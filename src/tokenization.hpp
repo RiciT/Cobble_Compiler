@@ -62,11 +62,13 @@ public:
 			}
 			else if (peek().value() == ';') 
 			{
+				consume();
 				tokens.push_back({.type = TokenType::semi});
 				continue;
 			}
 			else if (std::isspace(peek().value())) 
 			{
+				consume();
 				continue;
 			}
 			else 
@@ -80,9 +82,9 @@ public:
 	};
 private:
 
-	[[nodiscard]] std::optional<char> peek(int count = 0) const 
+	[[nodiscard]] std::optional<char> peek(int count = 1) const 
 	{
-		if (m_index + count >= m_src.length())
+		if (m_index + count > m_src.length())
 		{
 			return {};
 		}
