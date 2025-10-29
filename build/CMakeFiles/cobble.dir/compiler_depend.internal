@@ -3,6 +3,8 @@
 
 CMakeFiles/cobble.dir/src/main.cpp.o
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/generation.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parser.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/tokenization.hpp
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h

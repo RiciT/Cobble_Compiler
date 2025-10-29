@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <sstream>
 
 enum class TokenType 
 {
@@ -14,7 +15,7 @@ enum class TokenType
 struct Token 
 {
 	TokenType type;
-	std::optional<std::string> value;
+	std::optional<std::string> value {};
 };
 
 class Tokenizer {
@@ -80,9 +81,9 @@ public:
 		m_index = 0;
 		return tokens;
 	};
-private:
 
-	[[nodiscard]] std::optional<char> peek(int count = 1) const 
+private:
+	[[nodiscard]] inline std::optional<char> peek(int count = 1) const 
 	{
 		if (m_index + count > m_src.length())
 		{
@@ -95,7 +96,7 @@ private:
 		
 	}
 	
-	char consume() 
+	inline char consume() 
 	{
 		return m_src.at(m_index++);
 	}
