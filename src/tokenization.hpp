@@ -9,7 +9,12 @@ enum class TokenType
 {
 	exit,
 	int_lit,
-	semi
+	semi,
+	open_paren,
+	close_paren,
+	ident,
+	let,
+	equals,
 };
 
 struct Token 
@@ -43,10 +48,17 @@ public:
 					buf.clear();
 					continue;
 				}
+				else if (buf == "let")
+				{
+					tokens.push_back({.type = TokenType::let});
+					buf.clear();
+					continue;
+				}
 				else
 				{
-					std::cerr << "You screwed up" << std::endl;
-					exit(EXIT_FAILURE);
+					tokens.push_back({.type = TokenType::ident, .value = buf});
+					buf.clear();
+					continue;
 				}
 				
 			}
@@ -59,6 +71,22 @@ public:
 				}
 				tokens.push_back({.type = TokenType::int_lit, .value = buf});
 				buf.clear();
+				continue;
+			}
+			else if (peek().value() == '(') {
+				consume();
+				tokens.push_back({.type = TokenType::open_paren});
+				continue;
+			}
+			else if (peek().value() == ')') {
+				consume();
+				tokens.push_back({.type = TokenType::close_paren});
+				continue;
+			}
+			else if (peek().value() == '=') 
+			{
+				consume();
+				tokens.push_back({.type = TokenType::equals});
 				continue;
 			}
 			else if (peek().value() == ';') 
@@ -83,15 +111,15 @@ public:
 	};
 
 private:
-	[[nodiscard]] inline std::optional<char> peek(int count = 1) const 
+	[[nodiscard]] inline std::optional<char> peek(int offset = 0) const 
 	{
-		if (m_index + count > m_src.length())
+		if (m_index + offset >= m_src.length())
 		{
 			return {};
 		}
 		else 
 		{
-			return m_src.at(m_index);
+			return m_src.at(m_index + offset);
 		} 
 		
 	}

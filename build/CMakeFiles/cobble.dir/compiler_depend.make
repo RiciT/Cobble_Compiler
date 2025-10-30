@@ -24,6 +24,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
   /usr/include/c++/13/bits/enable_special_members.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -31,6 +32,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/bits/functexcept.h \
   /usr/include/c++/13/bits/functional_hash.h \
   /usr/include/c++/13/bits/hash_bytes.h \
+  /usr/include/c++/13/bits/hashtable.h \
+  /usr/include/c++/13/bits/hashtable_policy.h \
   /usr/include/c++/13/bits/invoke.h \
   /usr/include/c++/13/bits/ios_base.h \
   /usr/include/c++/13/bits/istream.tcc \
@@ -46,8 +49,10 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
+  /usr/include/c++/13/bits/parse_numbers.h \
   /usr/include/c++/13/bits/postypes.h \
   /usr/include/c++/13/bits/predefined_ops.h \
   /usr/include/c++/13/bits/ptr_traits.h \
@@ -73,6 +78,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/bits/streambuf_iterator.h \
   /usr/include/c++/13/bits/string_view.tcc \
   /usr/include/c++/13/bits/stringfwd.h \
+  /usr/include/c++/13/bits/unordered_map.h \
   /usr/include/c++/13/bits/uses_allocator.h \
   /usr/include/c++/13/bits/uses_allocator_args.h \
   /usr/include/c++/13/bits/utility.h \
@@ -90,6 +96,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/debug/assertions.h \
   /usr/include/c++/13/debug/debug.h \
   /usr/include/c++/13/exception \
+  /usr/include/c++/13/ext/aligned_buffer.h \
   /usr/include/c++/13/ext/alloc_traits.h \
   /usr/include/c++/13/ext/atomicity.h \
   /usr/include/c++/13/ext/numeric_traits.h \
@@ -115,6 +122,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/tuple \
   /usr/include/c++/13/type_traits \
   /usr/include/c++/13/typeinfo \
+  /usr/include/c++/13/unordered_map \
+  /usr/include/c++/13/variant \
   /usr/include/c++/13/vector \
   /usr/include/ctype.h \
   /usr/include/endian.h \
@@ -318,25 +327,37 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
-/usr/include/c++/13/bits/stl_algobase.h:
+/usr/include/stdlib.h:
 
-/usr/include/c++/13/cstdlib:
+/usr/include/stdio.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+/usr/include/stdc-predef.h:
 
-/usr/include/c++/13/bits/refwrap.h:
+/usr/include/sched.h:
 
-/usr/include/c++/13/bits/fstream.tcc:
+/usr/include/pthread.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/features.h:
 
 /usr/include/c++/13/debug/debug.h:
 
 /usr/include/c++/13/stdexcept:
 
-/usr/include/c++/13/bits/ostream_insert.h:
+/usr/include/c++/13/bits/node_handle.h:
+
+/usr/include/c++/13/ios:
+
+/usr/include/c++/13/bits/parse_numbers.h:
 
 /usr/include/time.h:
 
 /usr/include/c++/13/bits/memoryfwd.h:
+
+/usr/include/c++/13/bits/erase_if.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
@@ -358,19 +379,37 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/bits/iterator_concepts.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
-
-/usr/include/c++/13/bits/char_traits.h:
-
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
 
 /usr/include/c++/13/bits/ios_base.h:
+
+/usr/include/c++/13/bits/ostream_insert.h:
+
+/usr/include/c++/13/bits/hashtable.h:
 
 /usr/include/c++/13/bits/hash_bytes.h:
 
 /usr/include/c++/13/bits/ranges_util.h:
 
 /usr/include/asm-generic/errno-base.h:
+
+/usr/include/features-time64.h:
+
+/usr/include/c++/13/string_view:
+
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
+
+/usr/include/c++/13/bits/char_traits.h:
+
+/usr/include/c++/13/bits/hashtable_policy.h:
+
+/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/c++/13/streambuf:
+
+/usr/include/c++/13/bits/exception.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
 
@@ -388,10 +427,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parser.hpp:
 
-/usr/include/c++/13/bits/sstream.tcc:
-
-/usr/include/c++/13/cwctype:
-
 /usr/include/c++/13/bits/predefined_ops.h:
 
 /usr/include/c++/13/bits/ranges_cmp.h:
@@ -400,22 +435,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/cwchar:
 
-/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/c++/13/streambuf:
-
-/usr/include/c++/13/bits/exception.h:
-
-/usr/include/c++/13/bits/locale_facets.tcc:
-
-/usr/include/c++/13/bits/requires_hosted.h:
-
-/usr/include/c++/13/bits/string_view.tcc:
-
-/usr/include/features.h:
-
 /usr/include/c++/13/backward/binders.h:
 
 /usr/include/c++/13/bits/stringfwd.h:
@@ -423,8 +442,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 /usr/include/ctype.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/tokenization.hpp:
-
-/usr/include/stdlib.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/generation.hpp:
 
@@ -452,21 +469,21 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/istream:
 
-/usr/include/c++/13/string_view:
-
-/usr/include/features-time64.h:
-
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/include/c++/13/bits/basic_string.h:
-
-/usr/include/stdc-predef.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
 
 /usr/include/c++/13/bits/ptr_traits.h:
+
+/usr/include/c++/13/bits/fstream.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+
+/usr/include/c++/13/bits/refwrap.h:
 
 /usr/include/c++/13/bits/move.h:
 
@@ -482,13 +499,27 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/cerrno:
 
-/usr/include/stdio.h:
-
 /usr/include/c++/13/bits/concept_check.h:
 
 /usr/include/c++/13/bits/alloc_traits.h:
 
-/usr/include/c++/13/ios:
+/usr/include/c++/13/new:
+
+/usr/include/c++/13/ext/alloc_traits.h:
+
+/usr/include/c++/13/bits/locale_facets.tcc:
+
+/usr/include/c++/13/bits/requires_hosted.h:
+
+/usr/include/c++/13/bits/string_view.tcc:
+
+/usr/include/c++/13/cwctype:
+
+/usr/include/c++/13/bits/sstream.tcc:
+
+/usr/include/c++/13/cstdlib:
+
+/usr/include/c++/13/bits/stl_algobase.h:
 
 /usr/include/c++/13/bits/allocator.h:
 
@@ -518,15 +549,17 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/bits/stl_uninitialized.h:
 
+/usr/include/c++/13/bits/unordered_map.h:
+
 /usr/include/c++/13/bits/istream.tcc:
 
 /usr/include/c++/13/bits/exception_ptr.h:
 
 /usr/include/c++/13/optional:
 
-/usr/include/c++/13/bits/std_abs.h:
-
 /usr/include/c++/13/bits/postypes.h:
+
+/usr/include/c++/13/bits/std_abs.h:
 
 /usr/include/c++/13/bits/uses_allocator.h:
 
@@ -546,8 +579,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/bits/utility.h:
 
-/usr/include/c++/13/bits/vector.tcc:
-
 /usr/include/c++/13/clocale:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
@@ -564,11 +595,11 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
+/usr/include/c++/13/fstream:
+
 /usr/include/c++/13/bits/stl_pair.h:
 
 /usr/include/c++/13/bits/charconv.h:
-
-/usr/include/c++/13/fstream:
 
 /usr/include/c++/13/cstdio:
 
@@ -581,6 +612,12 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 /usr/include/c++/13/bits/functional_hash.h:
 
 /usr/include/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/usr/include/locale.h:
+
+/usr/include/c++/13/ext/aligned_buffer.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp:
 
@@ -595,10 +632,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 /usr/include/c++/13/iostream:
 
 /usr/include/c++/13/initializer_list:
-
-/usr/include/c++/13/ext/alloc_traits.h:
-
-/usr/include/c++/13/new:
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
 
@@ -618,20 +651,14 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
 
 /usr/include/c++/13/typeinfo:
 
+/usr/include/c++/13/unordered_map:
+
+/usr/include/c++/13/bits/vector.tcc:
+
+/usr/include/c++/13/variant:
+
 /usr/include/c++/13/bits/max_size_type.h:
 
 /usr/include/c++/13/bits/streambuf.tcc:
 
 /usr/include/endian.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
-
-/usr/include/linux/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
-
-/usr/include/locale.h:
-
-/usr/include/pthread.h:
-
-/usr/include/sched.h:

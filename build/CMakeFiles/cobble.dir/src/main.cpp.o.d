@@ -167,4 +167,12 @@ CMakeFiles/cobble.dir/src/main.cpp.o: \
  /usr/include/c++/13/bits/vector.tcc \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./generation.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./parser.hpp \
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./tokenization.hpp
+ /usr/include/c++/13/variant /usr/include/c++/13/bits/parse_numbers.h \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./tokenization.hpp \
+ /usr/include/c++/13/unordered_map \
+ /usr/include/c++/13/bits/unordered_map.h \
+ /usr/include/c++/13/bits/hashtable.h \
+ /usr/include/c++/13/bits/hashtable_policy.h \
+ /usr/include/c++/13/ext/aligned_buffer.h \
+ /usr/include/c++/13/bits/node_handle.h \
+ /usr/include/c++/13/bits/erase_if.h
