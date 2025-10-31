@@ -120,43 +120,64 @@ public:
 		}
 	}
 
-	std::optional<NodeExpr*> parse_expr() 
+	std::optional<NodeExpr*> parse_expr(int minimum_precedence = 0) 
 	{
-		if (auto atom = parse_atom())
+		//precedence climbing from Eli Bendersky (https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing)
+		std::optional<NodeAtom*> atom_lhs = parse_atom();
+		if (!atom_lhs.has_value()) { return {}; }
+
+		auto expr_lhs = m_allocator.alloc<NodeExpr>();
+		expr_lhs->expr = atom_lhs.value();
+
+		while (true)
 		{
-			if (try_consume(TokenType::plus_sign).has_value())
+			std::optional<Token> curr_tok = peek();
+			std::optional<int> prec; 
+			if (curr_tok.has_value()) 
 			{
-				auto bin_expr = m_allocator.alloc<NodeBinExpr>();
-				auto bin_expr_add = m_allocator.alloc<NodeBinExprAdd>();
-				auto lhs_expr = m_allocator.alloc<NodeExpr>();
-				lhs_expr->expr = atom.value();
-				bin_expr_add->lhs = lhs_expr;
-				
-				if (auto rhs = parse_expr())
-				{
-					bin_expr_add->rhs = rhs.value();
-					bin_expr->bin_expr = bin_expr_add;
-					auto expr = m_allocator.alloc<NodeExpr>();
-					expr->expr = bin_expr;
-					return expr;
-				}
-				else
-				{
-					std::cerr << "Expected expression" << std::endl;
-					exit(EXIT_FAILURE);
-				}
+				prec = bin_prec(curr_tok->type);
+				if (!prec.has_value() || prec < minimum_precedence)
+					break;
 			}
 			else
 			{
-				auto expr = m_allocator.alloc<NodeExpr>();
-				expr->expr = atom.value();
-				return expr;
+				break;
 			}
+
+			Token op = consume();
+			int next_minimum_precedence = prec.value() + 1;
+			auto expr_rhs = parse_expr(next_minimum_precedence);
+
+			if (!expr_rhs.has_value())
+			{
+				std::cerr << "Unable to parse expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			auto expr = m_allocator.alloc<NodeBinExpr>();
+			auto node_expr_lhs = m_allocator.alloc<NodeExpr>();
+			if (op.type == TokenType::plus_sign)
+			{
+				auto add = m_allocator.alloc<NodeBinExprAdd>();
+				
+				node_expr_lhs->expr = expr_lhs->expr;
+				add->lhs = node_expr_lhs;
+				add->rhs = expr_rhs.value();
+				expr->bin_expr = add;
+			}
+			else if (op.type == TokenType::mult_sign)
+			{
+				auto mult = m_allocator.alloc<NodeBinExprMult>();
+				
+				node_expr_lhs->expr = expr_lhs->expr;
+				mult->lhs = node_expr_lhs;
+				mult->rhs = expr_rhs.value();
+				expr->bin_expr = mult;
+			}
+			expr_lhs->expr = expr;
+
 		}
-		else 
-		{
-			return {};
-		}
+		return expr_lhs;
 	}
 
 	std::optional<NodeStmt*> parse_stmt() 

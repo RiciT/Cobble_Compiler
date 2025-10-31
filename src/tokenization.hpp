@@ -17,6 +17,17 @@ enum class TokenType
 	mult_sign,
 };
 
+std::optional<int> bin_prec(TokenType type) {
+	switch(type) {
+		case TokenType::plus_sign:
+			return 1;
+		case TokenType::mult_sign:
+			return 2;
+		default:
+			return {};
+	}
+}
+
 struct Token 
 {
 	TokenType type;
@@ -93,6 +104,12 @@ public:
 			{
 				consume();
 				tokens.push_back({ .type = TokenType::plus_sign});
+				continue;
+			}
+			else if (peek().value() == '*')
+			{
+				consume();
+				tokens.push_back({ .type = TokenType::mult_sign});
 				continue;
 			}
 			else if (peek().value() == '*')
