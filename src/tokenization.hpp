@@ -15,14 +15,29 @@ enum class TokenType
 	equals,
 	plus_sign,
 	mult_sign,
+	substract_sign,
+	division_sign,
+};
+
+static const std::unordered_map<char, TokenType> SingleCharTokens = {
+	{'(', TokenType::open_paren},
+	{')', TokenType::close_paren},
+	{'+', TokenType::plus_sign},
+	{'-', TokenType::substract_sign},
+	{'*', TokenType::mult_sign},
+	{'/', TokenType::division_sign},
+	{'=', TokenType::equals},
+	{';', TokenType::semi},
 };
 
 std::optional<int> bin_prec(TokenType type) {
 	switch(type) {
 		case TokenType::plus_sign:
-			return 1;
+		case TokenType::substract_sign:	
+			return 0;
 		case TokenType::mult_sign:
-			return 2;
+		case TokenType::division_sign:	
+			return 1;
 		default:
 			return {};
 	}
@@ -46,7 +61,8 @@ public:
 		std::string buf;
 		while (peek().has_value())
 		{
-			if (std::isalpha(peek().value()))
+			char next_char = peek().value();
+			if (std::isalpha(next_char))
 			{
 				buf.push_back(consume());
 				while (peek().has_value() && std::isalnum(peek().value()))
@@ -73,7 +89,7 @@ public:
 				}
 				
 			}
-			else if (std::isdigit(peek().value()))
+			else if (std::isdigit(next_char))
 			{
 				buf.push_back(consume());
 				while (peek().has_value() && std::isdigit(peek().value()))
@@ -84,50 +100,14 @@ public:
 				buf.clear();
 				continue;
 			}
-			else if (peek().value() == '(') {
-				consume();
-				tokens.push_back({.type = TokenType::open_paren});
-				continue;
-			}
-			else if (peek().value() == ')') {
-				consume();
-				tokens.push_back({.type = TokenType::close_paren});
-				continue;
-			}
-			else if (peek().value() == '=') 
+			else if (std::isspace(next_char)) 
 			{
 				consume();
-				tokens.push_back({.type = TokenType::equals});
-				continue;
 			}
-			else if (peek().value() == '+')
+			else if (auto token_char = SingleCharTokens.find(next_char); token_char != SingleCharTokens.end())
 			{
 				consume();
-				tokens.push_back({ .type = TokenType::plus_sign});
-				continue;
-			}
-			else if (peek().value() == '*')
-			{
-				consume();
-				tokens.push_back({ .type = TokenType::mult_sign});
-				continue;
-			}
-			else if (peek().value() == '*')
-			{
-				consume();
-				tokens.push_back({ .type = TokenType::mult_sign});
-				continue;
-			}
-			else if (peek().value() == ';') 
-			{
-				consume();
-				tokens.push_back({.type = TokenType::semi});
-				continue;
-			}
-			else if (std::isspace(peek().value())) 
-			{
-				consume();
-				continue;
+				tokens.push_back({.type = token_char->second});
 			}
 			else 
 			{
