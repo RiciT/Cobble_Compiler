@@ -102,18 +102,18 @@ public:
 
 	std::optional<NodeAtom*> parse_atom() 
 	{
-		if (peek().has_value() && peek().value().type == TokenType::int_lit)			
+		if (auto int_lit = try_consume(TokenType::int_lit)) 
 		{
 			auto atom_int_lit = m_allocator.alloc<NodeAtomIntLit>();
-			atom_int_lit->int_lit = consume();
+			atom_int_lit->int_lit = int_lit.value();
 			auto atom = m_allocator.alloc<NodeAtom>();
 			atom->primary_expr = atom_int_lit;
 			return atom;
 		}
-		else if (peek().has_value() && peek().value().type == TokenType::ident) 
+		else if (auto ident = try_consume(TokenType::ident)) 
 		{
 			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
-			atom_ident->ident = consume();
+			atom_ident->ident = ident.value();
 			auto atom = m_allocator.alloc<NodeAtom>();
 			atom->primary_expr = atom_ident;
 			return atom;
@@ -124,16 +124,14 @@ public:
 	{
 		if (auto atom = parse_atom())
 		{
-			if (peek().has_value() && peek().value().type == TokenType::plus_sign)
+			if (try_consume(TokenType::plus_sign).has_value())
 			{
 				auto bin_expr = m_allocator.alloc<NodeBinExpr>();
-
 				auto bin_expr_add = m_allocator.alloc<NodeBinExprAdd>();
 				auto lhs_expr = m_allocator.alloc<NodeExpr>();
 				lhs_expr->expr = atom.value();
 				bin_expr_add->lhs = lhs_expr;
 				
-				consume();
 				if (auto rhs = parse_expr())
 				{
 					bin_expr_add->rhs = rhs.value();
@@ -177,26 +175,9 @@ public:
 				std::cerr << "Invalid errrrxpression" << std::endl;
 				exit(EXIT_FAILURE);
 			}
+			try_consume(TokenType::close_paren, "Expected ')'");
+			try_consume(TokenType::semi, "Expected ';'");
 
-			if (peek().has_value() && peek().value().type == TokenType::close_paren)
-			{
-				consume();
-			} 
-			else
-			{
-				std::cerr << "Expected ')'" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			
-			if (peek().has_value() && peek().value().type == TokenType::semi)
-			{
-				consume();
-			}
-			else
-			{
-				std::cerr << "Expected ';'" << std::endl;
-				exit(EXIT_FAILURE);
-			}
 			auto stmt_ret_node = m_allocator.alloc<NodeStmt>();
 			stmt_ret_node->stmt = stmt_exit;
 			return stmt_ret_node;
@@ -217,15 +198,9 @@ public:
 				std::cerr << "Invalid expression" << std::endl;
 				exit(EXIT_FAILURE);
 			}
-			if (peek().has_value() && peek().value().type == TokenType::semi) 
-			{
-				consume();
-			}
-			else 
-			{
-				std::cerr << "Expected ';'" << std::endl;
-				exit(EXIT_FAILURE);
-			}
+			
+			try_consume(TokenType::semi, "Expected ';'");
+			
 			auto stmt_ret_node = m_allocator.alloc<NodeStmt>();
 			stmt_ret_node->stmt = stmt_let;
 			return stmt_ret_node; 
@@ -273,6 +248,30 @@ private:
 	inline Token consume() 
 	{
 		return m_tokens.at(m_index++);
+	}
+
+	inline Token try_consume(TokenType type, std::string err_msg)
+	{
+		if (peek().has_value() && peek().value().type == type)
+		{
+			return consume();
+		}
+		else
+		{
+			std::cerr << err_msg << std::endl;
+		}
+	}
+
+	inline std::optional<Token> try_consume(TokenType type)
+	{
+		if (peek().has_value() && peek().value().type == type)
+		{
+			return consume();
+		}
+		else
+		{
+			return {};
+		}
 	}
 
 	const std::vector<Token> m_tokens;
