@@ -1,8 +1,12 @@
 def x = 6;
-def y = 0;
+def y = 1;
 
-if(y) {
+//efaiehaoieghaeopvhaeovhaeohvi
+//evgaihvoeiadd dagg aeg 3351 3+ + + '''\\\////^ )()
+
+if(y-1 )
+{
     exit(2);
 }
 
-exit(1);
+//exit(1);

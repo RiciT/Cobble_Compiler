@@ -39,7 +39,7 @@ static const std::unordered_map<char, TokenType> SingleCharTokens = {
 	{'}', TokenType::close_curly},
 };
 
-std::optional<int> bin_prec(TokenType type) {
+inline std::optional<int> bin_prec(TokenType type) {
 	switch(type) {
 		case TokenType::plus_sign:
 		case TokenType::dash_sign:	
@@ -71,6 +71,7 @@ public:
 		while (peek().has_value())
 		{
 			char next_char = peek().value();
+			//idents and keywords
 			if (std::isalpha(next_char))
 			{
 				buf.push_back(consume());
@@ -104,6 +105,7 @@ public:
 				}
 				
 			}
+			//int literals
 			else if (std::isdigit(next_char))
 			{
 				buf.push_back(consume());
@@ -115,10 +117,27 @@ public:
 				buf.clear();
 				continue;
 			}
+			//single line comments
+			else if (SingleCharTokens.count(next_char) &&
+         				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
+         				peek(1).has_value() &&
+         				SingleCharTokens.count(peek(1).value()) &&
+         				SingleCharTokens.at(peek(1).value()) == TokenType::fslash_sign)
+			{
+				consume(); consume();
+				do
+				{
+					consume();
+				} while (peek().has_value() && peek().value() != '\n');
+			}
+			
+			
+			//empty space
 			else if (std::isspace(next_char)) 
 			{
 				consume();
 			}
+			//single char tokens
 			else if (auto token_char = SingleCharTokens.find(next_char); token_char != SingleCharTokens.end())
 			{
 				consume();

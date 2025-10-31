@@ -122,6 +122,7 @@ public:
 			atom->primary_expr = atom_paren;
 			return atom;
 		}
+		return {};
 	}
 
 	std::optional<NodeExpr*> parse_expr(int minimum_precedence = 0) 
