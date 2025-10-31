@@ -165,14 +165,64 @@ CMakeFiles/cobble.dir/src/main.cpp.o: \
  /usr/include/c++/13/bits/stl_vector.h \
  /usr/include/c++/13/bits/stl_bvector.h \
  /usr/include/c++/13/bits/vector.tcc \
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./generation.hpp \
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./parser.hpp \
- /usr/include/c++/13/variant /usr/include/c++/13/bits/parse_numbers.h \
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/./tokenization.hpp \
- /usr/include/c++/13/unordered_map \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/generation.hpp \
+ /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/bits/algorithmfwd.h \
+ /usr/include/c++/13/bits/stl_heap.h \
+ /usr/include/c++/13/bits/uniform_int_dist.h \
+ /usr/include/c++/13/bits/stl_tempbuf.h \
+ /usr/include/c++/13/bits/ranges_algo.h \
+ /usr/include/c++/13/bits/ranges_algobase.h \
+ /usr/include/c++/13/pstl/glue_algorithm_defs.h \
+ /usr/include/c++/13/pstl/execution_defs.h /usr/include/c++/13/cassert \
+ /usr/include/assert.h /usr/include/c++/13/unordered_map \
  /usr/include/c++/13/bits/unordered_map.h \
  /usr/include/c++/13/bits/hashtable.h \
  /usr/include/c++/13/bits/hashtable_policy.h \
  /usr/include/c++/13/ext/aligned_buffer.h \
  /usr/include/c++/13/bits/node_handle.h \
- /usr/include/c++/13/bits/erase_if.h
+ /usr/include/c++/13/bits/erase_if.h \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parser.hpp \
+ /usr/include/c++/13/variant /usr/include/c++/13/bits/parse_numbers.h \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/tokenization.hpp \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/arena_allocator.hpp \
+ /usr/include/c++/13/memory \
+ /usr/include/c++/13/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/13/bits/align.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+ /usr/include/c++/13/bits/unique_ptr.h \
+ /usr/include/c++/13/bits/shared_ptr.h \
+ /usr/include/c++/13/bits/shared_ptr_base.h \
+ /usr/include/c++/13/bits/allocated_ptr.h \
+ /usr/include/c++/13/ext/concurrence.h \
+ /usr/include/c++/13/bits/shared_ptr_atomic.h \
+ /usr/include/c++/13/bits/atomic_base.h \
+ /usr/include/c++/13/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/13/bits/atomic_wait.h /usr/include/c++/13/cstdint \
+ /usr/include/c++/13/climits \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
+ /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /usr/include/linux/close_range.h /usr/include/syscall.h \
+ /usr/include/x86_64-linux-gnu/sys/syscall.h \
+ /usr/include/x86_64-linux-gnu/asm/unistd.h \
+ /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
+ /usr/include/x86_64-linux-gnu/bits/syscall.h \
+ /usr/include/c++/13/bits/std_mutex.h \
+ /usr/include/c++/13/backward/auto_ptr.h \
+ /usr/include/c++/13/bits/ranges_uninitialized.h \
+ /usr/include/c++/13/pstl/glue_memory_defs.h /usr/include/c++/13/utility \
+ /usr/include/c++/13/bits/stl_relops.h

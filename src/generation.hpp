@@ -1,7 +1,10 @@
 #pragma once
 
-#include "parser.hpp"
+#include <algorithm>
+#include <cassert>
 #include <unordered_map>
+
+#include "parser.hpp"
 
 class Generator {
 public:
@@ -10,68 +13,88 @@ public:
     {
     }
 
-    void generate_expression(const NodeExpr& expr) 
+    void generate_atom(const NodeAtom* atom) 
     {
-        struct ExprVisitor {
+        struct AtomVisitor {
             Generator* gen;
-            void operator()(const NodeExprIdent& expr_ident) const
-            {
-                if (!gen->m_vars.contains(expr_ident.ident.value.value()))
+            void operator()(const NodeAtomIdent* atom_ident) const{
+                if (!gen->m_vars.contains(atom_ident->ident.value.value()))
                 {
-                    std::cerr << "Undeclared identifier: " << expr_ident.ident.value.value() << std::endl;
+                    std::cerr << "Undeclared identifier: " << atom_ident->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
                 //moving the stackpointer
-                const auto& var = gen->m_vars.at(expr_ident.ident.value.value());
+                const auto& var = gen->m_vars.at(atom_ident->ident.value.value());
                 std::stringstream offset;
                 offset << "QWORD [rsp + " << (gen->m_stack_size - var.stack_loc - 1) * 8 << "]\n";
                 gen->push(offset.str());
             }
-            void operator()(const NodeExprIntLit& expr_int_lit) const
+            void operator()(const NodeAtomIntLit* atom_int_lit) const {
+                gen->m_output << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
+                gen->push("rax");
+            }
+        };
+        AtomVisitor visitor({.gen = this});
+        std::visit(visitor, atom->primary_expr);
+    }
+
+    void generate_expression(const NodeExpr* expr) 
+    {
+        struct ExprVisitor {
+            Generator* gen;
+            void operator()(const NodeAtom* atom) const
+            {  
+                gen->generate_atom(atom);
+            }
+            void operator()(const NodeBinExpr* bin_expr) const 
             {
-                gen->m_output << "    mov rax, " << expr_int_lit.int_lit.value.value() << "\n";
+                gen->generate_expression(bin_expr->bin_expr->lhs);
+                gen->generate_expression(bin_expr->bin_expr->rhs);
+                gen->pop("rax");
+                gen->pop("rbx");
+                gen->m_output << "    add rax, rbx\n";
                 gen->push("rax");
             }
         };
 
         ExprVisitor visitor{ .gen = this };
-        std::visit(visitor, expr.expr);
+        std::visit(visitor, expr->expr);
     }
 
-    void generate_statement(const NodeStmt& stmt) 
+    void generate_statement(const NodeStmt* stmt) 
     {
         //visitor kind of works like a Match statement so that we can decide which is it
         struct StmtVisitor {
             Generator* gen;
-            void operator()(const NodeStmtExit& stmt_exit) const
+            void operator()(const NodeStmtExit* stmt_exit) const
             {
-                gen->generate_expression(stmt_exit.expr);
+                gen->generate_expression(stmt_exit->expr);
                 gen->m_output << "    mov rax, 60\n";
                 gen->pop("rdi");
 		        gen->m_output << "    syscall\n";
             }
-            void operator()(const NodeStmtLet& stmt_let) const
+            void operator()(const NodeStmtLet* stmt_let) const
             {
-                if (gen->m_vars.contains(stmt_let.ident.value.value())) 
+                if (gen->m_vars.contains(stmt_let->ident.value.value())) 
                 {
-                    std::cerr << "Identifier already used: " << stmt_let.ident.value.value() << std::endl;
+                    std::cerr << "Identifier already used: " << stmt_let->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
 
-                gen->m_vars.insert({stmt_let.ident.value.value(), Variable {.stack_loc = gen->m_stack_size }});
-                gen->generate_expression(stmt_let.expr);
+                gen->m_vars.insert({stmt_let->ident.value.value(), Variable {.stack_loc = gen->m_stack_size }});
+                gen->generate_expression(stmt_let->expr);
             }
         };
 
         StmtVisitor visitor { .gen = this };
-        std::visit(visitor, stmt.stmt);
+        std::visit(visitor, stmt->stmt);
     }
 
     [[nodiscard]] std::string generate_program() 
     {
 	    m_output << "global _start\n_start:\n";
         
-        for (const NodeStmt& stmt : m_prog.stmts)
+        for (const NodeStmt* stmt : m_prog.stmts)
         {
             generate_statement(stmt);
         }

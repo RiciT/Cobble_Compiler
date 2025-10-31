@@ -2,8 +2,6 @@
 
 #include <string>
 #include <vector>
-#include <optional>
-#include <sstream>
 
 enum class TokenType 
 {
@@ -15,6 +13,8 @@ enum class TokenType
 	ident,
 	let,
 	equals,
+	plus_sign,
+	mult_sign,
 };
 
 struct Token 
@@ -87,6 +87,18 @@ public:
 			{
 				consume();
 				tokens.push_back({.type = TokenType::equals});
+				continue;
+			}
+			else if (peek().value() == '+')
+			{
+				consume();
+				tokens.push_back({ .type = TokenType::plus_sign});
+				continue;
+			}
+			else if (peek().value() == '*')
+			{
+				consume();
+				tokens.push_back({ .type = TokenType::mult_sign});
 				continue;
 			}
 			else if (peek().value() == ';') 

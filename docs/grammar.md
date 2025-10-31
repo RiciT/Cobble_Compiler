@@ -1,17 +1,24 @@
 $$
-\begin{align}
-[\text{prog}] \to [\text{stmt}]^* 
+[\text{Prog}] \to [\text{Stmt}]^* 
 \\
-[\text{stmt}] \to 
+[\text{Stmt}] \to 
 \begin{cases} 
-    exit([\text{expr}]);\\
-    let \space \text{ident} = [\text{expr}]
+    exit([\text{Expr}]);\\
+    let \space \text{ident} = [\text{Expr}]
 \end{cases}
 \\
-[expr] \to
+[\text{Expr}] \to
 \begin{cases}
-    \text{int\_lit} \\ 
-    \text{ident}
-\end{cases} 
-\end{align}
+    \text{[Atom]}\\
+    [\text{BinExpr}]
+\end{cases}
+\\
+[\text{BinExpr}] \to \begin{cases}
+[\text{Expr}] * [\text{Expr}] & \text{prec} = 1\\
+[\text{Expr}] + [\text{Expr}] & \text{prec} = 0 
+\end{cases} \\
+[\text{Atom}] \to \begin{cases}
+\text{int\_lit}\\
+\text{ident}
+\end{cases}
 $$
