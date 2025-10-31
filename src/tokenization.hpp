@@ -5,13 +5,16 @@
 
 enum class TokenType 
 {
-	exit,
+	//Atoms
+	ident,
 	int_lit,
+	//Keywords
+	exit,
+	def,
+	//Single char tokens
 	semi,
 	open_paren,
 	close_paren,
-	ident,
-	def,
 	equals,
 	plus_sign,
 	mult_sign,
