@@ -21,13 +21,13 @@ struct NodeBinExprAdd {
 	NodeExpr* rhs;
 };
 
-// struct NodeBinExprMult {
-// 	NodeExpr* lhs;
-// 	NodeExpr* rhs;
-// };
+struct NodeBinExprMult {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
 
 struct NodeBinExpr {
-	NodeBinExprAdd* bin_expr;
+	std::variant<NodeBinExprAdd*, NodeBinExprMult*> bin_expr;
 };
 
 struct NodeAtom {
@@ -42,13 +42,13 @@ struct NodeStmtExit {
 	NodeExpr* expr;
 };
 
-struct NodeStmtLet {
+struct NodeStmtDef {
 	Token ident;
 	NodeExpr* expr;
 };
 
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtLet*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtDef*> stmt;
 };
 
 struct NodeProgram {
@@ -182,12 +182,12 @@ public:
 			stmt_ret_node->stmt = stmt_exit;
 			return stmt_ret_node;
 		} 
-		else if (peek().has_value() && peek().value().type == TokenType::let 
+		else if (peek().has_value() && peek().value().type == TokenType::def 
 			&& peek(1).has_value() && peek(1).value().type == TokenType::ident 
 			&& peek(2).has_value() && peek(2).value().type == TokenType::equals) 
 		{
 			consume();
-			auto stmt_let = m_allocator.alloc<NodeStmtLet>();
+			auto stmt_let = m_allocator.alloc<NodeStmtDef>();
 			stmt_let->ident = consume(); 
 			consume();
 			if (auto expr = parse_expr()) {
@@ -200,7 +200,7 @@ public:
 			}
 			
 			try_consume(TokenType::semi, "Expected ';'");
-			
+
 			auto stmt_ret_node = m_allocator.alloc<NodeStmt>();
 			stmt_ret_node->stmt = stmt_let;
 			return stmt_ret_node; 

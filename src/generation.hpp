@@ -73,16 +73,16 @@ public:
                 gen->pop("rdi");
 		        gen->m_output << "    syscall\n";
             }
-            void operator()(const NodeStmtLet* stmt_let) const
+            void operator()(const NodeStmtDef* stmt_def) const
             {
-                if (gen->m_vars.contains(stmt_let->ident.value.value())) 
+                if (gen->m_vars.contains(stmt_def->ident.value.value())) 
                 {
-                    std::cerr << "Identifier already used: " << stmt_let->ident.value.value() << std::endl;
+                    std::cerr << "Identifier already used: " << stmt_def->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
 
-                gen->m_vars.insert({stmt_let->ident.value.value(), Variable {.stack_loc = gen->m_stack_size }});
-                gen->generate_expression(stmt_let->expr);
+                gen->m_vars.insert({stmt_def->ident.value.value(), Variable {.stack_loc = gen->m_stack_size }});
+                gen->generate_expression(stmt_def->expr);
             }
         };
 

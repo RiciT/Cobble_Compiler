@@ -11,7 +11,7 @@ enum class TokenType
 	open_paren,
 	close_paren,
 	ident,
-	let,
+	def,
 	equals,
 	plus_sign,
 	mult_sign,
@@ -48,9 +48,9 @@ public:
 					buf.clear();
 					continue;
 				}
-				else if (buf == "let")
+				else if (buf == "def")
 				{
-					tokens.push_back({.type = TokenType::let});
+					tokens.push_back({.type = TokenType::def});
 					buf.clear();
 					continue;
 				}
