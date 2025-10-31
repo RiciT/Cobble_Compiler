@@ -244,6 +244,18 @@ public:
 			stmt_ret_node->stmt = stmt_let;
 			return stmt_ret_node; 
 		}
+		else if (auto open_curly = try_consume(TokenType::open_curly))
+		{
+			auto scope = m_allocator.alloc<NodeStmtScope>();
+			while (auto stmt = parse_stmt())
+			{
+				scope->stmts.push_back(stmt.value());
+			}
+			try_consume(TokenType::close_curly, "Expected '}'");
+			auto stmt = m_allocator.alloc<NodeStmt>();
+			stmt->stmt = scope;
+			return stmt;
+		}
 		else
 		{
 			return {};

@@ -26,7 +26,7 @@ public:
                 }
                 //moving the stackpointer
                 std::stringstream offset;
-                offset << "QWORD [rsp + " << (gen->m_stack_size - (*it).stack_loc - 1) * 8 << "]\n";
+                offset << "QWORD [rsp + " << (gen->m_stack_size - (*it).stack_loc - 1) * 8 << "]";
                 gen->push(offset.str());
             }
             void operator()(const NodeAtomIntLit* atom_int_lit) const {
@@ -128,7 +128,15 @@ public:
             }
             void operator()(const NodeStmtScope* scope) const 
             {
+                gen->begin_scope();
+
+                for (const NodeStmt* stmt : scope->stmts)
+                {
+                    gen->generate_statement(stmt);
+                }
                 
+
+                gen->end_scope();
             }
         };
 
@@ -165,6 +173,24 @@ private:
     {
         m_output << "    pop " << reg << "\n";
         m_stack_size--;
+    }
+
+    void begin_scope() 
+    {
+        m_scopes.push_back(m_vars.size());
+    }
+
+    void end_scope()
+    {
+        size_t pop_count = m_vars.size() - m_scopes.back();
+        //move back stackpointer (add since the stack is upside down)
+        m_output << "    add rsp, " << pop_count * 8 << "\n";
+        m_stack_size -= pop_count;
+        for (int i = 0; i < pop_count; i++)
+        {
+            m_vars.pop_back();
+        }
+        m_scopes.pop_back();
     }
 
     struct Variable 
