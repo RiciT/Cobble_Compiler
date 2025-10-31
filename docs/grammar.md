@@ -6,12 +6,20 @@ $$
 \begin{cases} 
     exit([\text{Expr}]);\\
     def \space \text{ident} = [\text{Expr}]\\
-    if([\text{Scope}])[\text{Scope}]
+    if([\text{Expr}])[\text{Scope}][\text{Else}]\\
     [\text{Scope}]
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}
 \\
+[\text{Elseif}] &\to \begin{cases}
+elseif([\text{Expr}])[\text{Scope}] \\
+\epsilon
+\end{cases}\\
+[\text{Else}] &\to \begin{cases}
+else[\text{Scope}] \\
+\epsilon
+\end{cases}\\
 [\text{Expr}] &\to
 \begin{cases}
     \text{[Atom]}\\

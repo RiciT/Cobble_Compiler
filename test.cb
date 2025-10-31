@@ -1,1 +1,18 @@
+def x = 2;
+def y = 10;
+
+if(x-2)
+{
+    exit(5);
+}
+elseif(x-1)
+{
+    exit(4);
+}
+else
+{
+    exit(3);
+}
+
+
 exit(1+y * 3);
