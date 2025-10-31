@@ -1,12 +1,1 @@
-def x = 6;
-def y = 1;
-
-//efaiehaoieghaeopvhaeovhaeohvi
-//evgaihvoeiadd dagg aeg 3351 3+ + + '''\\\////^ )()
-
-if(y-1 )
-{
-    exit(2);
-}
-
-//exit(1);
+exit(1+y * 3);

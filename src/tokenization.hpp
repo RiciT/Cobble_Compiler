@@ -130,8 +130,30 @@ public:
 					consume();
 				} while (peek().has_value() && peek().value() != '\n');
 			}
-			
-			
+			//multi line comment
+			else if (SingleCharTokens.count(next_char) &&
+         				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
+         				peek(1).has_value() &&
+         				SingleCharTokens.count(peek(1).value()) &&
+         				SingleCharTokens.at(peek(1).value()) == TokenType::star_sign) 
+			{
+				consume(); consume();
+				while (peek(1).has_value())
+				{
+					if (SingleCharTokens.count(peek().value()) &&
+            				SingleCharTokens.at(peek().value()) == TokenType::star_sign &&
+            				peek(1).has_value() &&
+            				SingleCharTokens.count(peek(1).value()) &&
+            				SingleCharTokens.at(peek(1).value()) == TokenType::fslash_sign)
+					{
+						break;
+					}
+					
+					consume();
+				}
+				if (peek().has_value()) { consume(); }
+				if (peek().has_value()) { consume(); }
+			}
 			//empty space
 			else if (std::isspace(next_char)) 
 			{
