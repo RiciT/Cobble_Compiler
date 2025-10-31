@@ -12,7 +12,7 @@ public:
     {
     }
 
-    void generate_atom(const NodeAtom* atom) 
+    void generate_atom(const NodeAtom* atom)
     {
         struct AtomVisitor {
             Generator* gen;
@@ -101,6 +101,18 @@ public:
         std::visit(visitor, expr->expr);
     }
 
+    void generate_scope(const NodeScope* scope)
+    {
+        begin_scope();
+
+        for (const NodeStmt* stmt : scope->stmts)
+        {
+            generate_statement(stmt);
+        }
+    
+        end_scope();
+    }
+
     void generate_statement(const NodeStmt* stmt) 
     {
         //visitor kind of works like a Match statement so that we can decide which is it
@@ -126,17 +138,19 @@ public:
                 gen->m_vars.push_back({ .name = stmt_def->ident.value.value(), .stack_loc = gen->m_stack_size });
                 gen->generate_expression(stmt_def->expr);
             }
-            void operator()(const NodeStmtScope* scope) const 
+            void operator()(const NodeScope* scope) const 
             {
-                gen->begin_scope();
-
-                for (const NodeStmt* stmt : scope->stmts)
-                {
-                    gen->generate_statement(stmt);
-                }
-                
-
-                gen->end_scope();
+                gen->generate_scope(scope);
+            }
+            void operator()(const NodeStmtIf* stmt_if) const 
+            {
+                gen->generate_expression(stmt_if->expr);
+                gen->pop("rax");
+                std::string label = gen->create_label();
+                gen->m_output << "    test rax, rax\n";
+                gen->m_output << "    jz " << label << "\n";
+                gen->generate_scope(stmt_if->scope);
+                gen->m_output << label << ":\n";
             }
         };
 
@@ -193,6 +207,13 @@ private:
         m_scopes.pop_back();
     }
 
+    std::string create_label() 
+    {
+        std::stringstream strs;
+        strs << "label" << m_label_count++;
+        return strs.str();
+    }
+
     struct Variable 
     {
         std::string name;
@@ -204,4 +225,5 @@ private:
     size_t m_stack_size = 0;
     std::vector<Variable> m_vars {};
     std::vector<size_t> m_scopes {};
+    int m_label_count = 0;
 };

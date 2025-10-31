@@ -6,8 +6,11 @@ $$
 \begin{cases} 
     exit([\text{Expr}]);\\
     def \space \text{ident} = [\text{Expr}]\\
-    \{[\text{Stmt}^*]\}
+    if([\text{Scope}])[\text{Scope}]
+    [\text{Scope}]
 \end{cases}
+\\
+[\text{Scope}] &\to \{[\text{Stmt}^*]\}
 \\
 [\text{Expr}] &\to
 \begin{cases}

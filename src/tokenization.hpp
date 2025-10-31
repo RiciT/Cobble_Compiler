@@ -23,6 +23,7 @@ enum class TokenType
 	fslash_sign,
 	open_curly,
 	close_curly,
+	if_,
 };
 
 static const std::unordered_map<char, TokenType> SingleCharTokens = {
@@ -86,6 +87,12 @@ public:
 				else if (buf == "def")
 				{
 					tokens.push_back({.type = TokenType::def});
+					buf.clear();
+					continue;
+				}
+				else if (buf == "if")
+				{
+					tokens.push_back({ .type = TokenType::if_ });
 					buf.clear();
 					continue;
 				}
