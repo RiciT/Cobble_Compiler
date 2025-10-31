@@ -33,6 +33,9 @@ public:
                 gen->m_output << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
                 gen->push("rax");
             }
+            void operator()(const NodeAtomParen* atom_paren) const {
+                gen->generate_expression(atom_paren->expr);
+            }
         };
         AtomVisitor visitor({.gen = this});
         std::visit(visitor, atom->primary_expr);
@@ -43,19 +46,36 @@ public:
         struct BinExprVisitor {
             Generator* gen;
             void operator()(const NodeBinExprAdd* add) const {
-                gen->generate_expression(add->lhs);
                 gen->generate_expression(add->rhs);
+                gen->generate_expression(add->lhs);
                 gen->pop("rax");
                 gen->pop("rbx");
                 gen->m_output << "    add rax, rbx\n";
                 gen->push("rax");
             }
+            void operator()(const NodeBinExprSub* sub) const {
+                gen->generate_expression(sub->rhs);
+                gen->generate_expression(sub->lhs);
+                gen->pop("rax");
+                gen->pop("rbx");
+                gen->m_output << "    sub rax, rbx\n";
+                gen->push("rax");
+            }
             void operator()(const NodeBinExprMult* mult) const {
-                gen->generate_expression(mult->lhs);
                 gen->generate_expression(mult->rhs);
+                gen->generate_expression(mult->lhs);
                 gen->pop("rax");
                 gen->pop("rbx");
                 gen->m_output << "    mul rbx\n";
+                gen->push("rax");
+            }
+            void operator()(const NodeBinExprDiv* div) const {
+                gen->generate_expression(div->rhs);
+                gen->generate_expression(div->lhs);
+                gen->pop("rax");
+                gen->pop("rbx");
+                gen->m_output << "    xor rdx, rdx\n";
+                gen->m_output << "    div rbx\n";
                 gen->push("rax");
             }
         };

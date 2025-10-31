@@ -21,6 +21,7 @@ $$
 \end{cases} \\
 [\text{Atom}] \to \begin{cases}
 \text{int\_lit}\\
-\text{ident}
+\text{ident}\\
+\text{([Expr])}
 \end{cases}
 $$

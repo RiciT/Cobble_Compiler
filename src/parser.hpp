@@ -16,6 +16,10 @@ struct NodeAtomIdent {
 
 struct NodeExpr;
 
+struct NodeAtomParen {
+	NodeExpr* expr;
+};
+
 struct NodeBinExprAdd {
 	NodeExpr* lhs;
 	NodeExpr* rhs;
@@ -26,12 +30,22 @@ struct NodeBinExprMult {
 	NodeExpr* rhs;
 };
 
+struct NodeBinExprSub {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
+struct NodeBinExprDiv {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
 struct NodeBinExpr {
-	std::variant<NodeBinExprAdd*, NodeBinExprMult*> bin_expr;
+	std::variant<NodeBinExprAdd*, NodeBinExprMult*, NodeBinExprDiv*, NodeBinExprSub*> bin_expr;
 };
 
 struct NodeAtom {
-	std::variant<NodeAtomIntLit*, NodeAtomIdent*> primary_expr;
+	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*> primary_expr;
 };
 
 struct NodeExpr {
@@ -56,48 +70,12 @@ struct NodeProgram {
 };
 
 class Parser {
+#pragma region  //public:
 public:
 	inline explicit Parser(std::vector<Token> tokens)
 		: m_tokens(std::move(tokens)),
 		m_allocator(1024 * 1024 * 4) //4 Mb
 	{
-	}
-
-	std::optional<NodeBinExpr*> parse_bin_expr()
-	{
-		if (auto lhs = parse_expr())
-		{
-			auto bin_expr = m_allocator.alloc<NodeBinExpr>();
-			if (peek().has_value() && peek().value().type == TokenType::plus_sign)
-			{
-				auto bin_expr_add = m_allocator.alloc<NodeBinExprAdd>();
-				bin_expr_add->lhs = lhs.value();
-				
-				consume();
-				if (auto rhs = parse_expr())
-				{
-					bin_expr_add->rhs = rhs.value();
-					bin_expr->bin_expr = bin_expr_add;
-					return bin_expr;
-				}
-				else
-				{
-					std::cerr << "Expected expression" << std::endl;
-					exit(EXIT_FAILURE);
-				}
-			}
-			else 
-			{
-				std::cerr << "Unsupported binary operator" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			
-		}
-		else
-		{
-			return {};
-		}
-		
 	}
 
 	std::optional<NodeAtom*> parse_atom() 
@@ -116,6 +94,21 @@ public:
 			atom_ident->ident = ident.value();
 			auto atom = m_allocator.alloc<NodeAtom>();
 			atom->primary_expr = atom_ident;
+			return atom;
+		}
+		else if (auto open_paren = try_consume(TokenType::open_paren))
+		{
+			auto expr = parse_expr();
+			if (!expr.has_value()) 
+			{
+				std::cerr << "Expected expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			try_consume(TokenType::close_paren, "Expected ')'");
+			auto atom_paren = m_allocator.alloc<NodeAtomParen>();
+			atom_paren->expr = expr.value();
+			auto atom = m_allocator.alloc<NodeAtom>();
+			atom->primary_expr = atom_paren;
 			return atom;
 		}
 	}
@@ -165,6 +158,15 @@ public:
 				add->rhs = expr_rhs.value();
 				expr->bin_expr = add;
 			}
+			else if (op.type == TokenType::substract_sign)
+			{
+				auto sub = m_allocator.alloc<NodeBinExprSub>();
+				
+				node_expr_lhs->expr = expr_lhs->expr;
+				sub->lhs = node_expr_lhs;
+				sub->rhs = expr_rhs.value();
+				expr->bin_expr = sub;
+			}
 			else if (op.type == TokenType::mult_sign)
 			{
 				auto mult = m_allocator.alloc<NodeBinExprMult>();
@@ -174,6 +176,16 @@ public:
 				mult->rhs = expr_rhs.value();
 				expr->bin_expr = mult;
 			}
+			else if (op.type == TokenType::division_sign)
+			{
+				auto div = m_allocator.alloc<NodeBinExprDiv>();
+				
+				node_expr_lhs->expr = expr_lhs->expr;
+				div->lhs = node_expr_lhs;
+				div->rhs = expr_rhs.value();
+				expr->bin_expr = div;
+			}
+			else { assert(false); } //Unreachable
 			expr_lhs->expr = expr;
 
 		}
@@ -252,6 +264,8 @@ public:
 		
 	}
 
+#pragma endregion
+#pragma region //private: 
 private:	
 	[[nodiscard]] inline std::optional<Token> peek(int offset = 0) const 
 	{
@@ -298,4 +312,5 @@ private:
 	const std::vector<Token> m_tokens;
 	size_t m_index = 0;
 	ArenaAllocator m_allocator;
+	#pragma endregion
 };
