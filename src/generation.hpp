@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <unordered_map>
 
 #include "parser.hpp"
 
@@ -18,15 +17,16 @@ public:
         struct AtomVisitor {
             Generator* gen;
             void operator()(const NodeAtomIdent* atom_ident) const{
-                if (!gen->m_vars.contains(atom_ident->ident.value.value()))
+                auto it = std::find_if(gen->m_vars.cbegin(), gen->m_vars.cend(), [&](const Variable& var){
+                    return var.name == atom_ident->ident.value.value(); });
+                if (it == gen->m_vars.cend())
                 {
                     std::cerr << "Undeclared identifier: " << atom_ident->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
                 //moving the stackpointer
-                const auto& var = gen->m_vars.at(atom_ident->ident.value.value());
                 std::stringstream offset;
-                offset << "QWORD [rsp + " << (gen->m_stack_size - var.stack_loc - 1) * 8 << "]\n";
+                offset << "QWORD [rsp + " << (gen->m_stack_size - (*it).stack_loc - 1) * 8 << "]\n";
                 gen->push(offset.str());
             }
             void operator()(const NodeAtomIntLit* atom_int_lit) const {
@@ -114,15 +114,21 @@ public:
 		        gen->m_output << "    syscall\n";
             }
             void operator()(const NodeStmtDef* stmt_def) const
-            {
-                if (gen->m_vars.contains(stmt_def->ident.value.value())) 
+            {   
+                auto it = std::find_if(gen->m_vars.cbegin(), gen->m_vars.cend(), [&](const Variable& var){
+                    return var.name == stmt_def->ident.value.value(); });
+                if (it != gen->m_vars.cend()) 
                 {
                     std::cerr << "Identifier already used: " << stmt_def->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
 
-                gen->m_vars.insert({stmt_def->ident.value.value(), Variable {.stack_loc = gen->m_stack_size }});
+                gen->m_vars.push_back({ .name = stmt_def->ident.value.value(), .stack_loc = gen->m_stack_size });
                 gen->generate_expression(stmt_def->expr);
+            }
+            void operator()(const NodeStmtScope* scope) const 
+            {
+                
             }
         };
 
@@ -163,11 +169,13 @@ private:
 
     struct Variable 
     {
+        std::string name;
         size_t stack_loc;
     };
 
     const NodeProgram m_prog;
     std::stringstream m_output;
     size_t m_stack_size = 0;
-    std::unordered_map<std::string, Variable> m_vars {};
+    std::vector<Variable> m_vars {};
+    std::vector<size_t> m_scopes {};
 };

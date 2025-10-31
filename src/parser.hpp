@@ -52,6 +52,8 @@ struct NodeExpr {
 	std::variant<NodeAtom*, NodeBinExpr*> expr;
 };
 
+struct NodeStmt;
+
 struct NodeStmtExit {
 	NodeExpr* expr;
 };
@@ -61,8 +63,12 @@ struct NodeStmtDef {
 	NodeExpr* expr;
 };
 
+struct NodeStmtScope {
+	std::vector<NodeStmt*> stmts;
+};
+
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtDef*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtDef*, NodeStmtScope*> stmt;
 };
 
 struct NodeProgram {
@@ -158,7 +164,7 @@ public:
 				add->rhs = expr_rhs.value();
 				expr->bin_expr = add;
 			}
-			else if (op.type == TokenType::substract_sign)
+			else if (op.type == TokenType::dash_sign)
 			{
 				auto sub = m_allocator.alloc<NodeBinExprSub>();
 				
@@ -167,7 +173,7 @@ public:
 				sub->rhs = expr_rhs.value();
 				expr->bin_expr = sub;
 			}
-			else if (op.type == TokenType::mult_sign)
+			else if (op.type == TokenType::star_sign)
 			{
 				auto mult = m_allocator.alloc<NodeBinExprMult>();
 				
@@ -176,7 +182,7 @@ public:
 				mult->rhs = expr_rhs.value();
 				expr->bin_expr = mult;
 			}
-			else if (op.type == TokenType::division_sign)
+			else if (op.type == TokenType::fslash_sign)
 			{
 				auto div = m_allocator.alloc<NodeBinExprDiv>();
 				

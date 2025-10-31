@@ -12,7 +12,20 @@ _start:
     pop rbx
     mul rbx
     push rax
-    mov rax, 10
+    mov rax, 3
+    push rax
+    mov rax, 2
+    push rax
+    pop rax
+    pop rbx
+    add rax, rbx
+    push rax
+    mov rax, 60
+    push rax
+    pop rax
+    pop rbx
+    xor rdx, rdx
+    div rbx
     push rax
     pop rax
     pop rbx

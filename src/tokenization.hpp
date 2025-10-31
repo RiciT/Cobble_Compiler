@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 enum class TokenType 
 {
@@ -17,29 +18,33 @@ enum class TokenType
 	close_paren,
 	equals,
 	plus_sign,
-	mult_sign,
-	substract_sign,
-	division_sign,
+	star_sign,
+	dash_sign,
+	fslash_sign,
+	open_curly,
+	close_curly,
 };
 
 static const std::unordered_map<char, TokenType> SingleCharTokens = {
 	{'(', TokenType::open_paren},
 	{')', TokenType::close_paren},
 	{'+', TokenType::plus_sign},
-	{'-', TokenType::substract_sign},
-	{'*', TokenType::mult_sign},
-	{'/', TokenType::division_sign},
+	{'-', TokenType::dash_sign},
+	{'*', TokenType::star_sign},
+	{'/', TokenType::fslash_sign},
 	{'=', TokenType::equals},
 	{';', TokenType::semi},
+	{'{', TokenType::open_curly},
+	{'}', TokenType::close_curly},
 };
 
 std::optional<int> bin_prec(TokenType type) {
 	switch(type) {
 		case TokenType::plus_sign:
-		case TokenType::substract_sign:	
+		case TokenType::dash_sign:	
 			return 0;
-		case TokenType::mult_sign:
-		case TokenType::division_sign:	
+		case TokenType::star_sign:
+		case TokenType::fslash_sign:	
 			return 1;
 		default:
 			return {};
