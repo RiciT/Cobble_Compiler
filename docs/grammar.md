@@ -6,14 +6,15 @@ $$
 \begin{cases} 
     exit([\text{Expr}]);\\
     def \space \text{ident} = [\text{Expr}]\\
-    if([\text{Expr}])[\text{Scope}][\text{Else}]\\
+    if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
     [\text{Scope}]
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}
 \\
-[\text{Elseif}] &\to \begin{cases}
-elseif([\text{Expr}])[\text{Scope}] \\
+[\text{IfPred}] &\to \begin{cases}
+elseif([\text{Expr}])[\text{Scope}][\text{IfPred}] \\
+[\text{Else}]\\
 \epsilon
 \end{cases}\\
 [\text{Else}] &\to \begin{cases}
