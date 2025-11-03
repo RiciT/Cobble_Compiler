@@ -52,7 +52,9 @@
         "charconv": "cpp",
         "ctime": "cpp",
         "format": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp"
     },
     "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
         "clang-diagnostic-error"

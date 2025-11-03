@@ -6,6 +6,7 @@
 #include "tokenization.hpp"
 #include "arena_allocator.hpp"
 
+#pragma region Nodes
 struct NodeAtomIntLit {
 	Token int_lit;
 };
@@ -96,6 +97,7 @@ struct NodeStmt {
 struct NodeProgram {
 	std::vector<NodeStmt*> stmts;
 };
+#pragma endregion
 
 class Parser {
 #pragma region  //public:
@@ -235,7 +237,51 @@ public:
 
 	std::optional<NodeIfPredicate*> parse_if_predicate()
 	{
-		
+		if (try_consume(TokenType::elseif_))
+		{
+			try_consume(TokenType::open_paren, "Expected '" + std::to_string(SingleCharTokens.at_value(TokenType::open_paren)) + "'");
+			auto elif_ = m_allocator.alloc<NodeIfPredElseIf>();
+			if (const auto expr = parse_expr())
+			{
+				elif_->expr = expr.value();
+			}
+			else
+			{
+				std::cerr << "Expected expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			
+			try_consume(TokenType::close_paren, "Expected '" + std::to_string(SingleCharTokens.at_value(TokenType::close_paren)) + "'");
+			if (const auto scope = parse_scope())
+			{
+				elif_->scope = scope.value();
+			}
+			else
+			{
+				std::cerr << "Expected scope" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			elif_->ifpred = parse_if_predicate();
+			auto pred = m_allocator.emplace<NodeIfPredicate>(elif_);
+			return pred;
+		}
+
+		if (try_consume(TokenType::else_))
+		{
+			auto else_ = m_allocator.alloc<NodeIfPredElse>();
+			if (const auto scope = parse_scope())
+			{
+				else_->scope = scope.value();
+			}
+			else 
+			{
+				std::cerr << "Expected scope" << std::endl;
+				exit(EXIT_FAILURE);	
+			}
+			auto pred = m_allocator.emplace<NodeIfPredicate>(else_);
+			return pred;
+		}
+		return {};
 	}
 
 	std::optional<NodeStmt*> parse_stmt() 

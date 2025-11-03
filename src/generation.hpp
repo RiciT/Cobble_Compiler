@@ -6,6 +6,7 @@
 #include "parser.hpp"
 
 class Generator {
+#pragma region public:
 public:
     inline Generator(NodeProgram prog)
         : m_prog(std::move(prog))
@@ -113,6 +114,39 @@ public:
         end_scope();
     }
 
+    void generate_if_predicate(const NodeIfPredicate* pred, const std::string& end_label)
+    {
+        struct PredVisitor {
+            Generator& gen;
+            const std::string& end_label;
+
+            void operator()(const NodeIfPredElseIf* elseif_) const
+            {
+                gen.m_output << "    ;; else if\n"; //comment
+                gen.generate_expression(elseif_->expr);
+                gen.pop("rax");
+                std::string label = gen.create_label();
+                gen.m_output << "    test rax, rax\n";
+                gen.m_output << "    jz " << label << "\n";
+                gen.generate_scope(elseif_->scope);
+                gen.m_output << "    jmp " << end_label << "\n";
+                if (elseif_->ifpred.has_value())
+                {    
+                    gen.m_output << label << ":\n";
+                    gen.generate_if_predicate(elseif_->ifpred.value(), end_label);
+                }
+            }
+            void operator()(const NodeIfPredElse* else_) const
+            {
+                gen.m_output << "    ;; else\n"; //comment
+                gen.generate_scope(else_->scope);
+            }
+        };
+
+        PredVisitor visitor{ .gen = *this, .end_label = end_label };
+        std::visit(visitor, pred->ifpred);
+    }
+
     void generate_statement(const NodeStmt* stmt) 
     {
         //visitor kind of works like a Match statement so that we can decide which is it
@@ -150,7 +184,18 @@ public:
                 gen.m_output << "    test rax, rax\n";
                 gen.m_output << "    jz " << label << "\n";
                 gen.generate_scope(stmt_if->scope);
-                gen.m_output << label << ":\n";
+                if (stmt_if->ifpred.has_value())
+                {
+                    const std::string end_label = gen.create_label();
+                    gen.m_output << "    jmp " << end_label << "\n";
+                    gen.m_output << label << ":\n";
+                    gen.generate_if_predicate(stmt_if->ifpred.value(), label);
+                    gen.m_output << end_label << ":\n";
+                }
+                else 
+                {
+                    gen.m_output << label << ":\n";
+                }
             }
         };
 
@@ -174,7 +219,9 @@ public:
 		m_output << "    syscall";
         return m_output.str();
     }
+#pragma endregion
 
+#pragma region private:
 private:
 
     void push(const std::string& reg)
@@ -226,4 +273,5 @@ private:
     std::vector<Variable> m_vars {};
     std::vector<size_t> m_scopes {};
     int m_label_count = 0;
+#pragma endregion
 };
