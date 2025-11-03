@@ -14,10 +14,6 @@ $$
 \\
 [\text{IfPred}] &\to \begin{cases}
 elseif([\text{Expr}])[\text{Scope}][\text{IfPred}] \\
-[\text{Else}]\\
-\epsilon
-\end{cases}\\
-[\text{Else}] &\to \begin{cases}
 else[\text{Scope}] \\
 \epsilon
 \end{cases}\\

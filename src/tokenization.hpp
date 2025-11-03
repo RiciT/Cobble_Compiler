@@ -2,7 +2,8 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+
+#include <unordered_bimap.hpp>
 
 enum class TokenType 
 {
@@ -24,9 +25,11 @@ enum class TokenType
 	open_curly,
 	close_curly,
 	if_,
+	elseif_,
+	else_,
 };
 
-static const std::unordered_map<char, TokenType> SingleCharTokens = {
+static const unordered_bimap<char, TokenType> SingleCharTokens = {
 	{'(', TokenType::open_paren},
 	{')', TokenType::close_paren},
 	{'+', TokenType::plus_sign},
@@ -97,6 +100,18 @@ public:
 					buf.clear();
 					continue;
 				}
+				else if (buf == "elseif")
+				{
+					tokens.push_back({ .type = TokenType::elseif_ });
+					buf.clear();
+					continue;
+				}
+				else if (buf == "else")
+				{
+					tokens.push_back({ .type = TokenType::else_ });
+					buf.clear();
+					continue;
+				}
 				else
 				{
 					tokens.push_back({.type = TokenType::ident, .value = buf});
@@ -118,11 +133,11 @@ public:
 				continue;
 			}
 			//single line comments
-			else if (SingleCharTokens.count(next_char) &&
-         				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
+			else if (SingleCharTokens.has_key(next_char) &&
+         				SingleCharTokens.get_value(next_char) == TokenType::fslash_sign &&
          				peek(1).has_value() &&
-         				SingleCharTokens.count(peek(1).value()) &&
-         				SingleCharTokens.at(peek(1).value()) == TokenType::fslash_sign)
+         				SingleCharTokens.has_key(peek(1).value()) &&
+         				SingleCharTokens.get_value(peek(1).value()) == TokenType::fslash_sign)
 			{
 				consume(); consume();
 				do
@@ -131,20 +146,20 @@ public:
 				} while (peek().has_value() && peek().value() != '\n');
 			}
 			//multi line comment
-			else if (SingleCharTokens.count(next_char) &&
-         				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
+			else if (SingleCharTokens.has_key(next_char) &&
+         				SingleCharTokens.get_value(next_char) == TokenType::fslash_sign &&
          				peek(1).has_value() &&
-         				SingleCharTokens.count(peek(1).value()) &&
-         				SingleCharTokens.at(peek(1).value()) == TokenType::star_sign) 
+         				SingleCharTokens.has_key(peek(1).value()) &&
+         				SingleCharTokens.get_value(peek(1).value()) == TokenType::star_sign) 
 			{
 				consume(); consume();
 				while (peek(1).has_value())
 				{
-					if (SingleCharTokens.count(peek().value()) &&
-            				SingleCharTokens.at(peek().value()) == TokenType::star_sign &&
+					if (SingleCharTokens.has_key(peek().value()) &&
+            				SingleCharTokens.get_value(peek().value()) == TokenType::star_sign &&
             				peek(1).has_value() &&
-            				SingleCharTokens.count(peek(1).value()) &&
-            				SingleCharTokens.at(peek(1).value()) == TokenType::fslash_sign)
+            				SingleCharTokens.has_key(peek(1).value()) &&
+            				SingleCharTokens.get_value(peek(1).value()) == TokenType::fslash_sign)
 					{
 						break;
 					}
@@ -160,7 +175,7 @@ public:
 				consume();
 			}
 			//single char tokens
-			else if (auto token_char = SingleCharTokens.find(next_char); token_char != SingleCharTokens.end())
+			else if (auto token_char = SingleCharTokens.find_key(next_char); token_char != SingleCharTokens.end())
 			{
 				consume();
 				tokens.push_back({.type = token_char->second});

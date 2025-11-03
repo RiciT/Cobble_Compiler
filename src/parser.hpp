@@ -67,9 +67,26 @@ struct NodeScope {
 	std::vector<NodeStmt*> stmts;
 };
 
+struct NodeIfPredicate;
+
+struct NodeIfPredicateElseIf {
+	NodeExpr* expr;
+	NodeScope* scope;
+	std::optional<NodeIfPredicate*> ifpred;
+};
+
+struct NodeIfPredicateElse {
+	NodeScope* scope;
+};
+
+struct NodeIfPredicate {
+	std::variant<NodeIfPredicateElseIf*, NodeIfPredicateElse*> ifpred;
+};
+
 struct NodeStmtIf {
 	NodeExpr* expr;
 	NodeScope* scope;
+	std::optional<NodeIfPredicate*> ifpred;
 };
 
 struct NodeStmt {
@@ -216,6 +233,14 @@ public:
 		return scope;
 	}
 
+	std::optional<NodeIfPredicate*> parse_if_predicate()
+	{
+		if (try_consume(TokenType::elseif_))
+		{
+			try_consume(TokenType::open_paren, "Expected " + SingleCharTokens.get_key(TokenType::close_paren));
+		}
+	}
+
 	std::optional<NodeStmt*> parse_stmt() 
 	{
 		if (peek().value().type == TokenType::exit && 
@@ -290,6 +315,7 @@ public:
 				std::cerr << "Invalid expression" << std::endl;
 				exit(EXIT_FAILURE);
 			}
+
 			try_consume(TokenType::close_paren, "Expected ')'");
 			if (auto scope = parse_scope())
 			{
@@ -300,6 +326,8 @@ public:
 				std::cerr << "Invalid scope" << std::endl;
 				exit(EXIT_FAILURE);
 			}
+			stmt_if->ifpred = parse_if_predicate();
+
 			auto stmt = m_allocator.alloc<NodeStmt>();
 			stmt->stmt = stmt_if;
 			return stmt;
