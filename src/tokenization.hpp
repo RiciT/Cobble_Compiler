@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include "unordered_bimap.hpp"
 
 enum class TokenType 
 {
@@ -24,9 +24,11 @@ enum class TokenType
 	open_curly,
 	close_curly,
 	if_,
+	elseif_,
+	else_,
 };
 
-static const std::unordered_map<char, TokenType> SingleCharTokens = {
+static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 	{'(', TokenType::open_paren},
 	{')', TokenType::close_paren},
 	{'+', TokenType::plus_sign},
@@ -97,6 +99,18 @@ public:
 					buf.clear();
 					continue;
 				}
+				else if (buf == "elseif")
+				{
+					tokens.push_back({ .type = TokenType::elseif_ });
+					buf.clear();
+					continue;
+				}
+				else if (buf == "else")
+				{
+					tokens.push_back({ .type = TokenType::else_ });
+					buf.clear();
+					continue;
+				}
 				else
 				{
 					tokens.push_back({.type = TokenType::ident, .value = buf});
@@ -160,7 +174,7 @@ public:
 				consume();
 			}
 			//single char tokens
-			else if (auto token_char = SingleCharTokens.find(next_char); token_char != SingleCharTokens.end())
+			else if (auto token_char = SingleCharTokens.find_by_key(next_char); token_char != SingleCharTokens.end())
 			{
 				consume();
 				tokens.push_back({.type = token_char->second});

@@ -67,9 +67,26 @@ struct NodeScope {
 	std::vector<NodeStmt*> stmts;
 };
 
+struct NodeIfPredicate;
+
+struct NodeIfPredElseIf {
+	NodeExpr* expr;
+	NodeScope* scope;
+	std::optional<NodeIfPredicate*> ifpred;
+};
+
+struct NodeIfPredElse {
+	NodeScope* scope;
+};
+
+struct NodeIfPredicate {
+	std::variant<NodeIfPredElseIf*, NodeIfPredElse*> ifpred;
+};
+
 struct NodeStmtIf {
 	NodeExpr* expr;
 	NodeScope* scope;
+	std::optional<NodeIfPredicate*> ifpred;
 };
 
 struct NodeStmt {
@@ -216,6 +233,11 @@ public:
 		return scope;
 	}
 
+	std::optional<NodeIfPredicate*> parse_if_predicate()
+	{
+		
+	}
+
 	std::optional<NodeStmt*> parse_stmt() 
 	{
 		if (peek().value().type == TokenType::exit && 
@@ -300,6 +322,9 @@ public:
 				std::cerr << "Invalid scope" << std::endl;
 				exit(EXIT_FAILURE);
 			}
+
+			stmt_if->ifpred = parse_if_predicate();
+
 			auto stmt = m_allocator.alloc<NodeStmt>();
 			stmt->stmt = stmt_if;
 			return stmt;
