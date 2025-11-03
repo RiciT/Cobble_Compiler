@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_set>
+#include <memory>
 
 ///This datatype is from https://github.com/LarsHagemann/bimap/blob/master/bimap.hpp
 ///but modified by me: https://github.com/RiCiT
@@ -25,11 +26,10 @@ public:
         typedef int difference_type;
         explicit const_iterator(const value_type& value) : m_data(std::move(value)) { }
         const self_type& operator++() { ++m_data.first; ++m_data.second; return *this; }
-        const value_type& operator*() { return m_data; }
+        const value_type& operator*() { return std::pair<const _KeyType&, const _ValueType&>(*m_data.first, *m_data.second); }
         bool operator==(const self_type& rhs) { return m_data.first == rhs.m_data.first; }
         bool operator!=(const self_type& rhs) { return m_data.first != rhs.m_data.first; }
-        const auto& operator*() const { return *m_data.first; }
-        auto operator->() const { return std::addressof(*m_key_iter.first); }
+        auto operator->() const { return std::addressof(*m_data.first); }
     private:
         value_type m_data;
     };
@@ -131,13 +131,13 @@ public:
     const_iterator find_key(const key_type& key) const
     {
         auto key_it = m_key_tree.find(key);
-        return key_it == m_key_tree.end() ? end() : const_iterator({ key_it, value_at_index(index_of_key(key_it)) });
+        return key_it == m_key_tree.end() ? end() : const_iterator({ key_it, value_at_index(index_of_key(*key_it)) });
     }
 
     const_iterator find_value(const value_type& value) const
     {
         auto value_it = m_value_tree.find(value);
-        return value_it == m_value_tree.end() ? end() : const_iterator({ key_at_index(index_of_value(value_it)), value_it });
+        return value_it == m_value_tree.end() ? end() : const_iterator({ key_at_index(index_of_value(*value_it)), value_it });
     }
 
     bool has_key(const key_type& key) const
