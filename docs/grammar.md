@@ -6,6 +6,7 @@ $$
 \begin{cases} 
     exit([\text{Expr}]);\\
     def \space \text{ident} = [\text{Expr}]\\
+    \text{ident} = [\text{Expr}];\\
     if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
     [\text{Scope}]
 \end{cases}
@@ -36,3 +37,7 @@ else[\text{Scope}]\\
 \end{cases}
 \end{align}
 $$
+
+Next steps 
+    implement: ==, !=, >=, <= for ints
+    implement: while loop

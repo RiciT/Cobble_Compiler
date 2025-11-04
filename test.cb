@@ -1,24 +1,14 @@
-def x = 2;
-def y = 10;
+def x = 1;
 
-if( x -2    )
+if(x-1)
 {
-    exit(5);
+    x = 4;
 }
-elseif(y-10) {
-    /*
-    eieghweobgefwg
-    dwhrew
-    th
-
-    */
-    exit(4);
+elseif(x-1) {
+    x = 5;
 }
-//eieghweobg
 else{
-    exit(1+y * 3);
+    x = 6;
 }
 
-/*
-exit(10);
-*/
+exit(x);

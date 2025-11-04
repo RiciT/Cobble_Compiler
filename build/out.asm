@@ -1,12 +1,10 @@
 global _start
 _start:
-    mov rax, 2
+    mov rax, 1
     push rax
-    mov rax, 10
+    mov rax, 1
     push rax
-    mov rax, 2
-    push rax
-    push QWORD [rsp + 16]
+    push QWORD [rsp + 8]
     pop rax
     pop rbx
     sub rax, rbx
@@ -14,16 +12,15 @@ _start:
     pop rax
     test rax, rax
     jz label0
-    mov rax, 5
+    mov rax, 4
     push rax
-    mov rax, 60
-    pop rdi
-    syscall
+    pop rax
+    mov [rsp + 0], rax 
     add rsp, 0
     jmp label1
 label0:
     ;; else if
-    mov rax, 10
+    mov rax, 1
     push rax
     push QWORD [rsp + 8]
     pop rax
@@ -33,33 +30,24 @@ label0:
     pop rax
     test rax, rax
     jz label2
-    mov rax, 4
+    mov rax, 5
     push rax
-    mov rax, 60
-    pop rdi
-    syscall
+    pop rax
+    mov [rsp + 0], rax 
     add rsp, 0
-    jmp label0
+    jmp label1
 label2:
     ;; else
-    mov rax, 3
-    push rax
-    push QWORD [rsp + 8]
-    pop rax
-    pop rbx
-    mul rbx
-    push rax
-    mov rax, 1
+    mov rax, 6
     push rax
     pop rax
-    pop rbx
-    add rax, rbx
-    push rax
+    mov [rsp + 0], rax 
+    add rsp, 0
+label1:
+    push QWORD [rsp + 0]
     mov rax, 60
     pop rdi
     syscall
-    add rsp, 0
-label1:
     mov rax, 60
     mov rdi, 0
     syscall

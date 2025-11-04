@@ -90,8 +90,13 @@ struct NodeStmtIf {
 	std::optional<NodeIfPredicate*> ifpred;
 };
 
+struct NodeStmtAssign {
+	Token  ident;
+	NodeExpr* expr;
+};
+
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtDef*, NodeScope*, NodeStmtIf*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*> stmt;
 };
 
 struct NodeProgram {
@@ -329,6 +334,26 @@ public:
 			auto stmt_ret_node = m_allocator.alloc<NodeStmt>();
 			stmt_ret_node->stmt = stmt_def;
 			return stmt_ret_node; 
+		}
+		else if (peek().has_value() && peek().value().type == TokenType::ident && 
+			peek(1).has_value() && peek(1).value().type == TokenType::equals)
+		{
+			const auto assign	= m_allocator.alloc<NodeStmtAssign>();
+			assign->ident = consume(); //ident
+			consume(); //=
+
+			if (const auto expr = parse_expr())
+			{
+				assign->expr = expr.value();
+			}
+			else
+			{
+				std::cerr << "Expected expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			try_consume(TokenType::semi, "Expected ';'");
+			auto stmt = m_allocator.emplace<NodeStmt>(assign);
+			return stmt;
 		}
 		else if (peek().has_value() && peek().value().type == TokenType::open_curly)
 		{

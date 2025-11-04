@@ -189,13 +189,27 @@ public:
                     const std::string end_label = gen.create_label();
                     gen.m_output << "    jmp " << end_label << "\n";
                     gen.m_output << label << ":\n";
-                    gen.generate_if_predicate(stmt_if->ifpred.value(), label);
+                    gen.generate_if_predicate(stmt_if->ifpred.value(), end_label);
                     gen.m_output << end_label << ":\n";
                 }
                 else 
                 {
                     gen.m_output << label << ":\n";
                 }
+            }
+            void operator()(const NodeStmtAssign* stmt_assign) const 
+            {
+                const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var){
+                    return var.name == stmt_assign->ident.value.value();
+                });
+                if (it == gen.m_vars.end())
+                {
+                    std::cerr << "Undeclared identifier: " << stmt_assign->ident.value.value() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+                gen.generate_expression(stmt_assign->expr);
+                gen.pop("rax");
+                gen.m_output << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax \n";
             }
         };
 
