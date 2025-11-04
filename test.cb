@@ -1,11 +1,13 @@
 def x = 10;
+def y = 5;
 
-while (x)
+while (y)
 {
-    x = x-1;
+    y = y-1;
+    x = x+1;
 }
 
-if(x)
+if(x-15)
 {
     x = 4;
 }
