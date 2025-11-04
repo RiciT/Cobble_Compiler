@@ -8,7 +8,8 @@ $$
     def \space \text{ident} = [\text{Expr}]\\
     \text{ident} = [\text{Expr}];\\
     if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
-    [\text{Scope}]
+    [\text{Scope}]\\
+    while([\text{Expr}])[\text{Scope}]
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}

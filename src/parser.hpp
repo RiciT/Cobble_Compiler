@@ -95,8 +95,13 @@ struct NodeStmtAssign {
 	NodeExpr* expr;
 };
 
+struct NodeStmtWhile {
+	NodeExpr* expr;
+	NodeScope* scope;
+};
+
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*, NodeStmtWhile*> stmt;
 };
 
 struct NodeProgram {
@@ -400,6 +405,34 @@ public:
 			stmt->stmt = stmt_if;
 			return stmt;
 			
+		}
+		else if (auto while_ = try_consume(TokenType::while_))
+		{
+			try_consume(TokenType::open_paren, "Expected '('");
+			auto stmt_while = m_allocator.alloc<NodeStmtWhile>();
+			if (auto expr = parse_expr())
+			{
+				stmt_while->expr = expr.value();
+			}
+			else 
+			{
+				std::cerr << "Invalid expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			try_consume(TokenType::close_paren, "Expected ')'");
+			if (auto scope = parse_scope())
+			{
+				stmt_while->scope = scope.value();
+			}
+			else
+			{
+				std::cerr << "Invalid scope" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			auto stmt = m_allocator.alloc<NodeStmt>();
+			stmt->stmt = stmt_while;
+			return stmt;
 		}
 		else
 		{

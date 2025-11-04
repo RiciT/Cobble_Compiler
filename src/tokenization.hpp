@@ -26,6 +26,7 @@ enum class TokenType
 	if_,
 	elseif_,
 	else_,
+	while_,
 };
 
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
@@ -108,6 +109,12 @@ public:
 				else if (buf == "else")
 				{
 					tokens.push_back({ .type = TokenType::else_ });
+					buf.clear();
+					continue;
+				}
+				else if (buf == "while")
+				{
+					tokens.push_back({ .type = TokenType::while_ });
 					buf.clear();
 					continue;
 				}

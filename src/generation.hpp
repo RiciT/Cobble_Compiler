@@ -211,6 +211,23 @@ public:
                 gen.pop("rax");
                 gen.m_output << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax \n";
             }
+            void operator()(const NodeStmtWhile* stmt_while) const
+            {
+                std::string label = gen.create_label();
+                gen.m_output << label << ":\n";
+
+                gen.generate_expression(stmt_while->expr);
+                gen.pop("rax");
+                gen.m_output << "    test rax, rax\n";
+                std::string end_label = gen.create_label();
+                gen.m_output << "    jz " << end_label << "\n";
+                
+                gen.generate_scope(stmt_while->scope);
+
+                gen.m_output << "    jmp " << label << "\n";
+
+                gen.m_output << end_label << ":\n";
+            }
         };
 
         StmtVisitor visitor { .gen = *this };
