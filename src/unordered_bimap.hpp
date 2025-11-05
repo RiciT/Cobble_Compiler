@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <stdexcept>
 #include <string>
 #include <optional>
 #include <utility> 
@@ -66,11 +65,11 @@ public:
 
     // --- Capacity ---
 
-    bool empty() const {
+    [[nodiscard]] bool empty() const {
         return map_forward.empty();
     }
 
-    size_t size() const {
+    [[nodiscard]] size_t size() const {
         // Both maps should always have the same size.
         return map_forward.size();
     }
@@ -84,7 +83,7 @@ public:
 
     bool insert(const Key& key, const Value& value) {
         // Check for conflicts
-        if (map_forward.count(key) > 0 || map_backward.count(value) > 0) {
+        if (map_forward.contains(key) || map_backward.contains(value)) {
             return false; 
         }
 
@@ -150,7 +149,7 @@ public:
         return true;
     }
 
-    void swap(bidirectional_unordered_map& other) {
+    void swap(bidirectional_unordered_map& other) noexcept {
         map_forward.swap(other.map_forward);
         map_backward.swap(other.map_backward);
     }
@@ -169,11 +168,11 @@ public:
         return map_backward.at(value);
     }
 
-    typename ForwardMap::const_iterator find_by_key(const Key& key) const {
+    ForwardMap::const_iterator find_by_key(const Key& key) const {
         return map_forward.find(key);
     }
 
-    typename ForwardMap::const_iterator find_by_value(const Value& value) const {
+    ForwardMap::const_iterator find_by_value(const Value& value) const {
         auto it = map_backward.find(value);
 
         if (it != map_backward.end()) {
@@ -189,21 +188,21 @@ public:
     }
 
     bool contains_key(const Key& key) const {
-        return map_forward.count(key) > 0;
+        return map_forward.contains(key);
     }
 
     bool contains_value(const Value& value) const {
-        return map_backward.count(value) > 0;
+        return map_backward.contains(value);
     }
 
     // --- Iterators ---
 
-    typename ForwardMap::iterator begin() { return map_forward.begin(); }
-    typename ForwardMap::iterator end() { return map_forward.end(); }
-    typename ForwardMap::const_iterator begin() const { return map_forward.cbegin(); }
-    typename ForwardMap::const_iterator end() const { return map_forward.cend(); }
-    typename ForwardMap::const_iterator cbegin() const { return map_forward.cbegin(); }
-    typename ForwardMap::const_iterator cend() const { return map_forward.cend(); }
+    ForwardMap::iterator begin() { return map_forward.begin(); }
+    ForwardMap::iterator end() { return map_forward.end(); }
+    ForwardMap::const_iterator begin() const { return map_forward.cbegin(); }
+    ForwardMap::const_iterator end() const { return map_forward.cend(); }
+    ForwardMap::const_iterator cbegin() const { return map_forward.cbegin(); }
+    ForwardMap::const_iterator cend() const { return map_forward.cend(); }
 };
 
 // --- Non-Member Functions ---
@@ -229,8 +228,7 @@ bool operator!=(
 template<typename K, typename V, typename HK, typename EK, typename HV, typename EV>
 void swap(
     bidirectional_unordered_map<K, V, HK, EK, HV, EV>& lhs,
-    bidirectional_unordered_map<K, V, HK, EK, HV, EV>& rhs) 
-{
+    bidirectional_unordered_map<K, V, HK, EK, HV, EV>& rhs) noexcept {
     lhs.swap(rhs);
 }
 

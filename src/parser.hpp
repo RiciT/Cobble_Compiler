@@ -112,7 +112,7 @@ struct NodeProgram {
 class Parser {
 #pragma region  //public:
 public:
-	inline explicit Parser(std::vector<Token> tokens)
+	explicit Parser(std::vector<Token> tokens)
 		: m_tokens(std::move(tokens)),
 		m_allocator(1024 * 1024 * 4) //4 Mb
 	{
@@ -120,7 +120,7 @@ public:
 
 	std::optional<NodeAtom*> parse_atom() 
 	{
-		if (auto int_lit = try_consume(TokenType::int_lit)) 
+		if (const auto int_lit = try_consume(TokenType::int_lit))
 		{
 			auto atom_int_lit = m_allocator.alloc<NodeAtomIntLit>();
 			atom_int_lit->int_lit = int_lit.value();
@@ -128,7 +128,7 @@ public:
 			atom->primary_expr = atom_int_lit;
 			return atom;
 		}
-		else if (auto ident = try_consume(TokenType::ident)) 
+		if (const auto ident = try_consume(TokenType::ident))
 		{
 			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
 			atom_ident->ident = ident.value();
@@ -136,9 +136,9 @@ public:
 			atom->primary_expr = atom_ident;
 			return atom;
 		}
-		else if (auto open_paren = try_consume(TokenType::open_paren))
+		if (auto open_paren = try_consume(TokenType::open_paren))
 		{
-			auto expr = parse_expr();
+			const auto expr = parse_expr();
 			if (!expr.has_value()) 
 			{
 				std::cerr << "Expected expression" << std::endl;
@@ -154,7 +154,7 @@ public:
 		return {};
 	}
 
-	std::optional<NodeExpr*> parse_expr(int minimum_precedence = 0) 
+	std::optional<NodeExpr*> parse_expr(const int minimum_precedence = 0)
 	{
 		//precedence climbing from Eli Bendersky (https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing)
 		std::optional<NodeAtom*> atom_lhs = parse_atom();
@@ -169,7 +169,7 @@ public:
 			std::optional<int> prec; 
 			if (curr_tok.has_value()) 
 			{
-				prec = bin_prec(curr_tok->type);
+				prec = bin_precedence(curr_tok->type);
 				if (!prec.has_value() || prec < minimum_precedence)
 					break;
 			}
@@ -178,8 +178,8 @@ public:
 				break;
 			}
 
-			Token op = consume();
-			int next_minimum_precedence = prec.value() + 1;
+			auto [type, value] = consume();
+			const int next_minimum_precedence = prec.value() + 1;
 			auto expr_rhs = parse_expr(next_minimum_precedence);
 
 			if (!expr_rhs.has_value())
@@ -189,8 +189,8 @@ public:
 			}
 
 			auto expr = m_allocator.alloc<NodeBinExpr>();
-			auto node_expr_lhs = m_allocator.alloc<NodeExpr>();
-			if (op.type == TokenType::plus_sign)
+			const auto node_expr_lhs = m_allocator.alloc<NodeExpr>();
+			if (type == TokenType::plus_sign)
 			{
 				auto add = m_allocator.alloc<NodeBinExprAdd>();
 				
@@ -199,7 +199,7 @@ public:
 				add->rhs = expr_rhs.value();
 				expr->bin_expr = add;
 			}
-			else if (op.type == TokenType::dash_sign)
+			else if (type == TokenType::dash_sign)
 			{
 				auto sub = m_allocator.alloc<NodeBinExprSub>();
 				
@@ -208,7 +208,7 @@ public:
 				sub->rhs = expr_rhs.value();
 				expr->bin_expr = sub;
 			}
-			else if (op.type == TokenType::star_sign)
+			else if (type == TokenType::star_sign)
 			{
 				auto mult = m_allocator.alloc<NodeBinExprMult>();
 				
@@ -217,7 +217,7 @@ public:
 				mult->rhs = expr_rhs.value();
 				expr->bin_expr = mult;
 			}
-			else if (op.type == TokenType::fslash_sign)
+			else if (type == TokenType::fslash_sign)
 			{
 				auto div = m_allocator.alloc<NodeBinExprDiv>();
 				
@@ -317,7 +317,7 @@ public:
 			stmt_ret_node->stmt = stmt_exit;
 			return stmt_ret_node;
 		} 
-		else if (peek().has_value() && peek().value().type == TokenType::def 
+		if (peek().has_value() && peek().value().type == TokenType::def
 			&& peek(1).has_value() && peek(1).value().type == TokenType::ident 
 			&& peek(2).has_value() && peek(2).value().type == TokenType::equals) 
 		{
@@ -340,7 +340,7 @@ public:
 			stmt_ret_node->stmt = stmt_def;
 			return stmt_ret_node; 
 		}
-		else if (peek().has_value() && peek().value().type == TokenType::ident && 
+		if (peek().has_value() && peek().value().type == TokenType::ident &&
 			peek(1).has_value() && peek(1).value().type == TokenType::equals)
 		{
 			const auto assign	= m_allocator.alloc<NodeStmtAssign>();
@@ -360,7 +360,7 @@ public:
 			auto stmt = m_allocator.emplace<NodeStmt>(assign);
 			return stmt;
 		}
-		else if (peek().has_value() && peek().value().type == TokenType::open_curly)
+		if (peek().has_value() && peek().value().type == TokenType::open_curly)
 		{
 			if (auto scope = parse_scope())
 			{
@@ -368,14 +368,10 @@ public:
 				stmt->stmt = scope.value();
 				return stmt;
 			}
-			else
-			{
-				std::cerr << "Invalid scope" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			
+			std::cerr << "Invalid scope" << std::endl;
+			exit(EXIT_FAILURE);
 		}
-		else if (auto if_ = try_consume(TokenType::if_))
+		if (auto if_ = try_consume(TokenType::if_))
 		{
 			try_consume(TokenType::open_paren, "Expected '('");
 			auto stmt_if = m_allocator.alloc<NodeStmtIf>();
@@ -406,7 +402,7 @@ public:
 			return stmt;
 			
 		}
-		else if (auto while_ = try_consume(TokenType::while_))
+		if (auto while_ = try_consume(TokenType::while_))
 		{
 			try_consume(TokenType::open_paren, "Expected '('");
 			auto stmt_while = m_allocator.alloc<NodeStmtWhile>();
@@ -434,10 +430,7 @@ public:
 			stmt->stmt = stmt_while;
 			return stmt;
 		}
-		else
-		{
-			return {};
-		}
+		return {};
 	}
 
 	std::optional<NodeProgram> parse_prog() 
@@ -463,17 +456,13 @@ public:
 #pragma endregion
 #pragma region //private: 
 private:	
-	[[nodiscard]] inline std::optional<Token> peek(int offset = 0) const 
+	[[nodiscard]] std::optional<Token> peek(const int offset = 0) const
 	{
 		if (m_index + offset >= m_tokens.size())
 		{
 			return {};
 		}
-		else 
-		{
-			return m_tokens.at(m_index + offset);
-		} 
-		
+		return m_tokens.at(m_index + offset);
 	}
 	
 	inline Token consume() 
@@ -481,29 +470,23 @@ private:
 		return m_tokens.at(m_index++);
 	}
 
-	inline Token try_consume(TokenType type, std::string err_msg)
+	Token try_consume(const TokenType type, const std::string& err_msg)
 	{
 		if (peek().has_value() && peek().value().type == type)
 		{
 			return consume();
 		}
-		else
-		{
 			std::cerr << err_msg << std::endl;
 			exit(EXIT_FAILURE);
-		}
 	}
 
-	inline std::optional<Token> try_consume(TokenType type)
+	std::optional<Token> try_consume(const TokenType type)
 	{
 		if (peek().has_value() && peek().value().type == type)
 		{
 			return consume();
 		}
-		else
-		{
-			return {};
-		}
+		return {};
 	}
 
 	const std::vector<Token> m_tokens;

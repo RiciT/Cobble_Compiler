@@ -8,7 +8,7 @@
 class Generator {
 #pragma region public:
 public:
-    inline Generator(NodeProgram prog)
+    explicit Generator(NodeProgram prog)
         : m_prog(std::move(prog))
     {
     }
@@ -18,7 +18,7 @@ public:
         struct AtomVisitor {
             Generator& gen;
             void operator()(const NodeAtomIdent* atom_ident) const{
-                auto it = std::find_if(gen.m_vars.cbegin(), gen.m_vars.cend(), [&](const Variable& var){
+                const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
                     return var.name == atom_ident->ident.value.value(); });
                 if (it == gen.m_vars.cend())
                 {
@@ -27,7 +27,7 @@ public:
                 }
                 //moving the stackpointer
                 std::stringstream offset;
-                offset << "QWORD [rsp + " << (gen.m_stack_size - (*it).stack_loc - 1) * 8 << "]";
+                offset << "QWORD [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "]";
                 gen.push(offset.str());
             }
             void operator()(const NodeAtomIntLit* atom_int_lit) const {
@@ -125,7 +125,7 @@ public:
                 gen.m_output << "    ;; else if\n"; //comment
                 gen.generate_expression(elseif_->expr);
                 gen.pop("rax");
-                std::string label = gen.create_label();
+                const std::string label = gen.create_label();
                 gen.m_output << "    test rax, rax\n";
                 gen.m_output << "    jz " << label << "\n";
                 gen.generate_scope(elseif_->scope);
@@ -160,8 +160,8 @@ public:
 		        gen.m_output << "    syscall\n";
             }
             void operator()(const NodeStmtDef* stmt_def) const
-            {   
-                auto it = std::find_if(gen.m_vars.cbegin(), gen.m_vars.cend(), [&](const Variable& var){
+            {
+                const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
                     return var.name == stmt_def->ident.value.value(); });
                 if (it != gen.m_vars.cend()) 
                 {
@@ -180,7 +180,7 @@ public:
             {
                 gen.generate_expression(stmt_if->expr);
                 gen.pop("rax");
-                std::string label = gen.create_label();
+                const std::string label = gen.create_label();
                 gen.m_output << "    test rax, rax\n";
                 gen.m_output << "    jz " << label << "\n";
                 gen.generate_scope(stmt_if->scope);
@@ -213,13 +213,13 @@ public:
             }
             void operator()(const NodeStmtWhile* stmt_while) const
             {
-                std::string label = gen.create_label();
+                const std::string label = gen.create_label();
                 gen.m_output << label << ":\n";
 
                 gen.generate_expression(stmt_while->expr);
                 gen.pop("rax");
                 gen.m_output << "    test rax, rax\n";
-                std::string end_label = gen.create_label();
+                const std::string end_label = gen.create_label();
                 gen.m_output << "    jz " << end_label << "\n";
                 
                 gen.generate_scope(stmt_while->scope);
@@ -274,7 +274,7 @@ private:
 
     void end_scope()
     {
-        size_t pop_count = m_vars.size() - m_scopes.back();
+        const size_t pop_count = m_vars.size() - m_scopes.back();
         //move back stackpointer (add since the stack is upside down)
         m_output << "    add rsp, " << pop_count * 8 << "\n";
         m_stack_size -= pop_count;

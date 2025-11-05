@@ -9,7 +9,7 @@
 int main(int argc, char* argv[]) 
 {
 	if(argc != 2) {
-		std::cerr << "Incorrect usage. Corrrect usage: " << std::endl;
+		std::cerr << "Incorrect usage. Correct usage: " << std::endl;
 		std::cerr << "cobble <input.cb>" << std::endl;
 		return EXIT_FAILURE;
 	}

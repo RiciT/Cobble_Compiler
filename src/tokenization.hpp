@@ -4,7 +4,7 @@
 #include <vector>
 #include "unordered_bimap.hpp"
 
-enum class TokenType 
+enum class TokenType
 {
 	//Atoms
 	ident,
@@ -42,20 +42,20 @@ static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 	{'}', TokenType::close_curly},
 };
 
-inline std::optional<int> bin_prec(TokenType type) {
+inline std::optional<int> bin_precedence(const TokenType type) {
 	switch(type) {
 		case TokenType::plus_sign:
-		case TokenType::dash_sign:	
+		case TokenType::dash_sign:
 			return 0;
 		case TokenType::star_sign:
-		case TokenType::fslash_sign:	
+		case TokenType::fslash_sign:
 			return 1;
 		default:
 			return {};
 	}
 }
 
-struct Token 
+struct Token
 {
 	TokenType type;
 	std::optional<std::string> value {};
@@ -63,12 +63,12 @@ struct Token
 
 class Tokenizer {
 public:
-	inline explicit Tokenizer(const std::string& src) 
-	: m_src(std::move(src)) 
+	inline explicit Tokenizer(const std::string& src)
+	: m_src(std::move(src))
 	{
 	}
 
-	inline std::vector<Token> tokenize() {	
+	inline std::vector<Token> tokenize() {
 		std::vector<Token> tokens;
 		std::string buf;
 		while (peek().has_value())
@@ -124,7 +124,7 @@ public:
 					buf.clear();
 					continue;
 				}
-				
+
 			}
 			//int literals
 			else if (std::isdigit(next_char))
@@ -156,7 +156,7 @@ public:
          				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
          				peek(1).has_value() &&
          				SingleCharTokens.count(peek(1).value()) &&
-         				SingleCharTokens.at(peek(1).value()) == TokenType::star_sign) 
+         				SingleCharTokens.at(peek(1).value()) == TokenType::star_sign)
 			{
 				consume(); consume();
 				while (peek(1).has_value())
@@ -169,14 +169,14 @@ public:
 					{
 						break;
 					}
-					
+
 					consume();
 				}
 				if (peek().has_value()) { consume(); }
 				if (peek().has_value()) { consume(); }
 			}
 			//empty space
-			else if (std::isspace(next_char)) 
+			else if (std::isspace(next_char))
 			{
 				consume();
 			}
@@ -186,7 +186,7 @@ public:
 				consume();
 				tokens.push_back({.type = token_char->second});
 			}
-			else 
+			else
 			{
 				std::cerr << "You messed up" << std::endl;
 	 			exit(EXIT_FAILURE);
@@ -197,24 +197,24 @@ public:
 	};
 
 private:
-	[[nodiscard]] inline std::optional<char> peek(int offset = 0) const 
+	[[nodiscard]] inline std::optional<char> peek(int offset = 0) const
 	{
 		if (m_index + offset >= m_src.length())
 		{
 			return {};
 		}
-		else 
+		else
 		{
 			return m_src.at(m_index + offset);
-		} 
-		
+		}
+
 	}
-	
-	inline char consume() 
+
+	inline char consume()
 	{
 		return m_src.at(m_index++);
 	}
 
-	const std::string m_src; //m_ for members 
+	const std::string m_src; //m_ for members
 	int m_index = 0;
 };
