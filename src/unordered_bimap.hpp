@@ -168,11 +168,11 @@ public:
         return map_backward.at(value);
     }
 
-    ForwardMap::const_iterator find_by_key(const Key& key) const {
+    typename ForwardMap::const_iterator find_by_key(const Key& key) const {
         return map_forward.find(key);
     }
 
-    ForwardMap::const_iterator find_by_value(const Value& value) const {
+    typename ForwardMap::const_iterator find_by_value(const Value& value) const {
         auto it = map_backward.find(value);
 
         if (it != map_backward.end()) {
@@ -197,12 +197,12 @@ public:
 
     // --- Iterators ---
 
-    ForwardMap::iterator begin() { return map_forward.begin(); }
-    ForwardMap::iterator end() { return map_forward.end(); }
-    ForwardMap::const_iterator begin() const { return map_forward.cbegin(); }
-    ForwardMap::const_iterator end() const { return map_forward.cend(); }
-    ForwardMap::const_iterator cbegin() const { return map_forward.cbegin(); }
-    ForwardMap::const_iterator cend() const { return map_forward.cend(); }
+    typename ForwardMap::iterator begin() { return map_forward.begin(); }
+    typename ForwardMap::iterator end() { return map_forward.end(); }
+    typename ForwardMap::const_iterator begin() const { return map_forward.cbegin(); }
+    typename ForwardMap::const_iterator end() const { return map_forward.cend(); }
+    typename ForwardMap::const_iterator cbegin() const { return map_forward.cbegin(); }
+    typename ForwardMap::const_iterator cend() const { return map_forward.cend(); }
 };
 
 // --- Non-Member Functions ---

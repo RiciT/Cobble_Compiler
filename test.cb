@@ -12,7 +12,7 @@ if(x-15)
     x = 4;
 }
 elseif(x) {
-    x = 5;
+    x = 7;
 }
 else{
     x = 6;

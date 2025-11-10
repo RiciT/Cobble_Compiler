@@ -1,6 +1,7 @@
 #pragma once //process only once if included
 
 #include <string>
+#include <utility>
 #include <vector>
 #include "unordered_bimap.hpp"
 
@@ -63,7 +64,7 @@ struct Token
 
 class Tokenizer {
 public:
-	inline explicit Tokenizer(const std::string& src)
+	inline explicit Tokenizer(std::string  src)
 	: m_src(std::move(src))
 	{
 	}

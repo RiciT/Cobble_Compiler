@@ -8,9 +8,9 @@
 
 int main(int argc, char* argv[]) 
 {
-	if(argc != 2) {
+	if(argc != 3) {
 		std::cerr << "Incorrect usage. Correct usage: " << std::endl;
-		std::cerr << "cobble <input.cb>" << std::endl;
+		std::cerr << "cobble <input.cb> <output-path>" << std::endl;
 		return EXIT_FAILURE;
 	}
 	 
@@ -34,14 +34,16 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 
+	std::string arg2(argv[2]);
+
 	{
 		Generator generator(prog.value());
-		std::fstream file("out.asm", std::ios::out);
+		std::fstream file(arg2+"out.asm", std::ios::out);
 		file << generator.generate_program();
 	}
 
-	system("nasm -felf64 out.asm");
-	system("ld -o out out.o");
+	system(("nasm -felf64 " + arg2 + "out.asm").c_str());
+	system(("ld -o " + arg2 + "out " + arg2 + "out.o").c_str());
 
 	return EXIT_SUCCESS;
 } 

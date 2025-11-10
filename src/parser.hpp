@@ -61,7 +61,7 @@ struct NodeStmtExit {
 
 struct NodeStmtDef {
 	Token ident;
-	NodeExpr* expr;
+	NodeExpr* expr{};
 };
 
 struct NodeScope {
@@ -71,8 +71,8 @@ struct NodeScope {
 struct NodeIfPredicate;
 
 struct NodeIfPredElseIf {
-	NodeExpr* expr;
-	NodeScope* scope;
+	NodeExpr* expr{};
+	NodeScope* scope{};
 	std::optional<NodeIfPredicate*> ifpred;
 };
 
@@ -85,14 +85,14 @@ struct NodeIfPredicate {
 };
 
 struct NodeStmtIf {
-	NodeExpr* expr;
-	NodeScope* scope;
+	NodeExpr* expr{};
+	NodeScope* scope{};
 	std::optional<NodeIfPredicate*> ifpred;
 };
 
 struct NodeStmtAssign {
 	Token  ident;
-	NodeExpr* expr;
+	NodeExpr* expr{};
 };
 
 struct NodeStmtWhile {
