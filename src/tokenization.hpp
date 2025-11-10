@@ -13,6 +13,10 @@ enum class TokenType
 	//Keywords
 	exit,
 	def,
+	if_,
+	elseif_,
+	else_,
+	while_,
 	//Single char tokens
 	semi,
 	open_paren,
@@ -24,10 +28,6 @@ enum class TokenType
 	fslash_sign,
 	open_curly,
 	close_curly,
-	if_,
-	elseif_,
-	else_,
-	while_,
 };
 
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
