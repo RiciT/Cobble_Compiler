@@ -1,21 +1,13 @@
-def x = 10;
-def y = 5;
-
-while (y)
-{
-    y = y-1;
-    x = x+1;
+//Fibonacci sequence
+def counter = 10;
+def res = 1;
+def temp = 1;
+def helper = 0;
+while (counter) {
+    counter = counter - 1;
+    res = temp + helper;
+    temp = helper;
+    helper = res;
 }
 
-if(x-15)
-{
-    x = 4;
-}
-elseif(x) {
-    x = 7;
-}
-else{
-    x = 6;
-}
-
-exit(x);
+print(res);

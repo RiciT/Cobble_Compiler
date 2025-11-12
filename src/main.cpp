@@ -46,4 +46,4 @@ int main(int argc, char* argv[])
 	system(("ld -o " + arg2 + "out " + arg2 + "out.o").c_str());
 
 	return EXIT_SUCCESS;
-} 
+}

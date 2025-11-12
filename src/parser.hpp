@@ -55,6 +55,10 @@ struct NodeExpr {
 
 struct NodeStmt;
 
+struct NodeStmtPrint {
+	NodeExpr* expr;
+};
+
 struct NodeStmtExit {
 	NodeExpr* expr;
 };
@@ -101,7 +105,7 @@ struct NodeStmtWhile {
 };
 
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*, NodeStmtWhile*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*, NodeStmtWhile*> stmt;
 };
 
 struct NodeProgram {
@@ -430,6 +434,25 @@ public:
 			stmt->stmt = stmt_while;
 			return stmt;
 		}
+		if (auto print_ = try_consume(TokenType::print))
+		{
+			try_consume(TokenType::open_paren, "Expected '('");
+			auto stmt_print = m_allocator.alloc<NodeStmtPrint>();
+			if (auto expr = parse_expr()) {
+				stmt_print->expr = expr.value();
+			}
+			else {
+				std::cerr << "Invalid expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			try_consume(TokenType::close_paren, "Expected ')'");
+			try_consume(TokenType::semi, "Expected ';'");
+
+			auto stmt = m_allocator.alloc<NodeStmt>();
+			stmt->stmt = stmt_print;
+			return stmt;
+		}
+
 		return {};
 	}
 

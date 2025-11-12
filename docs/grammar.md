@@ -9,7 +9,8 @@ $$
     \text{ident} = [\text{Expr}];\\
     if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
     [\text{Scope}]\\
-    while([\text{Expr}])[\text{Scope}]
+    while([\text{Expr}])[\text{Scope}]\\
+    print(\text{[Expr]});
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}

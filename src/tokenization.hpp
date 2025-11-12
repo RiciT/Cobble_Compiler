@@ -17,6 +17,7 @@ enum class TokenType
 	elseif_,
 	else_,
 	while_,
+	print,
 	//Single char tokens
 	semi,
 	open_paren,
@@ -83,49 +84,52 @@ public:
 				{
 					buf.push_back(consume());
 				}
+				//really just a function
+				if (buf == "print")
+				{
+					tokens.push_back({.type = TokenType::print});
+					buf.clear();
+					continue;
+				}
+				//really just a function
 				if (buf == "exit")
 				{
 					tokens.push_back({.type = TokenType::exit});
 					buf.clear();
 					continue;
 				}
-				else if (buf == "def")
+				if (buf == "def")
 				{
 					tokens.push_back({.type = TokenType::def});
 					buf.clear();
 					continue;
 				}
-				else if (buf == "if")
+				if (buf == "if")
 				{
 					tokens.push_back({ .type = TokenType::if_ });
 					buf.clear();
 					continue;
 				}
-				else if (buf == "elseif")
+				if (buf == "elseif")
 				{
 					tokens.push_back({ .type = TokenType::elseif_ });
 					buf.clear();
 					continue;
 				}
-				else if (buf == "else")
+				if (buf == "else")
 				{
 					tokens.push_back({ .type = TokenType::else_ });
 					buf.clear();
 					continue;
 				}
-				else if (buf == "while")
+				if (buf == "while")
 				{
 					tokens.push_back({ .type = TokenType::while_ });
 					buf.clear();
 					continue;
 				}
-				else
-				{
-					tokens.push_back({.type = TokenType::ident, .value = buf});
-					buf.clear();
-					continue;
-				}
-
+				tokens.push_back({.type = TokenType::ident, .value = buf});
+				buf.clear();
 			}
 			//int literals
 			else if (std::isdigit(next_char))

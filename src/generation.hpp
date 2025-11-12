@@ -228,6 +228,55 @@ public:
 
                 gen.m_output << end_label << ":\n";
             }
+            void operator()(const NodeStmtPrint* stmt_print) const
+            {
+                //PRINTING INTEGERS
+
+                gen.generate_expression(stmt_print->expr);
+                gen.pop("rax");  // Number to print is now in rax
+
+                // Convert integer to ASCII string
+                gen.m_output << "    ; Convert integer in rax to ASCII\n";
+                gen.m_output << "    mov rbx, 10\n";          // divisor
+                gen.m_output << "    mov rcx, 0\n";           // digit counter
+                gen.m_output << "    sub rsp, 32\n";          // allocate buffer on stack
+                gen.m_output << "    mov rdi, rsp\n";         // rdi = buffer address
+                gen.m_output << "    add rdi, 31\n";          // point to end of buffer
+                gen.m_output << "    mov BYTE [rdi], 10\n";   // add newline
+                gen.m_output << "    dec rdi\n";
+                gen.m_output << "    inc rcx\n";
+
+                // Handle the case where the number is 0
+                gen.m_output << "    test rax, rax\n";
+                gen.m_output << "    jnz .convert_loop\n";
+                gen.m_output << "    mov BYTE [rdi], '0'\n";
+                gen.m_output << "    dec rdi\n";
+                gen.m_output << "    inc rcx\n";
+                gen.m_output << "    jmp .done_convert\n";
+
+                gen.m_output << ".convert_loop:\n";
+                gen.m_output << "    test rax, rax\n";
+                gen.m_output << "    jz .done_convert\n";
+                gen.m_output << "    xor rdx, rdx\n";         // clear rdx for division
+                gen.m_output << "    div rbx\n";              // rax = rax/10, rdx = rax%10
+                gen.m_output << "    add dl, '0'\n";          // convert digit to ASCII
+                gen.m_output << "    mov [rdi], dl\n";        // store character
+                gen.m_output << "    dec rdi\n";              // move buffer pointer back
+                gen.m_output << "    inc rcx\n";              // increment digit count
+                gen.m_output << "    jmp .convert_loop\n";
+
+                gen.m_output << ".done_convert:\n";
+                gen.m_output << "    inc rdi\n";              // adjust to first digit
+
+                // Now print the buffer
+                gen.m_output << "    mov rax, 1\n";           // sys_write
+                gen.m_output << "    mov rsi, rdi\n";         // buffer address
+                gen.m_output << "    mov rdi, 1\n";           // stdout
+                gen.m_output << "    mov rdx, rcx\n";         // length = digit count
+                gen.m_output << "    syscall\n";
+
+                gen.m_output << "    add rsp, 32\n";          // clean up buffer
+            }
         };
 
         StmtVisitor visitor { .gen = *this };
