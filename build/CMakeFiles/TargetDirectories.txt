@@ -1,3 +1,0 @@
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build/CMakeFiles/cobble.dir
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build/CMakeFiles/edit_cache.dir
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build/CMakeFiles/rebuild_cache.dir

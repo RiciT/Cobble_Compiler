@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
-  "command": "/usr/bin/g++   -g -std=gnu++20 -o CMakeFiles/cobble.dir/src/main.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp",
-  "file": "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp",
-  "output": "CMakeFiles/cobble.dir/src/main.cpp.o"
-}
-]
