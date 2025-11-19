@@ -14,6 +14,10 @@ func newFunc(def y, def p)
 {
     def x = 1;
     res = res - 5;
+    return;
+    return 5 * x - 2;
 }
+
+newFunc(1+4, res+counter-helper);
 
 print(res);

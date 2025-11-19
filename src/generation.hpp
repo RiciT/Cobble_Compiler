@@ -282,6 +282,14 @@ public:
             {
                 //not implemented
             }
+            void operator()(const NodeStmtFuncCall* stmt_func_call) const
+            {
+                //not implemented
+            }
+            void operator()(const NodeStmtReturn* stmt_return) const
+            {
+                //not implemented
+            }
         };
 
         StmtVisitor visitor { .gen = *this };
