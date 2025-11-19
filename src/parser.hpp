@@ -378,7 +378,11 @@ public:
 			std::vector<Token> param_idents;
 			while (peek().has_value() && peek().value().type != TokenType::close_paren) {
 				//handle params
-				parse_stmt();
+				if (peek().has_value() && peek().value().type == TokenType::def
+					&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
+				{
+
+				}
 			}
 			//close paren token
 			consume();

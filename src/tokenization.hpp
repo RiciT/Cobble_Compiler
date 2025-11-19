@@ -30,6 +30,7 @@ enum class TokenType
 	fslash_sign,
 	open_curly,
 	close_curly,
+	comma,
 };
 
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
@@ -43,6 +44,7 @@ static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 	{';', TokenType::semi},
 	{'{', TokenType::open_curly},
 	{'}', TokenType::close_curly},
+	{',', TokenType::comma},
 };
 
 inline std::optional<int> bin_precedence(const TokenType type) {
