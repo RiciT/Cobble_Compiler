@@ -55,6 +55,10 @@ struct NodeExpr {
 
 struct NodeStmt;
 
+struct NodeScope {
+	std::vector<NodeStmt*> stmts;
+};
+
 struct NodeStmtPrint {
 	NodeExpr* expr;
 };
@@ -65,11 +69,13 @@ struct NodeStmtExit {
 
 struct NodeStmtDef {
 	Token ident;
-	NodeExpr* expr{};
+	std::optional<NodeExpr*> expr{};
 };
 
-struct NodeScope {
-	std::vector<NodeStmt*> stmts;
+struct NodeStmtFunc {
+	Token ident;
+	std::optional<std::vector<Token>> params;
+	NodeScope* scope{};
 };
 
 struct NodeIfPredicate;
@@ -132,6 +138,7 @@ public:
 			atom->primary_expr = atom_int_lit;
 			return atom;
 		}
+		//NOT ACTUALLY NEEDED
 		if (const auto ident = try_consume(TokenType::ident))
 		{
 			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
@@ -298,8 +305,9 @@ public:
 		return {};
 	}
 
-	std::optional<NodeStmt*> parse_stmt() 
+	std::optional<NodeStmt*> parse_stmt()
 	{
+		//Exit statement
 		if (peek().value().type == TokenType::exit && 
 			peek(1).has_value() && peek(1).value().type == TokenType::open_paren) 
 		{
@@ -321,28 +329,69 @@ public:
 			stmt_ret_node->stmt = stmt_exit;
 			return stmt_ret_node;
 		} 
+		//Define variable
 		if (peek().has_value() && peek().value().type == TokenType::def
-			&& peek(1).has_value() && peek(1).value().type == TokenType::ident 
-			&& peek(2).has_value() && peek(2).value().type == TokenType::equals) 
+			&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
 		{
+			bool is_expr = false;
 			consume();
 			auto stmt_def = m_allocator.alloc<NodeStmtDef>();
-			stmt_def->ident = consume(); 
-			consume();
-			if (auto expr = parse_expr()) {
-				stmt_def->expr = expr.value();
-			}
-			else 
+			stmt_def->ident = consume();
+
+			if (peek().value().type == TokenType::equals)
 			{
-				std::cerr << "Invalid expression" << std::endl;
-				exit(EXIT_FAILURE);
+				//equals sign
+				consume();
+				is_expr = true;
 			}
-			
+
+			if (is_expr)
+			{
+				if (auto expr = parse_expr()) {
+					stmt_def->expr = expr.value();
+				}
+				else
+				{
+					std::cerr << "Invalid expression" << std::endl;
+					exit(EXIT_FAILURE);
+				}
+			}
+
 			try_consume(TokenType::semi, "Expected ';'");
 
 			auto stmt_ret_node = m_allocator.alloc<NodeStmt>();
 			stmt_ret_node->stmt = stmt_def;
 			return stmt_ret_node; 
+		}
+		if (peek().has_value() && peek().value().type == TokenType::func
+			&& peek(1).has_value() && peek(1).value().type == TokenType::ident
+			&& peek(2).has_value() && peek(2).value().type == TokenType::open_paren)
+		{
+			//func token
+			consume();
+			auto stmt_func = m_allocator.alloc<NodeStmtFunc>();
+			stmt_func->ident = consume();
+
+			//open paren token
+			consume();
+
+			std::vector<Token> param_idents;
+			while (peek().has_value() && peek().value().type != TokenType::close_paren) {
+				//handle params
+				parse_stmt();
+			}
+			//close paren token
+			consume();
+
+			if (auto scope = parse_scope())
+			{
+				stmt_func->scope = scope.value();
+			}
+			else
+			{
+				std::cerr << "Invalid scope" << std::endl;
+				exit(EXIT_FAILURE);
+			}
 		}
 		if (peek().has_value() && peek().value().type == TokenType::ident &&
 			peek(1).has_value() && peek(1).value().type == TokenType::equals)

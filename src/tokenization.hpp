@@ -13,6 +13,7 @@ enum class TokenType
 	//Keywords
 	exit,
 	def,
+	func,
 	if_,
 	elseif_,
 	else_,
@@ -101,6 +102,12 @@ public:
 				if (buf == "def")
 				{
 					tokens.push_back({.type = TokenType::def});
+					buf.clear();
+					continue;
+				}
+				if (buf == "func")
+				{
+					tokens.push_back({.type = TokenType::func});
 					buf.clear();
 					continue;
 				}

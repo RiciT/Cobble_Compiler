@@ -4,13 +4,21 @@ $$
 \\
 [\text{Stmt}] &\to 
 \begin{cases} 
-    exit([\text{Expr}]);\\
-    def \space \text{ident} = [\text{Expr}]\\
+    def \space [\text{Type}] \space \text{ident} \space [= [\text{Expr}]]^?;\\
+    func \space [\text{Type}] \space \text{ident}([\text{ident}]^*)[\text{Scope}]\\
     \text{ident} = [\text{Expr}];\\
-    if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
     [\text{Scope}]\\
+    if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
     while([\text{Expr}])[\text{Scope}]\\
-    print(\text{[Expr]});
+    print(\text{[Expr]});\\ 
+    exit([\text{Expr}]);\\
+\end{cases}
+\\
+[\text{Type}] &\to 
+\begin{cases}
+void\\
+int \\
+\epsilon \space \text{(for now, remove later)}
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}
