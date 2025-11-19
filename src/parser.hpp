@@ -79,13 +79,13 @@ struct NodeStmtFunc {
 	NodeScope* scope{};
 };
 
-struct NodeStmtReturn {
-	std::optional<NodeExpr*> expr;
-};
-
 struct NodeStmtFuncCall {
 	Token ident;
 	std::optional<std::vector<NodeExpr*>> exprs;
+};
+
+struct NodeStmtReturn {
+	std::optional<NodeExpr*> expr;
 };
 
 struct NodeIfPredicate;
