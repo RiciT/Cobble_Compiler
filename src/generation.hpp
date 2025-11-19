@@ -170,7 +170,8 @@ public:
                 }
 
                 gen.m_vars.push_back({ .name = stmt_def->ident.value.value(), .stack_loc = gen.m_stack_size });
-                gen.generate_expression(stmt_def->expr);
+                if (stmt_def->expr)
+                    gen.generate_expression(stmt_def->expr.value());
             }
             void operator()(const NodeScope* scope) const 
             {
@@ -276,6 +277,10 @@ public:
                 gen.m_output << "    syscall\n";
 
                 gen.m_output << "    add rsp, 32\n";          // clean up buffer
+            }
+            void operator()(const NodeStmtFunc* stmt_func) const
+            {
+                //not implemented
             }
         };
 

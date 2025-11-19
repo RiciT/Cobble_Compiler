@@ -111,7 +111,7 @@ struct NodeStmtWhile {
 };
 
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*, NodeStmtWhile*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*, NodeStmtWhile*, NodeStmtFunc*> stmt;
 };
 
 struct NodeProgram {
@@ -376,16 +376,32 @@ public:
 			consume();
 
 			std::vector<Token> param_idents;
-			while (peek().has_value() && peek().value().type != TokenType::close_paren) {
+			while (true) {
 				//handle params
 				if (peek().has_value() && peek().value().type == TokenType::def
 					&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
 				{
-
+					//def
+					consume();
+					param_idents.push_back(consume());
+					if (peek().has_value() && peek().value().type == TokenType::close_paren)
+					{
+						break;
+					}
+					if (peek().has_value() && peek().value().type == TokenType::comma)
+					{
+						consume();
+						continue;
+					}
+					std::cerr << "Expected ')' or for more parameters ','" << std::endl;
+					exit(EXIT_FAILURE);
 				}
 			}
 			//close paren token
 			consume();
+
+			if (!param_idents.empty())
+				stmt_func->params = param_idents;
 
 			if (auto scope = parse_scope())
 			{
@@ -396,6 +412,8 @@ public:
 				std::cerr << "Invalid scope" << std::endl;
 				exit(EXIT_FAILURE);
 			}
+			auto stmt = m_allocator.emplace<NodeStmt>(stmt_func);
+			return stmt;
 		}
 		if (peek().has_value() && peek().value().type == TokenType::ident &&
 			peek(1).has_value() && peek(1).value().type == TokenType::equals)

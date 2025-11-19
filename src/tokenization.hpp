@@ -33,6 +33,17 @@ enum class TokenType
 	comma,
 };
 
+static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens = {
+	{"exit", TokenType::exit},
+	{"def", TokenType::def},
+	{"func", TokenType::func},
+	{"if", TokenType::if_},
+	{"elseif", TokenType::elseif_},
+	{"else", TokenType::else_},
+	{"while", TokenType::while_},
+	{"print", TokenType::print},
+};
+
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 	{'(', TokenType::open_paren},
 	{')', TokenType::close_paren},
@@ -88,57 +99,20 @@ public:
 					buf.push_back(consume());
 				}
 				//really just a function
-				if (buf == "print")
+				for (const auto&[keyword, tokentype] : KeyWordTokens)
 				{
-					tokens.push_back({.type = TokenType::print});
-					buf.clear();
-					continue;
+					if (buf == keyword)
+					{
+						tokens.push_back({.type = tokentype});
+						buf.clear();
+						break;
+					}
 				}
-				//really just a function
-				if (buf == "exit")
+				if (!buf.empty())
 				{
-					tokens.push_back({.type = TokenType::exit});
+					tokens.push_back({.type = TokenType::ident, .value = buf});
 					buf.clear();
-					continue;
 				}
-				if (buf == "def")
-				{
-					tokens.push_back({.type = TokenType::def});
-					buf.clear();
-					continue;
-				}
-				if (buf == "func")
-				{
-					tokens.push_back({.type = TokenType::func});
-					buf.clear();
-					continue;
-				}
-				if (buf == "if")
-				{
-					tokens.push_back({ .type = TokenType::if_ });
-					buf.clear();
-					continue;
-				}
-				if (buf == "elseif")
-				{
-					tokens.push_back({ .type = TokenType::elseif_ });
-					buf.clear();
-					continue;
-				}
-				if (buf == "else")
-				{
-					tokens.push_back({ .type = TokenType::else_ });
-					buf.clear();
-					continue;
-				}
-				if (buf == "while")
-				{
-					tokens.push_back({ .type = TokenType::while_ });
-					buf.clear();
-					continue;
-				}
-				tokens.push_back({.type = TokenType::ident, .value = buf});
-				buf.clear();
 			}
 			//int literals
 			else if (std::isdigit(next_char))
