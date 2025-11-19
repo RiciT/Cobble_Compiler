@@ -1,5 +1,5 @@
 //Fibonacci sequence
-def counter = 10;
+def counter = 11;
 def res = 1;
 def temp = 1;
 def helper = 0;
@@ -8,6 +8,12 @@ while (counter) {
     res = temp + helper;
     temp = helper;
     helper = res;
+}
+
+func newFunc(def y, def p)
+{
+    def x = 1;
+    res = res - 5;
 }
 
 print(res);

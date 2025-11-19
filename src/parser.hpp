@@ -2,6 +2,7 @@
 
 #include <variant>
 #include <cassert>
+#include <complex>
 
 #include "tokenization.hpp"
 #include "arena_allocator.hpp"
@@ -78,6 +79,15 @@ struct NodeStmtFunc {
 	NodeScope* scope{};
 };
 
+struct NodeStmtReturn {
+	std::optional<NodeExpr*> expr;
+};
+
+struct NodeStmtFuncCall {
+	Token ident;
+	std::optional<std::vector<NodeExpr*>> exprs;
+};
+
 struct NodeIfPredicate;
 
 struct NodeIfPredElseIf {
@@ -101,7 +111,7 @@ struct NodeStmtIf {
 };
 
 struct NodeStmtAssign {
-	Token  ident;
+	Token ident;
 	NodeExpr* expr{};
 };
 
@@ -111,7 +121,8 @@ struct NodeStmtWhile {
 };
 
 struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*, NodeStmtAssign*, NodeStmtWhile*, NodeStmtFunc*> stmt;
+	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*,
+		NodeStmtAssign*, NodeStmtWhile*, NodeStmtFunc*, NodeStmtFuncCall*, NodeStmtReturn*> stmt;
 };
 
 struct NodeProgram {
@@ -138,7 +149,6 @@ public:
 			atom->primary_expr = atom_int_lit;
 			return atom;
 		}
-		//NOT ACTUALLY NEEDED
 		if (const auto ident = try_consume(TokenType::ident))
 		{
 			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
@@ -237,7 +247,7 @@ public:
 				div->rhs = expr_rhs.value();
 				expr->bin_expr = div;
 			}
-			else { assert(false); } //Unreachable
+			else { assert(false); } //Should be unreachable
 			expr_lhs->expr = expr;
 
 		}
@@ -308,7 +318,7 @@ public:
 	std::optional<NodeStmt*> parse_stmt()
 	{
 		//Exit statement
-		if (peek().value().type == TokenType::exit && 
+		if (peek().value().type == TokenType::exit_ &&
 			peek(1).has_value() && peek(1).value().type == TokenType::open_paren) 
 		{
 			consume();
@@ -330,7 +340,7 @@ public:
 			return stmt_ret_node;
 		} 
 		//Define variable
-		if (peek().has_value() && peek().value().type == TokenType::def
+		if (peek().has_value() && peek().value().type == TokenType::def_
 			&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
 		{
 			bool is_expr = false;
@@ -363,7 +373,8 @@ public:
 			stmt_ret_node->stmt = stmt_def;
 			return stmt_ret_node; 
 		}
-		if (peek().has_value() && peek().value().type == TokenType::func
+		//Function definition
+		if (peek().has_value() && peek().value().type == TokenType::func_
 			&& peek(1).has_value() && peek(1).value().type == TokenType::ident
 			&& peek(2).has_value() && peek(2).value().type == TokenType::open_paren)
 		{
@@ -378,7 +389,7 @@ public:
 			std::vector<Token> param_idents;
 			while (true) {
 				//handle params
-				if (peek().has_value() && peek().value().type == TokenType::def
+				if (peek().has_value() && peek().value().type == TokenType::def_
 					&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
 				{
 					//def
@@ -415,6 +426,63 @@ public:
 			auto stmt = m_allocator.emplace<NodeStmt>(stmt_func);
 			return stmt;
 		}
+		//Function call
+		if (peek().has_value() && peek().value().type == TokenType::ident &&
+			peek(1).has_value() && peek(1).value().type == TokenType::open_paren)
+		{
+			auto stmt_func_call = m_allocator.alloc<NodeStmtFuncCall>();
+			stmt_func_call->ident = consume();
+
+			//open paren
+			consume();
+
+			std::vector<NodeExpr*> exprs;
+			while (true) {
+				//handle params
+				if (auto expr = parse_expr())
+				{
+					exprs.push_back(expr.value());
+					if (peek().has_value() && peek().value().type == TokenType::close_paren)
+					{
+						break;
+					}
+					if (peek().has_value() && peek().value().type == TokenType::comma)
+					{
+						consume();
+						continue;
+					}
+					std::cerr << "Expected ')' or for more parameters ','" << std::endl;
+					exit(EXIT_FAILURE);
+				}
+			}
+
+			//close paren token
+			try_consume(TokenType::close_paren, "Expected ')'");
+
+			//semi token
+			try_consume(TokenType::semi, "Expected ';'");
+
+			if (!exprs.empty())
+				stmt_func_call->exprs = exprs;
+
+			auto stmt = m_allocator.emplace<NodeStmt>(stmt_func_call);
+			return stmt;
+		}
+		//Return
+		if (peek().has_value() && peek().value().type == TokenType::return_)
+		{
+			consume();
+			auto stmt_return = m_allocator.alloc<NodeStmtReturn>();
+			if (auto expr = parse_expr())
+			{
+				stmt_return->expr = expr.value();
+			}
+			try_consume(TokenType::semi, "Expected ';'");
+
+			auto stmt = m_allocator.emplace<NodeStmt>(stmt_return);
+			return stmt;
+		}
+		//Variable assignment
 		if (peek().has_value() && peek().value().type == TokenType::ident &&
 			peek(1).has_value() && peek(1).value().type == TokenType::equals)
 		{
@@ -435,6 +503,7 @@ public:
 			auto stmt = m_allocator.emplace<NodeStmt>(assign);
 			return stmt;
 		}
+		//Scope
 		if (peek().has_value() && peek().value().type == TokenType::open_curly)
 		{
 			if (auto scope = parse_scope())
@@ -446,6 +515,7 @@ public:
 			std::cerr << "Invalid scope" << std::endl;
 			exit(EXIT_FAILURE);
 		}
+		//If
 		if (auto if_ = try_consume(TokenType::if_))
 		{
 			try_consume(TokenType::open_paren, "Expected '('");
@@ -477,6 +547,7 @@ public:
 			return stmt;
 			
 		}
+		//While
 		if (auto while_ = try_consume(TokenType::while_))
 		{
 			try_consume(TokenType::open_paren, "Expected '('");
@@ -505,7 +576,8 @@ public:
 			stmt->stmt = stmt_while;
 			return stmt;
 		}
-		if (auto print_ = try_consume(TokenType::print))
+		//Print
+		if (auto print_ = try_consume(TokenType::print_))
 		{
 			try_consume(TokenType::open_paren, "Expected '('");
 			auto stmt_print = m_allocator.alloc<NodeStmtPrint>();

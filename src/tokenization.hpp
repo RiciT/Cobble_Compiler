@@ -11,14 +11,15 @@ enum class TokenType
 	ident,
 	int_lit,
 	//Keywords
-	exit,
-	def,
-	func,
+	exit_,
+	def_,
+	func_,
 	if_,
 	elseif_,
 	else_,
 	while_,
-	print,
+	print_,
+	return_,
 	//Single char tokens
 	semi,
 	open_paren,
@@ -34,14 +35,15 @@ enum class TokenType
 };
 
 static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens = {
-	{"exit", TokenType::exit},
-	{"def", TokenType::def},
-	{"func", TokenType::func},
+	{"exit", TokenType::exit_},
+	{"def", TokenType::def_},
+	{"func", TokenType::func_},
 	{"if", TokenType::if_},
 	{"elseif", TokenType::elseif_},
 	{"else", TokenType::else_},
 	{"while", TokenType::while_},
-	{"print", TokenType::print},
+	{"print", TokenType::print_},
+	{"return", TokenType::return_},
 };
 
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {

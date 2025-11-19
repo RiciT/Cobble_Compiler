@@ -7,6 +7,8 @@ $$
     def \space [\text{Type}] \space \text{ident} \space [= [\text{Expr}]]^?;\\
     func \space [\text{Type}] \space \text{ident}([\text{ident}]^*)[\text{Scope}]\\
     \text{ident} = [\text{Expr}];\\
+    \text{ident}([\text{Expr}]^*);\\
+    \text{return} \space [\text{Expr}]^?;\\
     [\text{Scope}]\\
     if([\text{Expr}])[\text{Scope}][\text{IfPred}]\\
     while([\text{Expr}])[\text{Scope}]\\

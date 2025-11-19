@@ -1,6 +1,6 @@
 global _start
 _start:
-    mov rax, 10
+    mov rax, 11
     push rax
     mov rax, 1
     push rax
