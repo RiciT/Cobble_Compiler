@@ -3,6 +3,9 @@ def t = 5;
 func newFunc()
 {
     def x = 1;
+    return 0;
 }
+
+newFunc();
 
 print(9);

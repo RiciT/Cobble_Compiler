@@ -433,15 +433,11 @@ public:
 			consume();
 
 			std::vector<NodeExpr*> exprs;
-			while (true) {
+			while (peek().has_value() && peek().value().type != TokenType::close_paren) {
 				//handle params
 				if (auto expr = parse_expr())
 				{
 					exprs.push_back(expr.value());
-					if (peek().has_value() && peek().value().type == TokenType::close_paren)
-					{
-						break;
-					}
 					if (peek().has_value() && peek().value().type == TokenType::comma)
 					{
 						consume();
