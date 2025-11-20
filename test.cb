@@ -5,4 +5,9 @@ func add(def a, def b) {
     print(a + b);
 }
 
-add(t, y);
+func multip(def egyik, def masik) {
+    print(egyik * masik);
+}
+
+add(y, 11);
+multip(t, y);

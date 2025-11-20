@@ -313,9 +313,9 @@ public:
                 gen.current_stream() << "    mov rbp, rsp\n";
 
                 //save the current state so function has its own scope
-                size_t saved_stack_size = gen.m_stack_size;
-                std::vector<Variable> saved_vars = gen.m_vars;
-                std::vector<size_t> saved_scopes = gen.m_scopes;
+                const size_t saved_stack_size = gen.m_stack_size;
+                const std::vector<Variable> saved_vars = gen.m_vars;
+                const std::vector<size_t> saved_scopes = gen.m_scopes;
 
                 //reset for function scope
                 gen.m_stack_size = 0;
@@ -372,15 +372,12 @@ public:
                 //clean up arguments from stack
                 if (stmt_func_call->exprs.has_value())
                 {
-                    if (const size_t args_size = stmt_func_call->exprs.value().size() * 8; args_size > 0)
+                    if (const size_t args_size = stmt_func_call->exprs.value().size(); args_size > 0)
                     {
-                        gen.current_stream() << "    add rsp, " << args_size << "\n";
-                        gen.m_stack_size -= stmt_func_call->exprs.value().size();
+                        gen.current_stream() << "    add rsp, " << args_size * 8 << "\n";
+                        gen.m_stack_size -= args_size;
                     }
                 }
-
-                //return value is in rax so push it onto the stack
-                gen.current_stream() << "    push rax\n";
             }
             void operator()(const NodeStmtReturn* stmt_return) const
             {
