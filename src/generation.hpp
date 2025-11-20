@@ -280,7 +280,16 @@ public:
             }
             void operator()(const NodeStmtFunc* stmt_func) const
             {
-                //not implemented
+                const std::string func_label = "func_" + stmt_func->ident.value.value();
+
+                gen.m_output << func_label << ":\n";
+                gen.m_output << "    push rbp\n";
+                gen.m_output << "    mov rbp, rsp\n";
+
+                if (stmt_func->params.has_value())
+                {
+                    //push params to two separate registers
+                }
             }
             void operator()(const NodeStmtFuncCall* stmt_func_call) const
             {
