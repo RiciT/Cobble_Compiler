@@ -21,15 +21,27 @@ public:
             void operator()(const NodeAtomIdent* atom_ident) const{
                 const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
                     return var.name == atom_ident->ident.value.value(); });
+
                 if (it == gen.m_vars.cend())
                 {
                     std::cerr << "Undeclared identifier: " << atom_ident->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
-                //moving the stackpointer
-                std::stringstream offset;
-                offset << "QWORD [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "]";
-                gen.push(offset.str());
+
+                if (it->is_param)
+                {
+                    //parameters: positive offset from rbp
+                    std::stringstream offset;
+                    offset << "QWORD [rbp + " << it->stack_loc << "]";
+                    gen.push(offset.str());
+                }
+                else
+                {
+                    //local variables: calculated from rsp
+                    std::stringstream offset;
+                    offset << "QWORD [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "]";
+                    gen.push(offset.str());
+                }
             }
             void operator()(const NodeAtomIntLit* atom_int_lit) const {
                 gen.current_stream() << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
@@ -202,8 +214,7 @@ public:
             void operator()(const NodeStmtAssign* stmt_assign) const 
             {
                 const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var){
-                    return var.name == stmt_assign->ident.value.value();
-                });
+                    return var.name == stmt_assign->ident.value.value(); });
                 if (it == gen.m_vars.end())
                 {
                     std::cerr << "Undeclared identifier: " << stmt_assign->ident.value.value() << std::endl;
@@ -211,7 +222,17 @@ public:
                 }
                 gen.generate_expression(stmt_assign->expr);
                 gen.pop("rax");
-                gen.current_stream() << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax \n";
+
+                if (it->is_param)
+                {
+                    //parameters: positive offset from rbp
+                    gen.current_stream() << "    mov [rbp + " << it->stack_loc << "], rax\n";
+                }
+                else
+                {
+                    //local variables: calculated from rsp
+                    gen.current_stream() << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax\n";
+                }
             }
             void operator()(const NodeStmtWhile* stmt_while) const
             {
@@ -291,9 +312,30 @@ public:
                 gen.current_stream() << "    push rbp\n";
                 gen.current_stream() << "    mov rbp, rsp\n";
 
+                //save the current state so function has its own scope
+                size_t saved_stack_size = gen.m_stack_size;
+                std::vector<Variable> saved_vars = gen.m_vars;
+                std::vector<size_t> saved_scopes = gen.m_scopes;
+
+                //reset for function scope
+                gen.m_stack_size = 0;
+                gen.m_vars.clear();
+                gen.m_scopes.clear();
+
                 if (stmt_func->params.has_value())
                 {
-                    //push params to two separate registers
+                    int param_index = 0;
+                    for (const Token& param : stmt_func->params.value())
+                    {
+                        // poarameters are at [rbp + 16], [rbp + 24], etc.
+                        // +16 because: +8 for return address, +8 for saved rbp
+                        gen.m_vars.push_back({
+                            .name = param.value.value(),
+                            .stack_loc = static_cast<size_t>(16 + param_index * 8),
+                            .is_param = true
+                        });
+                        param_index++;
+                    }
                 }
 
                 gen.generate_scope(stmt_func->scope);
@@ -303,13 +345,39 @@ public:
                 gen.current_stream() << "    pop rbp\n";
                 gen.current_stream() << "    ret\n";
 
+                //restore state
+                gen.m_stack_size = saved_stack_size;
+                gen.m_vars = saved_vars;
+                gen.m_scopes = saved_scopes;
+
                 gen.m_current_stream = &gen.m_output;
             }
             void operator()(const NodeStmtFuncCall* stmt_func_call) const
             {
+                //push arguments right-to-left
+                if (stmt_func_call->exprs.has_value())
+                {
+                    const auto& args = stmt_func_call->exprs.value();
+                    for (int i = args.size() - 1; i >= 0; i--)
+                    {
+                        gen.generate_expression(args[i]);
+                        //expression result is already pushed
+                    }
+                }
+
                 //push parameters onto stack so it can be popped in order
                 const std::string func_label = "func_" + stmt_func_call->ident.value.value();
                 gen.current_stream() << "    call " << func_label << "\n";
+
+                //clean up arguments from stack
+                if (stmt_func_call->exprs.has_value())
+                {
+                    if (const size_t args_size = stmt_func_call->exprs.value().size() * 8; args_size > 0)
+                    {
+                        gen.current_stream() << "    add rsp, " << args_size << "\n";
+                        gen.m_stack_size -= stmt_func_call->exprs.value().size();
+                    }
+                }
 
                 //return value is in rax so push it onto the stack
                 gen.current_stream() << "    push rax\n";
@@ -409,6 +477,7 @@ private:
     {
         std::string name;
         size_t stack_loc;
+        bool is_param = false;
     };
 
     const NodeProgram m_prog;

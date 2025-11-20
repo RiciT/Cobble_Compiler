@@ -53,4 +53,6 @@ $$
 
 Next steps 
     implement: ==, !=, >=, <= for ints
-    implement: while loop
+
+Note:
+    for functional purity local vars are not accessible inside functions

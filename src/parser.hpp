@@ -400,7 +400,11 @@ public:
 						consume();
 						continue;
 					}
-					std::cerr << "Expected ')' or for more parameters ','" << std::endl;
+					if (peek().has_value() && peek().value().type == TokenType::close_paren)
+					{
+						break;
+					}
+					std::cerr << "Expected ')' or for more parameters ',' in func def" << std::endl;
 					exit(EXIT_FAILURE);
 				}
 			}
@@ -443,7 +447,11 @@ public:
 						consume();
 						continue;
 					}
-					std::cerr << "Expected ')' or for more parameters ','" << std::endl;
+					if (peek().has_value() && peek().value().type == TokenType::close_paren)
+					{
+						break;
+					}
+					std::cerr << "Expected ')' or for more parameters ',' in func call" << std::endl;
 					exit(EXIT_FAILURE);
 				}
 			}
