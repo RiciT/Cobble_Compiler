@@ -11,6 +11,7 @@ public:
     explicit Generator(NodeProgram prog)
         : m_prog(std::move(prog))
     {
+        m_current_stream = &m_output;
     }
 
     void generate_atom(const NodeAtom* atom)
@@ -31,7 +32,7 @@ public:
                 gen.push(offset.str());
             }
             void operator()(const NodeAtomIntLit* atom_int_lit) const {
-                gen.m_output << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
+                gen.current_stream() << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
                 gen.push("rax");
             }
             void operator()(const NodeAtomParen* atom_paren) const {
@@ -51,7 +52,7 @@ public:
                 gen.generate_expression(add->lhs);
                 gen.pop("rax");
                 gen.pop("rbx");
-                gen.m_output << "    add rax, rbx\n";
+                gen.current_stream() << "    add rax, rbx\n";
                 gen.push("rax");
             }
             void operator()(const NodeBinExprSub* sub) const {
@@ -59,7 +60,7 @@ public:
                 gen.generate_expression(sub->lhs);
                 gen.pop("rax");
                 gen.pop("rbx");
-                gen.m_output << "    sub rax, rbx\n";
+                gen.current_stream() << "    sub rax, rbx\n";
                 gen.push("rax");
             }
             void operator()(const NodeBinExprMult* mult) const {
@@ -67,7 +68,7 @@ public:
                 gen.generate_expression(mult->lhs);
                 gen.pop("rax");
                 gen.pop("rbx");
-                gen.m_output << "    mul rbx\n";
+                gen.current_stream() << "    mul rbx\n";
                 gen.push("rax");
             }
             void operator()(const NodeBinExprDiv* div) const {
@@ -75,8 +76,8 @@ public:
                 gen.generate_expression(div->lhs);
                 gen.pop("rax");
                 gen.pop("rbx");
-                gen.m_output << "    xor rdx, rdx\n";
-                gen.m_output << "    div rbx\n";
+                gen.current_stream() << "    xor rdx, rdx\n";
+                gen.current_stream() << "    div rbx\n";
                 gen.push("rax");
             }
         };
@@ -122,23 +123,23 @@ public:
 
             void operator()(const NodeIfPredElseIf* elseif_) const
             {
-                gen.m_output << "    ;; else if\n"; //comment
+                gen.current_stream() << "    ;; else if\n"; //comment
                 gen.generate_expression(elseif_->expr);
                 gen.pop("rax");
                 const std::string label = gen.create_label();
-                gen.m_output << "    test rax, rax\n";
-                gen.m_output << "    jz " << label << "\n";
+                gen.current_stream() << "    test rax, rax\n";
+                gen.current_stream() << "    jz " << label << "\n";
                 gen.generate_scope(elseif_->scope);
-                gen.m_output << "    jmp " << end_label << "\n";
+                gen.current_stream() << "    jmp " << end_label << "\n";
                 if (elseif_->ifpred.has_value())
                 {    
-                    gen.m_output << label << ":\n";
+                    gen.current_stream() << label << ":\n";
                     gen.generate_if_predicate(elseif_->ifpred.value(), end_label);
                 }
             }
             void operator()(const NodeIfPredElse* else_) const
             {
-                gen.m_output << "    ;; else\n"; //comment
+                gen.current_stream() << "    ;; else\n"; //comment
                 gen.generate_scope(else_->scope);
             }
         };
@@ -155,9 +156,9 @@ public:
             void operator()(const NodeStmtExit* stmt_exit) const
             {
                 gen.generate_expression(stmt_exit->expr);
-                gen.m_output << "    mov rax, 60\n";
+                gen.current_stream() << "    mov rax, 60\n";
                 gen.pop("rdi");
-		        gen.m_output << "    syscall\n";
+		        gen.current_stream() << "    syscall\n";
             }
             void operator()(const NodeStmtDef* stmt_def) const
             {
@@ -182,20 +183,20 @@ public:
                 gen.generate_expression(stmt_if->expr);
                 gen.pop("rax");
                 const std::string label = gen.create_label();
-                gen.m_output << "    test rax, rax\n";
-                gen.m_output << "    jz " << label << "\n";
+                gen.current_stream() << "    test rax, rax\n";
+                gen.current_stream() << "    jz " << label << "\n";
                 gen.generate_scope(stmt_if->scope);
                 if (stmt_if->ifpred.has_value())
                 {
                     const std::string end_label = gen.create_label();
-                    gen.m_output << "    jmp " << end_label << "\n";
-                    gen.m_output << label << ":\n";
+                    gen.current_stream() << "    jmp " << end_label << "\n";
+                    gen.current_stream() << label << ":\n";
                     gen.generate_if_predicate(stmt_if->ifpred.value(), end_label);
-                    gen.m_output << end_label << ":\n";
+                    gen.current_stream() << end_label << ":\n";
                 }
                 else 
                 {
-                    gen.m_output << label << ":\n";
+                    gen.current_stream() << label << ":\n";
                 }
             }
             void operator()(const NodeStmtAssign* stmt_assign) const 
@@ -210,24 +211,24 @@ public:
                 }
                 gen.generate_expression(stmt_assign->expr);
                 gen.pop("rax");
-                gen.m_output << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax \n";
+                gen.current_stream() << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax \n";
             }
             void operator()(const NodeStmtWhile* stmt_while) const
             {
                 const std::string label = gen.create_label();
-                gen.m_output << label << ":\n";
+                gen.current_stream() << label << ":\n";
 
                 gen.generate_expression(stmt_while->expr);
                 gen.pop("rax");
-                gen.m_output << "    test rax, rax\n";
+                gen.current_stream() << "    test rax, rax\n";
                 const std::string end_label = gen.create_label();
-                gen.m_output << "    jz " << end_label << "\n";
+                gen.current_stream() << "    jz " << end_label << "\n";
                 
                 gen.generate_scope(stmt_while->scope);
 
-                gen.m_output << "    jmp " << label << "\n";
+                gen.current_stream() << "    jmp " << label << "\n";
 
-                gen.m_output << end_label << ":\n";
+                gen.current_stream() << end_label << ":\n";
             }
             void operator()(const NodeStmtPrint* stmt_print) const
             {
@@ -237,67 +238,102 @@ public:
                 gen.pop("rax");  // Number to print is now in rax
 
                 // Convert integer to ASCII string
-                gen.m_output << "    ; Convert integer in rax to ASCII\n";
-                gen.m_output << "    mov rbx, 10\n";          // divisor
-                gen.m_output << "    mov rcx, 0\n";           // digit counter
-                gen.m_output << "    sub rsp, 32\n";          // allocate buffer on stack
-                gen.m_output << "    mov rdi, rsp\n";         // rdi = buffer address
-                gen.m_output << "    add rdi, 31\n";          // point to end of buffer
-                gen.m_output << "    mov BYTE [rdi], 10\n";   // add newline
-                gen.m_output << "    dec rdi\n";
-                gen.m_output << "    inc rcx\n";
+                gen.current_stream() << "    ; Convert integer in rax to ASCII\n";
+                gen.current_stream() << "    mov rbx, 10\n";          // divisor
+                gen.current_stream() << "    mov rcx, 0\n";           // digit counter
+                gen.current_stream() << "    sub rsp, 32\n";          // allocate buffer on stack
+                gen.current_stream() << "    mov rdi, rsp\n";         // rdi = buffer address
+                gen.current_stream() << "    add rdi, 31\n";          // point to end of buffer
+                gen.current_stream() << "    mov BYTE [rdi], 10\n";   // add newline
+                gen.current_stream() << "    dec rdi\n";
+                gen.current_stream() << "    inc rcx\n";
 
+                const std::string convert_loop_label = gen.create_label();
+                const std::string done_convert_label = gen.create_label();
                 // Handle the case where the number is 0
-                gen.m_output << "    test rax, rax\n";
-                gen.m_output << "    jnz .convert_loop\n";
-                gen.m_output << "    mov BYTE [rdi], '0'\n";
-                gen.m_output << "    dec rdi\n";
-                gen.m_output << "    inc rcx\n";
-                gen.m_output << "    jmp .done_convert\n";
+                gen.current_stream() << "    test rax, rax\n";
+                gen.current_stream() << "    jnz " << convert_loop_label << "\n";
+                gen.current_stream() << "    mov BYTE [rdi], '0'\n";
+                gen.current_stream() << "    dec rdi\n";
+                gen.current_stream() << "    inc rcx\n";
+                gen.current_stream() << "    jmp " << done_convert_label << "\n";
 
-                gen.m_output << ".convert_loop:\n";
-                gen.m_output << "    test rax, rax\n";
-                gen.m_output << "    jz .done_convert\n";
-                gen.m_output << "    xor rdx, rdx\n";         // clear rdx for division
-                gen.m_output << "    div rbx\n";              // rax = rax/10, rdx = rax%10
-                gen.m_output << "    add dl, '0'\n";          // convert digit to ASCII
-                gen.m_output << "    mov [rdi], dl\n";        // store character
-                gen.m_output << "    dec rdi\n";              // move buffer pointer back
-                gen.m_output << "    inc rcx\n";              // increment digit count
-                gen.m_output << "    jmp .convert_loop\n";
+                gen.current_stream() << convert_loop_label << ":\n";
+                gen.current_stream() << "    test rax, rax\n";
+                gen.current_stream() << "    jz " << done_convert_label << "\n";
+                gen.current_stream() << "    xor rdx, rdx\n";         // clear rdx for division
+                gen.current_stream() << "    div rbx\n";              // rax = rax/10, rdx = rax%10
+                gen.current_stream() << "    add dl, '0'\n";          // convert digit to ASCII
+                gen.current_stream() << "    mov [rdi], dl\n";        // store character
+                gen.current_stream() << "    dec rdi\n";              // move buffer pointer back
+                gen.current_stream() << "    inc rcx\n";              // increment digit count
+                gen.current_stream() << "    jmp " << convert_loop_label << "\n";
 
-                gen.m_output << ".done_convert:\n";
-                gen.m_output << "    inc rdi\n";              // adjust to first digit
+                gen.current_stream() << done_convert_label << ":\n";
+                gen.current_stream() << "    inc rdi\n";              // adjust to first digit
 
                 // Now print the buffer
-                gen.m_output << "    mov rax, 1\n";           // sys_write
-                gen.m_output << "    mov rsi, rdi\n";         // buffer address
-                gen.m_output << "    mov rdi, 1\n";           // stdout
-                gen.m_output << "    mov rdx, rcx\n";         // length = digit count
-                gen.m_output << "    syscall\n";
+                gen.current_stream() << "    mov rax, 1\n";           // sys_write
+                gen.current_stream() << "    mov rsi, rdi\n";         // buffer address
+                gen.current_stream() << "    mov rdi, 1\n";           // stdout
+                gen.current_stream() << "    mov rdx, rcx\n";         // length = digit count
+                gen.current_stream() << "    syscall\n";
 
-                gen.m_output << "    add rsp, 32\n";          // clean up buffer
+                gen.current_stream() << "    add rsp, 32\n";          // clean up buffer
             }
             void operator()(const NodeStmtFunc* stmt_func) const
             {
+                gen.m_current_stream = &gen.m_functions;
+
                 const std::string func_label = "func_" + stmt_func->ident.value.value();
 
-                gen.m_output << func_label << ":\n";
-                gen.m_output << "    push rbp\n";
-                gen.m_output << "    mov rbp, rsp\n";
+                gen.current_stream() << func_label << ":\n";
+                gen.current_stream() << "    push rbp\n";
+                gen.current_stream() << "    mov rbp, rsp\n";
 
                 if (stmt_func->params.has_value())
                 {
                     //push params to two separate registers
                 }
+
+                gen.generate_scope(stmt_func->scope);
+
+                gen.current_stream() << "    mov rax, 0\n";
+                gen.current_stream() << "    mov rsp, rbp\n";
+                gen.current_stream() << "    pop rbp\n";
+                gen.current_stream() << "    ret\n";
+
+                gen.m_current_stream = &gen.m_output;
             }
             void operator()(const NodeStmtFuncCall* stmt_func_call) const
             {
-                //not implemented
+                //push parameters onto stack so it can be popped in order
+                const std::string func_label = "func_" + stmt_func_call->ident.value.value();
+                gen.current_stream() << "    call " << func_label << "\n";
+
+                //return value is in rax so push it onto the stack
+                gen.current_stream() << "    push rax\n";
             }
             void operator()(const NodeStmtReturn* stmt_return) const
             {
-                //not implemented
+                gen.m_current_stream = &gen.m_functions;
+
+                if (stmt_return->expr.has_value())
+                {
+                    gen.generate_expression(stmt_return->expr.value());
+                    gen.pop("rax");
+                }
+                else
+                {
+                    // no return value so default to 0
+                    gen.current_stream() << "    mov rax, 0\n";
+                }
+
+                gen.current_stream() << "    mov rsp, rbp\n";
+                gen.current_stream() << "    pop rbp\n";
+                gen.current_stream() << "    ret\n";
+
+                gen.m_current_stream = &gen.m_output;
             }
         };
 
@@ -307,19 +343,20 @@ public:
 
     [[nodiscard]] std::string generate_program() 
     {
+        m_current_stream = &m_output;
 	    m_output << "global _start\n_start:\n";
         
         for (const NodeStmt* stmt : m_prog.stmts)
         {
             generate_statement(stmt);
         }
-        
 
         //if no explicit exit, exit with 0
         m_output << "    mov rax, 60\n";
 		m_output << "    mov rdi, 0\n";
 		m_output << "    syscall";
-        return m_output.str();
+
+        return m_output.str() + "\n\n; Function stream starting here\n" + m_functions.str() + "\n";
     }
 #pragma endregion
 
@@ -328,13 +365,13 @@ private:
 
     void push(const std::string& reg)
     {
-        m_output << "    push " << reg << "\n";
+        current_stream() << "    push " << reg << "\n";
         m_stack_size++; //1 = 64bit
     }
 
     void pop(const std::string& reg) 
     {
-        m_output << "    pop " << reg << "\n";
+        current_stream() << "    pop " << reg << "\n";
         m_stack_size--;
     }
 
@@ -347,7 +384,7 @@ private:
     {
         const size_t pop_count = m_vars.size() - m_scopes.back();
         //move back stackpointer (add since the stack is upside down)
-        m_output << "    add rsp, " << pop_count * 8 << "\n";
+        current_stream() << "    add rsp, " << pop_count * 8 << "\n";
         m_stack_size -= pop_count;
         for (int i = 0; i < pop_count; i++)
         {
@@ -356,7 +393,12 @@ private:
         m_scopes.pop_back();
     }
 
-    std::string create_label() 
+    std::stringstream& current_stream() const
+    {
+        return *m_current_stream;
+    }
+
+    std::string create_label()
     {
         std::stringstream strs;
         strs << "label" << m_label_count++;
@@ -370,7 +412,11 @@ private:
     };
 
     const NodeProgram m_prog;
+
     std::stringstream m_output;
+    std::stringstream m_functions;
+    std::stringstream* m_current_stream;
+
     size_t m_stack_size = 0;
     std::vector<Variable> m_vars {};
     std::vector<size_t> m_scopes {};
