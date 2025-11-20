@@ -387,7 +387,7 @@ public:
 			consume();
 
 			std::vector<Token> param_idents;
-			while (true) {
+			while (peek().has_value() && peek().value().type != TokenType::close_paren) {
 				//handle params
 				if (peek().has_value() && peek().value().type == TokenType::def_
 					&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
@@ -395,10 +395,6 @@ public:
 					//def
 					consume();
 					param_idents.push_back(consume());
-					if (peek().has_value() && peek().value().type == TokenType::close_paren)
-					{
-						break;
-					}
 					if (peek().has_value() && peek().value().type == TokenType::comma)
 					{
 						consume();

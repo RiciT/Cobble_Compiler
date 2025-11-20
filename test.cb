@@ -1,23 +1,8 @@
-//Fibonacci sequence
-def counter = 11;
-def res = 1;
-def temp = 1;
-def helper = 0;
-while (counter) {
-    counter = counter - 1;
-    res = temp + helper;
-    temp = helper;
-    helper = res;
-}
+def t = 5;
 
-func newFunc(def y, def p)
+func newFunc()
 {
     def x = 1;
-    res = res - 5;
-    return;
-    return 5 * x - 2;
 }
 
-newFunc(1+4, res+counter-helper);
-
-print(res);
+print(9);

@@ -1,45 +1,12 @@
 global _start
 _start:
-    mov rax, 11
+    mov rax, 5
     push rax
-    mov rax, 1
+func_newFunc:
+    push rbp
+    mov rbp, rsp
+    mov rax, 9
     push rax
-    mov rax, 1
-    push rax
-    mov rax, 0
-    push rax
-label0:
-    push QWORD [rsp + 24]
-    pop rax
-    test rax, rax
-    jz label1
-    mov rax, 1
-    push rax
-    push QWORD [rsp + 32]
-    pop rax
-    pop rbx
-    sub rax, rbx
-    push rax
-    pop rax
-    mov [rsp + 24], rax 
-    push QWORD [rsp + 0]
-    push QWORD [rsp + 16]
-    pop rax
-    pop rbx
-    add rax, rbx
-    push rax
-    pop rax
-    mov [rsp + 16], rax 
-    push QWORD [rsp + 0]
-    pop rax
-    mov [rsp + 8], rax 
-    push QWORD [rsp + 16]
-    pop rax
-    mov [rsp + 0], rax 
-    add rsp, 0
-    jmp label0
-label1:
-    push QWORD [rsp + 16]
     pop rax
     ; Convert integer in rax to ASCII
     mov rbx, 10

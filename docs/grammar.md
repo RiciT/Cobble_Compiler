@@ -33,7 +33,8 @@ else[\text{Scope}]\\
 [\text{Expr}] &\to
 \begin{cases}
     \text{[Atom]}\\
-    [\text{BinExpr}]
+    [\text{BinExpr}]\\
+    \text{ident}([\text{Expr}]*)
 \end{cases}
 \\
 [\text{BinExpr}] &\to \begin{cases}
