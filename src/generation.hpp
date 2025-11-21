@@ -211,7 +211,7 @@ public:
                     exit(EXIT_FAILURE);
                 }
 
-                gen.m_vars.push_back({ .name = stmt_def->ident.value.value(), .stack_loc = gen.m_stack_size });
+                gen.m_vars.push_back({ .type = stmt_def->type, .name = stmt_def->ident.value.value(), .stack_loc = gen.m_stack_size });
                 if (stmt_def->expr)
                     gen.generate_expression(stmt_def->expr.value());
             }
@@ -354,12 +354,13 @@ public:
                 if (stmt_func->params.has_value())
                 {
                     int param_index = 0;
-                    for (const Token& param : stmt_func->params.value())
+                    for (const NodeFuncParam& param : stmt_func->params.value())
                     {
                         // poarameters are at [rbp + 16], [rbp + 24], etc.
                         // +16 because: +8 for return address, +8 for saved rbp
                         gen.m_vars.push_back({
-                            .name = param.value.value(),
+                            .type = param.type,
+                            .name = param.ident.value.value(),
                             .stack_loc = static_cast<size_t>(16 + param_index * 8),
                             .is_param = true
                         });
@@ -503,6 +504,7 @@ private:
 
     struct Variable 
     {
+        VarType type;
         std::string name;
         size_t stack_loc;
         bool is_param = false;

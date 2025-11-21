@@ -20,6 +20,10 @@ enum class TokenType
 	while_,
 	print_,
 	return_,
+	//types
+	int_,
+	char_,
+	bool_,
 	//Single char tokens
 	semi,
 	open_paren,
@@ -32,6 +36,8 @@ enum class TokenType
 	open_curly,
 	close_curly,
 	comma,
+	single_quote,
+	double_quote,
 };
 
 static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens = {
@@ -44,6 +50,9 @@ static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens =
 	{"while", TokenType::while_},
 	{"print", TokenType::print_},
 	{"return", TokenType::return_},
+	{"int", TokenType::int_},
+	{"char", TokenType::char_},
+	{"bool", TokenType::bool_},
 };
 
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
@@ -58,6 +67,20 @@ static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 	{'{', TokenType::open_curly},
 	{'}', TokenType::close_curly},
 	{',', TokenType::comma},
+	{'\'', TokenType::single_quote},
+	{'\"', TokenType::double_quote},
+};
+
+enum class VarType {
+	int_,
+	char_,
+	bool_,
+};
+
+static const bidirectional_unordered_map<VarType, TokenType> VariableTypes = {
+	{VarType::int_, TokenType::int_},
+	{VarType::char_, TokenType::char_},
+	{VarType::bool_, TokenType::bool_},
 };
 
 inline std::optional<int> bin_precedence(const TokenType type) {

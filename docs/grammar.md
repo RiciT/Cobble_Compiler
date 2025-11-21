@@ -18,9 +18,7 @@ $$
 \\
 [\text{Type}] &\to 
 \begin{cases}
-void\\
 int \\
-\epsilon \space \text{(for now, remove later)}
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}
@@ -53,6 +51,8 @@ $$
 
 Next steps 
     implement: ==, !=, >=, <= for ints
+    implement arrays
+    implement strings
 
 Note:
     for functional purity local vars are not accessible inside functions

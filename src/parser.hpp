@@ -74,13 +74,20 @@ struct NodeStmtExit {
 };
 
 struct NodeStmtDef {
+	VarType type;
 	Token ident;
 	std::optional<NodeExpr*> expr{};
 };
 
-struct NodeStmtFunc {
+struct NodeFuncParam {
+	VarType type;
 	Token ident;
-	std::optional<std::vector<Token>> params;
+};
+
+struct NodeStmtFunc {
+	VarType return_type;
+	Token ident;
+	std::optional<std::vector<NodeFuncParam>> params;
 	NodeScope* scope{};
 };
 
@@ -177,6 +184,16 @@ public:
 			atom->primary_expr = atom_paren;
 			return atom;
 		}
+		return {};
+	}
+
+	std::optional<VarType> parse_type()
+	{
+		if (auto type = consume(); VariableTypes.contains_value(type.type))
+		{
+			return VariableTypes.at_value(type.type);
+		}
+
 		return {};
 	}
 
@@ -383,13 +400,33 @@ public:
 			return stmt_ret_node;
 		} 
 		//Define variable
-		if (peek().has_value() && peek().value().type == TokenType::def_
-			&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
+		if (peek().has_value() && peek().value().type == TokenType::def_)
 		{
 			bool is_expr = false;
-			consume();
+
+			consume(); //def
+
 			auto stmt_def = m_allocator.alloc<NodeStmtDef>();
-			stmt_def->ident = consume();
+
+			if (auto type = parse_type())
+			{
+				stmt_def->type = type.value();
+			}
+			else
+			{
+				std::cerr << "Expected type after 'def'" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			if (peek().has_value() && peek().value().type == TokenType::ident)
+			{
+				stmt_def->ident = consume();
+			}
+			else
+			{
+				std::cerr << "Expected identifier" << std::endl;
+				exit(EXIT_FAILURE);
+			}
 
 			if (peek().value().type == TokenType::equals)
 			{
@@ -417,27 +454,67 @@ public:
 			return stmt_ret_node; 
 		}
 		//Function definition
-		if (peek().has_value() && peek().value().type == TokenType::func_
-			&& peek(1).has_value() && peek(1).value().type == TokenType::ident
-			&& peek(2).has_value() && peek(2).value().type == TokenType::open_paren)
+		if (peek().has_value() && peek().value().type == TokenType::func_)
 		{
 			//func token
 			consume();
 			auto stmt_func = m_allocator.alloc<NodeStmtFunc>();
-			stmt_func->ident = consume();
 
-			//open paren token
-			consume();
+			if (auto type = parse_type())
+			{
+				stmt_func->return_type = type.value();
+			}
+			else
+			{
+				std::cerr << "Expected return type after 'func'" << std::endl;
+				exit(EXIT_FAILURE);
+			}
 
-			std::vector<Token> param_idents;
+			// Parse function name
+			if (peek().has_value() && peek().value().type == TokenType::ident)
+			{
+				stmt_func->ident = consume();
+			}
+			else
+			{
+				std::cerr << "Expected function name" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			try_consume(TokenType::open_paren, "Expected '('");
+
+			std::vector<NodeFuncParam> param_idents;
 			while (peek().has_value() && peek().value().type != TokenType::close_paren) {
 				//handle params
-				if (peek().has_value() && peek().value().type == TokenType::def_
-					&& peek(1).has_value() && peek(1).value().type == TokenType::ident)
+				if (peek().has_value() && peek().value().type == TokenType::def_)
 				{
 					//def
-					consume();
-					param_idents.push_back(consume());
+					NodeFuncParam param;
+
+					//expect: def int paramName
+					try_consume(TokenType::def_, "Expected 'def' in parameter");
+
+					if (auto type = parse_type())
+					{
+						param.type = type.value();
+					}
+					else
+					{
+						std::cerr << "Expected type in parameter" << std::endl;
+						exit(EXIT_FAILURE);
+					}
+
+					if (peek().has_value() && peek().value().type == TokenType::ident)
+					{
+						param.ident = consume();
+					}
+					else
+					{
+						std::cerr << "Expected parameter name" << std::endl;
+						exit(EXIT_FAILURE);
+					}
+
+					param_idents.push_back(param);
 					if (peek().has_value() && peek().value().type == TokenType::comma)
 					{
 						consume();
@@ -451,8 +528,9 @@ public:
 					exit(EXIT_FAILURE);
 				}
 			}
+
 			//close paren token
-			consume();
+			try_consume(TokenType::close_paren, "Expected ')'");
 
 			if (!param_idents.empty())
 				stmt_func->params = param_idents;

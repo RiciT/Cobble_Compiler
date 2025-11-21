@@ -1,14 +1,14 @@
-def t = 9;
-def y = 6;
+def int t = 9;
+def int y = 6;
 
-func add(def a, def b) {
-    print(a + b);
+func int add(def int a, def int b) {
+    return (a + b);
 }
 
-func multip(def egyik, def masik) {
+func int multip(def int egyik, def int masik) {
     return egyik * masik;
 }
 
-def a;
-a = multip(6,t) + 2;
+def int a;
+a = multip(6,t) + add(t,y);
 print(a);
