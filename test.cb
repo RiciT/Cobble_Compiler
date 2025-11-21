@@ -7,6 +7,7 @@ func add(def a, def b) {
 
 func multip(def egyik, def masik) {
     print(egyik * masik);
+    return egyik;
 }
 
 add(y, 11);

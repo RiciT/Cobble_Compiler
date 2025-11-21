@@ -109,6 +109,11 @@ label3:
     mov rdx, rcx
     syscall
     add rsp, 32
+    push QWORD [rbp + 16]
+    pop rax
+    mov rsp, rbp
+    pop rbp
+    ret
     add rsp, 0
     mov rax, 0
     mov rsp, rbp

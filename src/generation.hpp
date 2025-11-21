@@ -378,11 +378,15 @@ public:
                         gen.m_stack_size -= args_size;
                     }
                 }
+
+
+                // TAKE OUT THIS PART SINCE THIS MESSES WITH STACK POINTER LOCATION
+                // WILL NEED TO HANDLE EXPRESSION FUNC CALLS DIFFERENTLY
+                //return value is in rax so push it onto the stack
+                //gen.push("rax");
             }
             void operator()(const NodeStmtReturn* stmt_return) const
             {
-                gen.m_current_stream = &gen.m_functions;
-
                 if (stmt_return->expr.has_value())
                 {
                     gen.generate_expression(stmt_return->expr.value());
@@ -397,8 +401,6 @@ public:
                 gen.current_stream() << "    mov rsp, rbp\n";
                 gen.current_stream() << "    pop rbp\n";
                 gen.current_stream() << "    ret\n";
-
-                gen.m_current_stream = &gen.m_output;
             }
         };
 
