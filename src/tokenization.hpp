@@ -20,10 +20,19 @@ enum class TokenType
 	while_,
 	print_,
 	return_,
+	true_,
+	false_,
 	//types
 	int_,
 	char_,
 	bool_,
+	//Boolean operators
+	equals_equals,
+	not_equals,
+	greater_equals,
+	less_equals,
+	greater,
+	less,
 	//Single char tokens
 	semi,
 	open_paren,
@@ -38,6 +47,7 @@ enum class TokenType
 	comma,
 	single_quote,
 	double_quote,
+	exclamation_point,
 };
 
 static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens = {
@@ -53,6 +63,8 @@ static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens =
 	{"int", TokenType::int_},
 	{"char", TokenType::char_},
 	{"bool", TokenType::bool_},
+	{"true", TokenType::true_},
+	{"false", TokenType::false_},
 };
 
 static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
@@ -69,6 +81,9 @@ static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 	{',', TokenType::comma},
 	{'\'', TokenType::single_quote},
 	{'\"', TokenType::double_quote},
+	{'>', TokenType::greater},
+	{'<', TokenType::less},
+	{'!', TokenType::exclamation_point}
 };
 
 enum class VarType {
@@ -85,12 +100,19 @@ static const bidirectional_unordered_map<VarType, TokenType> VariableTypes = {
 
 inline std::optional<int> bin_precedence(const TokenType type) {
 	switch(type) {
+		case TokenType::equals_equals:
+		case TokenType::not_equals:
+		case TokenType::greater_equals:
+		case TokenType::less_equals:
+		case TokenType::greater:
+		case TokenType::less:
+			return 0;
 		case TokenType::plus_sign:
 		case TokenType::dash_sign:
-			return 0;
+			return 1;
 		case TokenType::star_sign:
 		case TokenType::fslash_sign:
-			return 1;
+			return 2;
 		default:
 			return {};
 	}
@@ -152,11 +174,7 @@ public:
 				continue;
 			}
 			//single line comments
-			else if (SingleCharTokens.count(next_char) &&
-         				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
-         				peek(1).has_value() &&
-         				SingleCharTokens.count(peek(1).value()) &&
-         				SingleCharTokens.at(peek(1).value()) == TokenType::fslash_sign)
+			else if (Test_Double_SingleCharTokens(next_char, TokenType::fslash_sign, TokenType::fslash_sign))
 			{
 				consume(); consume();
 				do
@@ -165,20 +183,12 @@ public:
 				} while (peek().has_value() && peek().value() != '\n');
 			}
 			//multi line comment
-			else if (SingleCharTokens.count(next_char) &&
-         				SingleCharTokens.at(next_char) == TokenType::fslash_sign &&
-         				peek(1).has_value() &&
-         				SingleCharTokens.count(peek(1).value()) &&
-         				SingleCharTokens.at(peek(1).value()) == TokenType::star_sign)
+			else if (Test_Double_SingleCharTokens(next_char, TokenType::fslash_sign, TokenType::star_sign))
 			{
 				consume(); consume();
 				while (peek(1).has_value())
 				{
-					if (SingleCharTokens.count(peek().value()) &&
-            				SingleCharTokens.at(peek().value()) == TokenType::star_sign &&
-            				peek(1).has_value() &&
-            				SingleCharTokens.count(peek(1).value()) &&
-            				SingleCharTokens.at(peek(1).value()) == TokenType::fslash_sign)
+					if (Test_Double_SingleCharTokens(peek().value(), TokenType::star_sign, TokenType::fslash_sign))
 					{
 						break;
 					}
@@ -188,6 +198,18 @@ public:
 				if (peek().has_value()) { consume(); }
 				if (peek().has_value()) { consume(); }
 			}
+			//==
+			else if (Test_Double_SingleCharTokens(next_char, TokenType::equals, TokenType::equals))
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::equals_equals }); }
+			//!=
+			else if (Test_Double_SingleCharTokens(next_char, TokenType::exclamation_point, TokenType::equals))
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::not_equals }); }
+			//>=
+			else if (Test_Double_SingleCharTokens(next_char, TokenType::greater, TokenType::equals))
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::greater_equals }); }
+			//<=
+			else if (Test_Double_SingleCharTokens(next_char, TokenType::less, TokenType::equals))
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::less_equals }); }
 			//empty space
 			else if (std::isspace(next_char))
 			{
@@ -201,7 +223,7 @@ public:
 			}
 			else
 			{
-				std::cerr << "You messed up" << std::endl;
+				std::cerr << "Could not tokenize something where peek() = " << peek().value() << " and buf = " << buf << std::endl;
 	 			exit(EXIT_FAILURE);
 			}
 		}
@@ -226,6 +248,15 @@ private:
 	inline char consume()
 	{
 		return m_src.at(m_index++);
+	}
+
+	inline bool Test_Double_SingleCharTokens(const char next_char, const TokenType type1, const TokenType type2)
+	{
+		return SingleCharTokens.count(next_char) &&
+						 SingleCharTokens.at(next_char) == type1 &&
+						 peek(1).has_value() &&
+						 SingleCharTokens.count(peek(1).value()) &&
+						 SingleCharTokens.at(peek(1).value()) == type2;
 	}
 
 	const std::string m_src; //m_ for members

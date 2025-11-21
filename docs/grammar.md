@@ -18,6 +18,7 @@ $$
 \\
 [\text{Type}] &\to 
 \begin{cases}
+void\\
 int \\
 \end{cases}
 \\
@@ -36,10 +37,16 @@ else[\text{Scope}]\\
 \end{cases}
 \\
 [\text{BinExpr}] &\to \begin{cases}
-[\text{Expr}] * [\text{Expr}] & \text{prec} = 1\\
-[\text{Expr}] / [\text{Expr}] & \text{prec} = 1\\
-[\text{Expr}] - [\text{Expr}] & \text{prec} = 0\\
-[\text{Expr}] + [\text{Expr}] & \text{prec} = 0
+[\text{Expr}] * [\text{Expr}] & \text{prec} = 2\\
+[\text{Expr}] / [\text{Expr}] & \text{prec} = 2\\
+[\text{Expr}] - [\text{Expr}] & \text{prec} = 1\\
+[\text{Expr}] + [\text{Expr}] & \text{prec} = 1\\
+[\text{Expr}] == [\text{Expr}] & \text{prec} = 0\\
+[\text{Expr}] \space!= [\text{Expr}] & \text{prec} = 0\\
+[\text{Expr}] >= [\text{Expr}] & \text{prec} = 0\\
+[\text{Expr}] <= [\text{Expr}] & \text{prec} = 0\\
+[\text{Expr}] > [\text{Expr}] & \text{prec} = 0\\
+[\text{Expr}] < [\text{Expr}] & \text{prec} = 0\\
 \end{cases} \\
 [\text{Atom}] &\to \begin{cases}
 \text{int\_lit}\\
@@ -50,7 +57,6 @@ else[\text{Scope}]\\
 $$
 
 Next steps 
-    implement: ==, !=, >=, <= for ints
     implement arrays
     implement strings
 

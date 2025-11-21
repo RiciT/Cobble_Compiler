@@ -6,10 +6,15 @@
 
 #include "tokenization.hpp"
 #include "arena_allocator.hpp"
+#include "unordered_bimap.hpp"
 
 #pragma region Nodes
 struct NodeAtomIntLit {
 	Token int_lit;
+};
+
+struct NodeAtomBoolLit {
+	Token bool_lit;
 };
 
 struct NodeAtomIdent {
@@ -42,12 +47,44 @@ struct NodeBinExprDiv {
 	NodeExpr* rhs;
 };
 
+struct NodeBinExprEq {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
+struct NodeBinExprNotEq {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
+struct NodeBinExprGreater {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
+struct NodeBinExprLess {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
+struct NodeBinExprGreaterEq {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
+struct NodeBinExprLessEq {
+	NodeExpr* lhs;
+	NodeExpr* rhs;
+};
+
 struct NodeBinExpr {
-	std::variant<NodeBinExprAdd*, NodeBinExprMult*, NodeBinExprDiv*, NodeBinExprSub*> bin_expr;
+	std::variant<NodeBinExprAdd*, NodeBinExprMult*, NodeBinExprDiv*, NodeBinExprSub*,
+		NodeBinExprEq*, NodeBinExprNotEq*, NodeBinExprGreaterEq*, NodeBinExprLessEq*,
+		NodeBinExprLess*, NodeBinExprGreater*> bin_expr;
 };
 
 struct NodeAtom {
-	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*> primary_expr;
+	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*, NodeAtomBoolLit*> primary_expr;
 };
 
 struct NodeExprFuncCall {
@@ -161,6 +198,22 @@ public:
 			atom->primary_expr = atom_int_lit;
 			return atom;
 		}
+		if (const auto true_lit = try_consume(TokenType::true_))
+		{
+			const auto atom_bool_lit = m_allocator.alloc<NodeAtomBoolLit>();
+			atom_bool_lit->bool_lit = true_lit.value();
+			auto atom = m_allocator.alloc<NodeAtom>();
+			atom->primary_expr = atom_bool_lit;
+			return atom;
+		}
+		if (const auto false_lit = try_consume(TokenType::false_))
+		{
+			const auto atom_bool_lit = m_allocator.alloc<NodeAtomBoolLit>();
+			atom_bool_lit->bool_lit = false_lit.value();
+			auto atom = m_allocator.alloc<NodeAtom>();
+			atom->primary_expr = atom_bool_lit;
+			return atom;
+		}
 		if (const auto ident = try_consume(TokenType::ident))
 		{
 			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
@@ -271,6 +324,8 @@ public:
 
 			auto expr = m_allocator.alloc<NodeBinExpr>();
 			const auto node_expr_lhs = m_allocator.alloc<NodeExpr>();
+			//i dont yet know how but somehow we need a map from operator<->NodeBinExpr
+			//as all of these are the same
 			if (type == TokenType::plus_sign)
 			{
 				auto add = m_allocator.alloc<NodeBinExprAdd>();
@@ -306,6 +361,60 @@ public:
 				div->lhs = node_expr_lhs;
 				div->rhs = expr_rhs.value();
 				expr->bin_expr = div;
+			}
+			else if (type == TokenType::equals_equals)
+			{
+				auto eq = m_allocator.alloc<NodeBinExprEq>();
+
+				node_expr_lhs->expr = expr_lhs->expr;
+				eq->lhs = node_expr_lhs;
+				eq->rhs = expr_rhs.value();
+				expr->bin_expr = eq;
+			}
+			else if (type == TokenType::not_equals)
+			{
+				auto neq = m_allocator.alloc<NodeBinExprNotEq>();
+
+				node_expr_lhs->expr = expr_lhs->expr;
+				neq->lhs = node_expr_lhs;
+				neq->rhs = expr_rhs.value();
+				expr->bin_expr = neq;
+			}
+			else if (type == TokenType::greater_equals)
+			{
+				auto geq = m_allocator.alloc<NodeBinExprGreaterEq>();
+
+				node_expr_lhs->expr = expr_lhs->expr;
+				geq->lhs = node_expr_lhs;
+				geq->rhs = expr_rhs.value();
+				expr->bin_expr = geq;
+			}
+			else if (type == TokenType::less_equals)
+			{
+				auto leq = m_allocator.alloc<NodeBinExprLessEq>();
+
+				node_expr_lhs->expr = expr_lhs->expr;
+				leq->lhs = node_expr_lhs;
+				leq->rhs = expr_rhs.value();
+				expr->bin_expr = leq;
+			}
+			else if (type == TokenType::greater)
+			{
+				auto gt = m_allocator.alloc<NodeBinExprGreater>();
+
+				node_expr_lhs->expr = expr_lhs->expr;
+				gt->lhs = node_expr_lhs;
+				gt->rhs = expr_rhs.value();
+				expr->bin_expr = gt;
+			}
+			else if (type == TokenType::less)
+			{
+				auto lt = m_allocator.alloc<NodeBinExprLess>();
+
+				node_expr_lhs->expr = expr_lhs->expr;
+				lt->lhs = node_expr_lhs;
+				lt->rhs = expr_rhs.value();
+				expr->bin_expr = lt;
 			}
 			else { assert(false); } //Should be unreachable
 			expr_lhs->expr = expr;

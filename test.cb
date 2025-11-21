@@ -1,14 +1,10 @@
-def int t = 9;
-def int y = 6;
+def bool x = true;
+def bool y = false;
+def int a = 5;
+def int b = 10;
 
-func int add(def int a, def int b) {
-    return (a + b);
+def bool isLess = a < b;
+
+if (isLess) {
+    print(1);
 }
-
-func int multip(def int egyik, def int masik) {
-    return egyik * masik;
-}
-
-def int a;
-a = multip(6,t) + add(t,y);
-print(a);

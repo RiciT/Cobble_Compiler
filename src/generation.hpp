@@ -47,6 +47,20 @@ public:
                 gen.current_stream() << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
                 gen.push("rax");
             }
+            void operator()(const NodeAtomBoolLit* atom_bool_lit) const
+            {
+                //true = 1, false = 0
+                if (atom_bool_lit->bool_lit.type == TokenType::true_)
+                {
+                    gen.current_stream() << "    mov rax, 1\n";
+                }
+                if (atom_bool_lit->bool_lit.type == TokenType::false_)
+                {
+                    gen.current_stream() << "    mov rax, 0\n";
+                }
+
+                gen.push("rax");
+            }
             void operator()(const NodeAtomParen* atom_paren) const {
                 gen.generate_expression(atom_paren->expr);
             }
@@ -90,6 +104,66 @@ public:
                 gen.pop("rbx");
                 gen.current_stream() << "    xor rdx, rdx\n";
                 gen.current_stream() << "    div rbx\n";
+                gen.push("rax");
+            }
+            void operator()(const NodeBinExprEq* eq) const {
+                gen.generate_expression(eq->lhs);
+                gen.generate_expression(eq->rhs);
+                gen.pop("rbx");
+                gen.pop("rax");
+                gen.current_stream() << "    cmp rax, rbx\n";
+                gen.current_stream() << "    sete al\n";        // Set al to 1 if equal
+                gen.current_stream() << "    movzx rax, al\n";  // Zero-extend to full register
+                gen.push("rax");
+            }
+            void operator()(const NodeBinExprNotEq* neq) const {
+                gen.generate_expression(neq->lhs);
+                gen.generate_expression(neq->rhs);
+                gen.pop("rbx");
+                gen.pop("rax");
+                gen.current_stream() << "    cmp rax, rbx\n";
+                gen.current_stream() << "    setne al\n";
+                gen.current_stream() << "    movzx rax, al\n";
+                gen.push("rax");
+            }
+            void operator()(const NodeBinExprGreater* gt) const {
+                gen.generate_expression(gt->lhs);
+                gen.generate_expression(gt->rhs);
+                gen.pop("rbx");
+                gen.pop("rax");
+                gen.current_stream() << "    cmp rax, rbx\n";
+                gen.current_stream() << "    setg al\n";
+                gen.current_stream() << "    movzx rax, al\n";
+                gen.push("rax");
+            }
+            void operator()(const NodeBinExprLess* lt) const {
+                gen.generate_expression(lt->lhs);
+                gen.generate_expression(lt->rhs);
+                gen.pop("rbx");
+                gen.pop("rax");
+                gen.current_stream() << "    cmp rax, rbx\n";
+                gen.current_stream() << "    setl al\n";
+                gen.current_stream() << "    movzx rax, al\n";
+                gen.push("rax");
+            }
+            void operator()(const NodeBinExprGreaterEq* gte) const {
+                gen.generate_expression(gte->lhs);
+                gen.generate_expression(gte->rhs);
+                gen.pop("rbx");
+                gen.pop("rax");
+                gen.current_stream() << "    cmp rax, rbx\n";
+                gen.current_stream() << "    setge al\n";
+                gen.current_stream() << "    movzx rax, al\n";
+                gen.push("rax");
+            }
+            void operator()(const NodeBinExprLessEq* lte) const {
+                gen.generate_expression(lte->lhs);
+                gen.generate_expression(lte->rhs);
+                gen.pop("rbx");
+                gen.pop("rax");
+                gen.current_stream() << "    cmp rax, rbx\n";
+                gen.current_stream() << "    setle al\n";
+                gen.current_stream() << "    movzx rax, al\n";
                 gen.push("rax");
             }
         };
