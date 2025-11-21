@@ -242,9 +242,9 @@ public:
 
 	std::optional<VarType> parse_type()
 	{
-		if (auto type = consume(); VariableTypes.contains_value(type.type))
+		if (auto type = consume(); VariableBaseTypes.contains_value(type.type))
 		{
-			return VariableTypes.at_value(type.type);
+			return VariableBaseTypes.at_value(type.type);
 		}
 
 		return {};
