@@ -109,6 +109,35 @@ public:
             {
                 gen.generate_binary_expression(bin_expr);
             }
+            void operator()(const NodeExprFuncCall* expr_func_call) const
+            {
+                //push arguments right-to-left
+                if (expr_func_call->exprs.has_value())
+                {
+                    const auto& args = expr_func_call->exprs.value();
+                    for (int i = args.size() - 1; i >= 0; i--)
+                    {
+                        gen.generate_expression(args[i]);
+                        //expression result is already pushed
+                    }
+                }
+
+                //push parameters onto stack so it can be popped in order
+                const std::string func_label = "func_" + expr_func_call->ident.value.value();
+                gen.current_stream() << "    call " << func_label << "\n";
+
+                //clean up arguments from stack
+                if (expr_func_call->exprs.has_value())
+                {
+                    if (const size_t args_size = expr_func_call->exprs.value().size(); args_size > 0)
+                    {
+                        gen.current_stream() << "    add rsp, " << args_size * 8 << "\n";
+                        gen.m_stack_size -= args_size;
+                    }
+                }
+
+                gen.push("rax");
+            }
         };
 
         ExprVisitor visitor{ .gen = *this };

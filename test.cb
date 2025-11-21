@@ -1,4 +1,4 @@
-def t = 5;
+def t = 9;
 def y = 6;
 
 func add(def a, def b) {
@@ -6,9 +6,9 @@ func add(def a, def b) {
 }
 
 func multip(def egyik, def masik) {
-    print(egyik * masik);
-    return egyik;
+    return egyik * masik;
 }
 
-add(y, 11);
-multip(t, y);
+def a;
+a = multip(6,t) + 2;
+print(a);

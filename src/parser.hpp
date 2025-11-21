@@ -50,8 +50,13 @@ struct NodeAtom {
 	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*> primary_expr;
 };
 
+struct NodeExprFuncCall {
+	Token ident;
+	std::optional<std::vector<NodeExpr*>> exprs;
+};
+
 struct NodeExpr {
-	std::variant<NodeAtom*, NodeBinExpr*> expr;
+	std::variant<NodeAtom*, NodeBinExpr*, NodeExprFuncCall*> expr;
 };
 
 struct NodeStmt;
@@ -175,15 +180,53 @@ public:
 		return {};
 	}
 
+	std::optional<NodeExprFuncCall*> parse_expr_func_call()
+	{
+		auto expr_func_call = m_allocator.alloc<NodeExprFuncCall>();
+		expr_func_call->ident = consume();
+		consume();  // open paren
+
+		std::vector<NodeExpr*> exprs;
+		while (peek().has_value() && peek().value().type != TokenType::close_paren) {
+			if (auto expr = parse_expr())
+			{
+				exprs.push_back(expr.value());
+				if (try_consume(TokenType::comma)) continue;
+				if (peek().has_value() && peek().value().type == TokenType::close_paren) break;
+				std::cerr << "Expected ')' or ',' in func call" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+		}
+		try_consume(TokenType::close_paren, "Expected ')'");
+
+		if (!exprs.empty())
+			expr_func_call->exprs = exprs;
+
+		return expr_func_call;
+	}
+
 	std::optional<NodeExpr*> parse_expr(const int minimum_precedence = 0)
 	{
+		NodeExpr* expr_lhs = nullptr;
+
+		if (peek().has_value() && peek().value().type == TokenType::ident
+			&& peek(1).has_value() && peek(1).value().type == TokenType::open_paren)
+		{
+			std::optional<NodeExprFuncCall*> func_call_lhs = parse_expr_func_call();
+			if (!func_call_lhs.has_value()) { return {}; }
+			expr_lhs = m_allocator.alloc<NodeExpr>();
+			expr_lhs->expr = func_call_lhs.value();
+		}
+		else
+		{
+			//try atom
+			std::optional<NodeAtom*> atom_lhs = parse_atom();
+			if (!atom_lhs.has_value()) { return {}; }
+			expr_lhs = m_allocator.alloc<NodeExpr>();
+			expr_lhs->expr = atom_lhs.value();
+		}
+
 		//precedence climbing from Eli Bendersky (https://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing)
-		std::optional<NodeAtom*> atom_lhs = parse_atom();
-		if (!atom_lhs.has_value()) { return {}; }
-
-		auto expr_lhs = m_allocator.alloc<NodeExpr>();
-		expr_lhs->expr = atom_lhs.value();
-
 		while (true)
 		{
 			std::optional<Token> curr_tok = peek();

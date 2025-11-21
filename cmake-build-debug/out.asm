@@ -1,18 +1,58 @@
 global _start
 _start:
-    mov rax, 5
+    mov rax, 9
     push rax
     mov rax, 6
     push rax
-    mov rax, 11
+    mov rax, 2
     push rax
-    push QWORD [rsp + 8]
-    call func_add
-    add rsp, 16
-    push QWORD [rsp + 0]
     push QWORD [rsp + 16]
+    mov rax, 6
+    push rax
     call func_multip
     add rsp, 16
+    push rax
+    pop rax
+    pop rbx
+    add rax, rbx
+    push rax
+    pop rax
+    mov [rsp + 18446744073709551608], rax
+    push QWORD [rsp + 18446744073709551608]
+    pop rax
+    ; Convert integer in rax to ASCII
+    mov rbx, 10
+    mov rcx, 0
+    sub rsp, 32
+    mov rdi, rsp
+    add rdi, 31
+    mov BYTE [rdi], 10
+    dec rdi
+    inc rcx
+    test rax, rax
+    jnz label2
+    mov BYTE [rdi], '0'
+    dec rdi
+    inc rcx
+    jmp label3
+label2:
+    test rax, rax
+    jz label3
+    xor rdx, rdx
+    div rbx
+    add dl, '0'
+    mov [rdi], dl
+    dec rdi
+    inc rcx
+    jmp label2
+label3:
+    inc rdi
+    mov rax, 1
+    mov rsi, rdi
+    mov rdi, 1
+    mov rdx, rcx
+    syscall
+    add rsp, 32
     mov rax, 60
     mov rdi, 0
     syscall
@@ -75,41 +115,6 @@ func_multip:
     pop rbx
     mul rbx
     push rax
-    pop rax
-    ; Convert integer in rax to ASCII
-    mov rbx, 10
-    mov rcx, 0
-    sub rsp, 32
-    mov rdi, rsp
-    add rdi, 31
-    mov BYTE [rdi], 10
-    dec rdi
-    inc rcx
-    test rax, rax
-    jnz label2
-    mov BYTE [rdi], '0'
-    dec rdi
-    inc rcx
-    jmp label3
-label2:
-    test rax, rax
-    jz label3
-    xor rdx, rdx
-    div rbx
-    add dl, '0'
-    mov [rdi], dl
-    dec rdi
-    inc rcx
-    jmp label2
-label3:
-    inc rdi
-    mov rax, 1
-    mov rsi, rdi
-    mov rdi, 1
-    mov rdx, rcx
-    syscall
-    add rsp, 32
-    push QWORD [rbp + 16]
     pop rax
     mov rsp, rbp
     pop rbp
