@@ -3,164 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "unordered_bimap.hpp"
-
-enum class TokenType
-{
-	//Atoms
-	ident,
-	int_lit,
-	//Keywords
-	exit_,
-	def_,
-	func_,
-	if_,
-	elseif_,
-	else_,
-	while_,
-	print_,
-	return_,
-	true_,
-	false_,
-	//types
-	int_,
-	char_,
-	bool_,
-	//Boolean operators
-	equals_equals,
-	not_equals,
-	greater_equals,
-	less_equals,
-	greater,
-	less,
-	//Single char tokens
-	semi,
-	open_paren,
-	close_paren,
-	equals,
-	plus_sign,
-	star_sign,
-	dash_sign,
-	fslash_sign,
-	open_curly,
-	close_curly,
-	comma,
-	single_quote,
-	double_quote,
-	exclamation_point,
-	open_bracket,
-	close_bracket
-};
-
-static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens = {
-	{"exit", TokenType::exit_},
-	{"def", TokenType::def_},
-	{"func", TokenType::func_},
-	{"if", TokenType::if_},
-	{"elseif", TokenType::elseif_},
-	{"else", TokenType::else_},
-	{"while", TokenType::while_},
-	{"print", TokenType::print_},
-	{"return", TokenType::return_},
-	{"int", TokenType::int_},
-	{"char", TokenType::char_},
-	{"bool", TokenType::bool_},
-	{"true", TokenType::true_},
-	{"false", TokenType::false_},
-};
-
-static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
-	{'(', TokenType::open_paren},
-	{')', TokenType::close_paren},
-	{'+', TokenType::plus_sign},
-	{'-', TokenType::dash_sign},
-	{'*', TokenType::star_sign},
-	{'/', TokenType::fslash_sign},
-	{'=', TokenType::equals},
-	{';', TokenType::semi},
-	{'{', TokenType::open_curly},
-	{'}', TokenType::close_curly},
-	{',', TokenType::comma},
-	{'\'', TokenType::single_quote},
-	{'\"', TokenType::double_quote},
-	{'>', TokenType::greater},
-	{'<', TokenType::less},
-	{'!', TokenType::exclamation_point},
-	{'[', TokenType::open_bracket},
-	{']', TokenType::close_bracket},
-};
-
-enum class BaseType {
-	int_,
-	char_,
-	bool_,
-};
-
-struct VarType {
-	BaseType base;
-	bool is_array = false;
-	size_t array_size = 0;
-
-	//helpers
-	//comparison
-
-	bool operator==(const VarType& other) const
-	{
-		return base == other.base &&
-			is_array == other.is_array &&
-			array_size == other.array_size;
-	}
-
-	bool operator!=(const VarType& other) const
-	{
-		return !(*this == other);
-	}
-
-	//base match
-	bool base_matches(const VarType& other) const
-	{
-		return base == other.base;
-	}
-
-	//get element type
-	VarType element_type() const
-	{
-		return VarType{ .base = base, .is_array = false, .array_size = 0};
-	}
-
-	//create array type from this array
-	VarType as_array(const size_t size) const
-	{
-		return VarType{ .base = base, .is_array = true, .array_size = size};
-	}
-
-	//helpers to create types easily
-	static VarType make_int_lit()
-	{
-		return VarType{ .base = BaseType::int_, .is_array = false, .array_size = 0};
-	}
-
-	static VarType make_bool_lit()
-	{
-		return VarType{ .base = BaseType::bool_, .is_array = false, .array_size = 0};
-	}
-
-	static VarType make_int_array(const size_t size)
-	{
-		return VarType{ .base = BaseType::int_, .is_array = true, .array_size = size};
-	}
-
-	static VarType make_bool_array(const size_t size)
-	{
-		return VarType{ .base = BaseType::bool_, .is_array = true, .array_size = size};
-	}
-};
-
-static const bidirectional_unordered_map<BaseType, TokenType> VariableBaseTypes = {
-	{BaseType::int_, TokenType::int_},
-	{BaseType::char_, TokenType::char_},
-	{BaseType::bool_, TokenType::bool_},
-};
+#include "token.hpp"
 
 inline std::optional<int> bin_precedence(const TokenType type) {
 	switch(type) {
@@ -181,12 +24,6 @@ inline std::optional<int> bin_precedence(const TokenType type) {
 			return {};
 	}
 }
-
-struct Token
-{
-	TokenType type;
-	std::optional<std::string> value {};
-};
 
 class Tokenizer {
 public:
@@ -314,7 +151,7 @@ private:
 		return m_src.at(m_index++);
 	}
 
-	inline bool Test_Double_SingleCharTokens(const char next_char, const TokenType type1, const TokenType type2)
+	inline bool Test_Double_SingleCharTokens(const char next_char, const TokenType type1, const TokenType type2) const
 	{
 		return SingleCharTokens.count(next_char) &&
 						 SingleCharTokens.at(next_char) == type1 &&

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "parser.hpp"
+#include "../parsing/parser.hpp"
 
 class Generator {
 #pragma region public:

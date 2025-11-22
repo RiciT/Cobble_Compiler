@@ -4,193 +4,11 @@
 #include <cassert>
 #include <complex>
 
-#include "tokenization.hpp"
-#include "arena_allocator.hpp"
-#include "unordered_bimap.hpp"
-
-#pragma region Nodes
-struct NodeExpr;
-
-struct NodeAtomIntLit {
-	Token int_lit;
-};
-
-struct NodeAtomBoolLit {
-	Token bool_lit;
-};
-
-struct NodeAtomIdent {
-	Token ident;
-};
-
-struct NodeAtomArrayAccess {
-	Token ident;
-	NodeExpr* index;
-};
-
-struct NodeAtomParen {
-	NodeExpr* expr;
-};
-
-struct NodeAtom {
-	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*, NodeAtomBoolLit*, NodeAtomArrayAccess*> primary_expr;
-};
-
-struct NodeBinExprAdd {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprMult {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprSub {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprDiv {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprEq {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprNotEq {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprGreater {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprLess {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprGreaterEq {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExprLessEq {
-	NodeExpr* lhs;
-	NodeExpr* rhs;
-};
-
-struct NodeBinExpr {
-	std::variant<NodeBinExprAdd*, NodeBinExprMult*, NodeBinExprDiv*, NodeBinExprSub*,
-		NodeBinExprEq*, NodeBinExprNotEq*, NodeBinExprGreaterEq*, NodeBinExprLessEq*,
-		NodeBinExprLess*, NodeBinExprGreater*> bin_expr;
-};
-
-struct NodeFuncCallExpr {
-	Token ident;
-	std::optional<std::vector<NodeExpr*>> exprs;
-};
-
-struct NodeExpr {
-	std::variant<NodeAtom*, NodeBinExpr*, NodeFuncCallExpr*> expr;
-};
-
-struct NodeStmt;
-
-struct NodeScope {
-	std::vector<NodeStmt*> stmts;
-};
-
-struct NodeStmtPrint {
-	NodeExpr* expr;
-};
-
-struct NodeStmtExit {
-	NodeExpr* expr;
-};
-
-struct NodeStmtDef {
-	VarType type;
-	Token ident;
-	std::optional<NodeExpr*> expr{};
-	std::optional<NodeExpr*> array_size_expr{};
-};
-
-struct NodeFuncParam {
-	VarType type;
-	Token ident;
-};
-
-struct NodeStmtFunc {
-	VarType return_type;
-	Token ident;
-	std::optional<std::vector<NodeFuncParam>> params;
-	NodeScope* scope{};
-};
-
-struct NodeStmtFuncCall {
-	Token ident;
-	std::optional<std::vector<NodeExpr*>> exprs;
-};
-
-struct NodeStmtReturn {
-	std::optional<NodeExpr*> expr;
-};
-
-struct NodeIfPredicate;
-
-struct NodeIfPredElseIf {
-	NodeExpr* expr{};
-	NodeScope* scope{};
-	std::optional<NodeIfPredicate*> ifpred;
-};
-
-struct NodeIfPredElse {
-	NodeScope* scope;
-};
-
-struct NodeIfPredicate {
-	std::variant<NodeIfPredElseIf*, NodeIfPredElse*> ifpred;
-};
-
-struct NodeStmtIf {
-	NodeExpr* expr{};
-	NodeScope* scope{};
-	std::optional<NodeIfPredicate*> ifpred;
-};
-
-struct NodeStmtAssign {
-	Token ident;
-	NodeExpr* expr{};
-};
-
-struct NodeStmtWhile {
-	NodeExpr* expr;
-	NodeScope* scope;
-};
-
-struct NodeStmtArrayAssign {
-	Token ident;
-	NodeExpr* index;
-	NodeExpr* value;
-};
-
-struct NodeStmt {
-	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*,
-	NodeStmtAssign*, NodeStmtWhile*, NodeStmtFunc*, NodeStmtFuncCall*, NodeStmtReturn*,
-	NodeStmtArrayAssign*> stmt;
-};
-
-struct NodeProgram {
-	std::vector<NodeStmt*> stmts;
-};
-#pragma endregion
+#include "../lexing/tokenization.hpp"
+#include "../common/arena_allocator.hpp"
+#include "../common/unordered_bimap.hpp"
+#include "../common/var_types.hpp"
+#include "../ast/nodes.hpp"
 
 class Parser {
 #pragma region  //public:
@@ -938,7 +756,8 @@ public:
 	}
 
 #pragma endregion
-#pragma region //private: 
+
+#pragma region //private:
 private:	
 	[[nodiscard]] std::optional<Token> peek(const int offset = 0) const
 	{

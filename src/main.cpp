@@ -4,7 +4,7 @@
 #include <optional>
 #include <vector>
 
-#include "generation.hpp"
+#include "codegen/generation.hpp"
 
 int main(int argc, char* argv[]) 
 {
