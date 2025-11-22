@@ -1,9 +1,8 @@
 #pragma once
 
 #include <algorithm>
-#include <cassert>
 
-#include "../parsing/parser.hpp"
+#include "parsing/parser.hpp"
 
 class Generator {
 #pragma region public:
@@ -323,7 +322,7 @@ public:
                 if (stmt_def->type.is_array)
                 {
                     //evaluate array size at compile time
-                    auto size_opt = gen.evaluate_const_expr(stmt_def->array_size_expr.value());
+                    const auto size_opt = gen.evaluate_const_expr(stmt_def->array_size_expr.value());
                     if (!size_opt.has_value())
                     {
                         std::cerr << "Array size must be a compile-time constant expression" << std::endl;
@@ -336,10 +335,10 @@ public:
                         exit(EXIT_FAILURE);
                     }
 
-                    size_t array_size = static_cast<size_t>(size_opt.value());
+                    const size_t array_size = static_cast<size_t>(size_opt.value());
 
                     //allocate space for array
-                    size_t total_bytes = array_size * 8;
+                    const size_t total_bytes = array_size * 8;
                     gen.current_stream() << "    sub rsp, " << total_bytes << "\n";
 
                     //create type with resolved size
@@ -507,13 +506,13 @@ public:
                 if (stmt_func->params.has_value())
                 {
                     int param_index = 0;
-                    for (const NodeFuncParam& param : stmt_func->params.value())
+                    for (const auto&[type, ident] : stmt_func->params.value())
                     {
                         // poarameters are at [rbp + 16], [rbp + 24], etc.
                         // +16 because: +8 for return address, +8 for saved rbp
                         gen.m_vars.push_back({
-                            .type = param.type,
-                            .name = param.ident.value.value(),
+                            .type = type,
+                            .name = ident.value.value(),
                             .stack_loc = static_cast<size_t>(16 + param_index * 8),
                             .is_param = true
                         });
@@ -700,82 +699,72 @@ public:
 
             std::optional<int64_t> operator()(const NodeBinExprAdd* add) const
             {
-                auto lhs = gen.evaluate_const_expr(add->lhs);
-                auto rhs = gen.evaluate_const_expr(add->rhs);
-                if (lhs && rhs) return *lhs + *rhs;
+                const auto lhs = gen.evaluate_const_expr(add->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(add->rhs); lhs && rhs) return *lhs + *rhs;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprSub* sub) const
             {
-                auto lhs = gen.evaluate_const_expr(sub->lhs);
-                auto rhs = gen.evaluate_const_expr(sub->rhs);
-                if (lhs && rhs) return *lhs - *rhs;
+                const auto lhs = gen.evaluate_const_expr(sub->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(sub->rhs); lhs && rhs) return *lhs - *rhs;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprMult* mult) const
             {
-                auto lhs = gen.evaluate_const_expr(mult->lhs);
-                auto rhs = gen.evaluate_const_expr(mult->rhs);
-                if (lhs && rhs) return *lhs * *rhs;
+                const auto lhs = gen.evaluate_const_expr(mult->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(mult->rhs); lhs && rhs) return *lhs * *rhs;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprDiv* div) const
             {
-                auto lhs = gen.evaluate_const_expr(div->lhs);
-                auto rhs = gen.evaluate_const_expr(div->rhs);
-                if (lhs && rhs && *rhs != 0) return *lhs / *rhs;
+                const auto lhs = gen.evaluate_const_expr(div->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(div->rhs); lhs && rhs && *rhs != 0) return *lhs / *rhs;
                 return {};
             }
 
             // Add comparison operators if you have them
             std::optional<int64_t> operator()(const NodeBinExprEq* eq) const
             {
-                auto lhs = gen.evaluate_const_expr(eq->lhs);
-                auto rhs = gen.evaluate_const_expr(eq->rhs);
-                if (lhs && rhs) return (*lhs == *rhs) ? 1 : 0;
+                const auto lhs = gen.evaluate_const_expr(eq->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(eq->rhs); lhs && rhs) return (*lhs == *rhs) ? 1 : 0;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprNotEq* neq) const
             {
-                auto lhs = gen.evaluate_const_expr(neq->lhs);
-                auto rhs = gen.evaluate_const_expr(neq->rhs);
-                if (lhs && rhs) return (*lhs != *rhs) ? 1 : 0;
+                const auto lhs = gen.evaluate_const_expr(neq->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(neq->rhs); lhs && rhs) return (*lhs != *rhs) ? 1 : 0;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprLess* lt) const
             {
-                auto lhs = gen.evaluate_const_expr(lt->lhs);
-                auto rhs = gen.evaluate_const_expr(lt->rhs);
-                if (lhs && rhs) return (*lhs < *rhs) ? 1 : 0;
+                const auto lhs = gen.evaluate_const_expr(lt->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(lt->rhs); lhs && rhs) return (*lhs < *rhs) ? 1 : 0;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprGreater* gt) const
             {
-                auto lhs = gen.evaluate_const_expr(gt->lhs);
-                auto rhs = gen.evaluate_const_expr(gt->rhs);
-                if (lhs && rhs) return (*lhs > *rhs) ? 1 : 0;
+                const auto lhs = gen.evaluate_const_expr(gt->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(gt->rhs); lhs && rhs) return (*lhs > *rhs) ? 1 : 0;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprLessEq* lte) const
             {
-                auto lhs = gen.evaluate_const_expr(lte->lhs);
-                auto rhs = gen.evaluate_const_expr(lte->rhs);
-                if (lhs && rhs) return (*lhs <= *rhs) ? 1 : 0;
+                const auto lhs = gen.evaluate_const_expr(lte->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(lte->rhs); lhs && rhs) return (*lhs <= *rhs) ? 1 : 0;
                 return {};
             }
 
             std::optional<int64_t> operator()(const NodeBinExprGreaterEq* gte) const
             {
-                auto lhs = gen.evaluate_const_expr(gte->lhs);
-                auto rhs = gen.evaluate_const_expr(gte->rhs);
-                if (lhs && rhs) return (*lhs >= *rhs) ? 1 : 0;
+                const auto lhs = gen.evaluate_const_expr(gte->lhs);
+                if (const auto rhs = gen.evaluate_const_expr(gte->rhs); lhs && rhs) return (*lhs >= *rhs) ? 1 : 0;
                 return {};
             }
         };
@@ -830,15 +819,14 @@ private:
         //move back stackpointer (add since the stack is upside down)
         for (size_t i = 0; i < pop_count; i++)
         {
-            const auto& var = m_vars[m_vars.size() - 1 - i];
-            if (var.type.is_array) { slots_to_pop += var.type.array_size; }
+            if (const auto& var = m_vars[m_vars.size() - 1 - i]; var.type.is_array) { slots_to_pop += var.type.array_size; }
             else { slots_to_pop += 1; }
         }
 
         current_stream() << "    add rsp, " << slots_to_pop * 8 << "\n";
         m_stack_size -= slots_to_pop;
 
-        for (int i = 0; i < pop_count; i++)
+        for (size_t i = 0; i < pop_count; i++)
         {
             m_vars.pop_back();
         }

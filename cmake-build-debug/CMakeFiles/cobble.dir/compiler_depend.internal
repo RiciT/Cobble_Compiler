@@ -3,11 +3,15 @@
 
 CMakeFiles/cobble.dir/src/main.cpp.o
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/arena_allocator.hpp
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/generation.hpp
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parser.hpp
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/tokenization.hpp
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/unordered_bimap.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ast/nodes.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/operator_precedence.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h

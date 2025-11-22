@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/unordered_bimap.hpp"
+#include "common/unordered_bimap.hpp"
 
 enum class TokenType
 {

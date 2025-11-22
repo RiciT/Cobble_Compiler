@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lexing/token.hpp"
+#include "lexing/token.hpp"
 
 enum class BaseType {
     int_,

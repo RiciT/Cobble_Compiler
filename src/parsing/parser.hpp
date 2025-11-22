@@ -4,11 +4,9 @@
 #include <cassert>
 #include <complex>
 
-#include "../lexing/tokenization.hpp"
-#include "../common/arena_allocator.hpp"
-#include "../common/unordered_bimap.hpp"
-#include "../common/var_types.hpp"
-#include "../ast/nodes.hpp"
+#include "common/arena_allocator.hpp"
+#include "ast/nodes.hpp"
+#include "operator_precedence.hpp"
 
 class Parser {
 #pragma region  //public:

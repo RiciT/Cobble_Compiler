@@ -4,6 +4,8 @@
 #include <optional>
 #include <vector>
 
+#include "lexing/tokenization.hpp"
+#include "parsing/parser.hpp"
 #include "codegen/generation.hpp"
 
 int main(int argc, char* argv[]) 

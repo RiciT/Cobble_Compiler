@@ -4,8 +4,8 @@
 #include <optional>
 #include <vector>
 
-#include "../lexing/token.hpp"
-#include "../common/var_types.hpp"
+#include "lexing/token.hpp"
+#include "common/var_types.hpp"
 
 #pragma region Forward declarations
 struct NodeExpr;
