@@ -8,7 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.cpp" "CMakeFiles/cobble.dir/src/codegen/generation.cpp.o" "gcc" "CMakeFiles/cobble.dir/src/codegen/generation.cpp.o.d"
   "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp" "CMakeFiles/cobble.dir/src/main.cpp.o" "gcc" "CMakeFiles/cobble.dir/src/main.cpp.o.d"
+  "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp" "CMakeFiles/cobble.dir/src/parsing/parser.cpp.o" "gcc" "CMakeFiles/cobble.dir/src/parsing/parser.cpp.o.d"
   "" "cobble" "gcc" "CMakeFiles/cobble.dir/link.d"
   )
 

@@ -129,6 +129,30 @@ cobble/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/build
 .PHONY : cobble/fast
 
+src/codegen/generation.o: src/codegen/generation.cpp.o
+.PHONY : src/codegen/generation.o
+
+# target to build an object file
+src/codegen/generation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.o
+.PHONY : src/codegen/generation.cpp.o
+
+src/codegen/generation.i: src/codegen/generation.cpp.i
+.PHONY : src/codegen/generation.i
+
+# target to preprocess a source file
+src/codegen/generation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.i
+.PHONY : src/codegen/generation.cpp.i
+
+src/codegen/generation.s: src/codegen/generation.cpp.s
+.PHONY : src/codegen/generation.s
+
+# target to generate assembly for a file
+src/codegen/generation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.s
+.PHONY : src/codegen/generation.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -153,6 +177,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/parsing/parser.o: src/parsing/parser.cpp.o
+.PHONY : src/parsing/parser.o
+
+# target to build an object file
+src/parsing/parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.o
+.PHONY : src/parsing/parser.cpp.o
+
+src/parsing/parser.i: src/parsing/parser.cpp.i
+.PHONY : src/parsing/parser.i
+
+# target to preprocess a source file
+src/parsing/parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.i
+.PHONY : src/parsing/parser.cpp.i
+
+src/parsing/parser.s: src/parsing/parser.cpp.s
+.PHONY : src/parsing/parser.s
+
+# target to generate assembly for a file
+src/parsing/parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.s
+.PHONY : src/parsing/parser.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +210,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cobble"
+	@echo "... src/codegen/generation.o"
+	@echo "... src/codegen/generation.i"
+	@echo "... src/codegen/generation.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/parsing/parser.o"
+	@echo "... src/parsing/parser.i"
+	@echo "... src/parsing/parser.s"
 .PHONY : help
 
 
