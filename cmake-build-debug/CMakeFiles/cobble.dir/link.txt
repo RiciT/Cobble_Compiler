@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/cobble.dir/link.d CMakeFiles/cobble.dir/src/main.cpp.o -o cobble
