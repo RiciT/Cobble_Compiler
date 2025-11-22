@@ -13,7 +13,7 @@ _start:
     add rbx, 0
     add rbx, rax
     mov [rbx], rcx
-    mov rax, 5
+    mov rax, 4
     push rax
     mov rax, 5
     push rax
