@@ -226,29 +226,7 @@ public:
 			atom->primary_expr = atom_bool_lit;
 			return atom;
 		}
-		if (const auto ident = try_consume(TokenType::ident))
-		{
-			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
-			atom_ident->ident = ident.value();
-			auto atom = m_allocator.alloc<NodeAtom>();
-			atom->primary_expr = atom_ident;
-			return atom;
-		}
-		if (auto open_paren = try_consume(TokenType::open_paren))
-		{
-			const auto expr = parse_expr();
-			if (!expr.has_value()) 
-			{
-				std::cerr << "Expected expression" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			try_consume(TokenType::close_paren, "Expected ')'");
-			auto atom_paren = m_allocator.alloc<NodeAtomParen>();
-			atom_paren->expr = expr.value();
-			auto atom = m_allocator.alloc<NodeAtom>();
-			atom->primary_expr = atom_paren;
-			return atom;
-		}
+		//need this before the normal variable!!!!
 		if (peek().has_value() && peek().value().type == TokenType::ident &&
 			peek(1).has_value() && peek(1).value().type == TokenType::open_bracket)
 		{
@@ -270,6 +248,29 @@ public:
 
 			auto atom = m_allocator.alloc<NodeAtom>();
 			atom->primary_expr = atom_array_access;
+			return atom;
+		}
+		if (const auto ident = try_consume(TokenType::ident))
+		{
+			auto atom_ident = m_allocator.alloc<NodeAtomIdent>();
+			atom_ident->ident = ident.value();
+			auto atom = m_allocator.alloc<NodeAtom>();
+			atom->primary_expr = atom_ident;
+			return atom;
+		}
+		if (auto open_paren = try_consume(TokenType::open_paren))
+		{
+			const auto expr = parse_expr();
+			if (!expr.has_value()) 
+			{
+				std::cerr << "Expected expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			try_consume(TokenType::close_paren, "Expected ')'");
+			auto atom_paren = m_allocator.alloc<NodeAtomParen>();
+			atom_paren->expr = expr.value();
+			auto atom = m_allocator.alloc<NodeAtom>();
+			atom->primary_expr = atom_paren;
 			return atom;
 		}
 		return {};

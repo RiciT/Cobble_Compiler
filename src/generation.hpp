@@ -64,6 +64,41 @@ public:
             void operator()(const NodeAtomParen* atom_paren) const {
                 gen.generate_expression(atom_paren->expr);
             }
+            void operator()(const NodeAtomArrayAccess* atom_array_access) const
+            {
+                const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var) {
+                    return var.name == atom_array_access->ident.value.value();
+                });
+
+                if (it == gen.m_vars.end())
+                {
+                    std::cerr << "Undeclared identifier: " << atom_array_access->ident.value.value() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+
+                if (!it->type.is_array)
+                {
+                    std::cerr << "Cannot index non-array: " << atom_array_access->ident.value.value() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+
+                gen.generate_expression(atom_array_access->index);
+                gen.pop("rax");
+
+                //calc offset
+                gen.current_stream() << "    mov rbx, 8\n";
+                gen.current_stream() << "    mul rbx\n";
+
+                //address
+                const size_t base_offset = (gen.m_stack_size - it->stack_loc - it->type.array_size) * 8;
+
+                gen.current_stream() << "    mov rbx, rsp\n";
+                gen.current_stream() << "    add rbx, " << base_offset << "\n";
+                gen.current_stream() << "    add rbx, rax\n";
+
+                gen.current_stream() << "    mov rax, [rbx]\n";
+                gen.push("rax");
+            }
         };
         AtomVisitor visitor({.gen = *this});
         std::visit(visitor, atom->primary_expr);
@@ -279,21 +314,45 @@ public:
             {
                 const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
                     return var.name == stmt_def->ident.value.value(); });
-                if (it != gen.m_vars.cend()) 
+                if (it != gen.m_vars.cend())
                 {
                     std::cerr << "Identifier already used: " << stmt_def->ident.value.value() << std::endl;
                     exit(EXIT_FAILURE);
                 }
 
-                gen.m_vars.push_back({ .type = stmt_def->type, .name = stmt_def->ident.value.value(), .stack_loc = gen.m_stack_size });
-                if (stmt_def->expr)
-                    gen.generate_expression(stmt_def->expr.value());
+                if (stmt_def->type.is_array)
+                {
+                    //allocating space for the array
+                    const size_t total_bytes = stmt_def->type.array_size * 8;
+                    gen.current_stream() << "    sub rsp, " << total_bytes << "\n";
+
+                    gen.m_vars.push_back({
+                        .type = stmt_def->type,
+                        .name = stmt_def->ident.value.value(),
+                        .stack_loc = gen.m_stack_size,
+                        .is_param = false
+                    });
+
+                    gen.m_stack_size += stmt_def->type.array_size;
+                }
+                else
+                {
+                    gen.m_vars.push_back({ .type = stmt_def->type, .name = stmt_def->ident.value.value(), .stack_loc = gen.m_stack_size });
+                    if (stmt_def->expr)
+                        gen.generate_expression(stmt_def->expr.value());
+                    else
+                    {
+                        //def initialize to 0
+                        gen.current_stream() << "    mov rax, 0\n";
+                        gen.push("rax");
+                    }
+                }
             }
-            void operator()(const NodeScope* scope) const 
+            void operator()(const NodeScope* scope) const
             {
                 gen.generate_scope(scope);
             }
-            void operator()(const NodeStmtIf* stmt_if) const 
+            void operator()(const NodeStmtIf* stmt_if) const
             {
                 gen.generate_expression(stmt_if->expr);
                 gen.pop("rax");
@@ -309,12 +368,12 @@ public:
                     gen.generate_if_predicate(stmt_if->ifpred.value(), end_label);
                     gen.current_stream() << end_label << ":\n";
                 }
-                else 
+                else
                 {
                     gen.current_stream() << label << ":\n";
                 }
             }
-            void operator()(const NodeStmtAssign* stmt_assign) const 
+            void operator()(const NodeStmtAssign* stmt_assign) const
             {
                 const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var){
                     return var.name == stmt_assign->ident.value.value(); });
@@ -347,7 +406,7 @@ public:
                 gen.current_stream() << "    test rax, rax\n";
                 const std::string end_label = gen.create_label();
                 gen.current_stream() << "    jz " << end_label << "\n";
-                
+
                 gen.generate_scope(stmt_while->scope);
 
                 gen.current_stream() << "    jmp " << label << "\n";
@@ -506,17 +565,57 @@ public:
                 gen.current_stream() << "    pop rbp\n";
                 gen.current_stream() << "    ret\n";
             }
+            void operator()(const NodeStmtArrayAssign* stmt_array_assign) const
+            {
+                const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var) {
+                    return var.name == stmt_array_assign->ident.value.value();
+                });
+
+                if (it == gen.m_vars.end())
+                {
+                    std::cerr << "Undeclared identifier: " << stmt_array_assign->ident.value.value() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+
+                if (!it->type.is_array)
+                {
+                    std::cerr << "Cannot index non-array: " << stmt_array_assign->ident.value.value() << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+
+                //generate index expression
+                gen.generate_expression(stmt_array_assign->index);
+
+                //generate value expression
+                gen.generate_expression(stmt_array_assign->value);
+
+                gen.pop("rcx");  // value
+                gen.pop("rax");  // index
+
+                //calc offset
+                gen.current_stream() << "    mov rbx, 8\n";
+                gen.current_stream() << "    mul rbx\n";
+
+                //address
+                const size_t base_offset = (gen.m_stack_size - it->stack_loc - it->type.array_size) * 8;
+                gen.current_stream() << "    mov rbx, rsp\n";
+                gen.current_stream() << "    add rbx, " << base_offset << "\n";
+                gen.current_stream() << "    add rbx, rax\n";
+
+                //store value
+                gen.current_stream() << "    mov [rbx], rcx\n";
+            }
         };
 
         StmtVisitor visitor { .gen = *this };
         std::visit(visitor, stmt->stmt);
     }
 
-    [[nodiscard]] std::string generate_program() 
+    [[nodiscard]] std::string generate_program()
     {
         m_current_stream = &m_output;
 	    m_output << "global _start\n_start:\n";
-        
+
         for (const NodeStmt* stmt : m_prog.stmts)
         {
             generate_statement(stmt);
@@ -553,10 +652,19 @@ private:
 
     void end_scope()
     {
+        size_t slots_to_pop = 0;
         const size_t pop_count = m_vars.size() - m_scopes.back();
         //move back stackpointer (add since the stack is upside down)
-        current_stream() << "    add rsp, " << pop_count * 8 << "\n";
-        m_stack_size -= pop_count;
+        for (size_t i = 0; i < pop_count; i++)
+        {
+            const auto& var = m_vars[m_vars.size() - 1 - i];
+            if (var.type.is_array) { slots_to_pop += var.type.array_size; }
+            else { slots_to_pop += 1; }
+        }
+
+        current_stream() << "    add rsp, " << slots_to_pop * 8 << "\n";
+        m_stack_size -= slots_to_pop;
+
         for (int i = 0; i < pop_count; i++)
         {
             m_vars.pop_back();

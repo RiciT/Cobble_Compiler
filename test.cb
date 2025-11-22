@@ -1,10 +1,13 @@
-def bool x = true;
-def bool y = false;
-def int a = 5;
-def int b = 10;
+def int[5] arr;
 
-def bool isLess = a < b;
+arr[0] = 100;
+arr[1] = 200;
+arr[2] = 300;
+arr[3] = 400;
+arr[4] = 500;
 
-if (isLess) {
-    print(1);
+def int i = 0;
+while (i < 5) {
+    print(arr[i] / 200);
+    i = i + 1;
 }

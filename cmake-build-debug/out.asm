@@ -1,26 +1,96 @@
 global _start
 _start:
-    mov rax, 1
-    push rax
+    sub rsp, 40
     mov rax, 0
     push rax
+    mov rax, 100
+    push rax
+    pop rcx
+    pop rax
+    mov rbx, 8
+    mul rbx
+    mov rbx, rsp
+    add rbx, 0
+    add rbx, rax
+    mov [rbx], rcx
+    mov rax, 1
+    push rax
+    mov rax, 200
+    push rax
+    pop rcx
+    pop rax
+    mov rbx, 8
+    mul rbx
+    mov rbx, rsp
+    add rbx, 0
+    add rbx, rax
+    mov [rbx], rcx
+    mov rax, 2
+    push rax
+    mov rax, 300
+    push rax
+    pop rcx
+    pop rax
+    mov rbx, 8
+    mul rbx
+    mov rbx, rsp
+    add rbx, 0
+    add rbx, rax
+    mov [rbx], rcx
+    mov rax, 3
+    push rax
+    mov rax, 400
+    push rax
+    pop rcx
+    pop rax
+    mov rbx, 8
+    mul rbx
+    mov rbx, rsp
+    add rbx, 0
+    add rbx, rax
+    mov [rbx], rcx
+    mov rax, 4
+    push rax
+    mov rax, 500
+    push rax
+    pop rcx
+    pop rax
+    mov rbx, 8
+    mul rbx
+    mov rbx, rsp
+    add rbx, 0
+    add rbx, rax
+    mov [rbx], rcx
+    mov rax, 0
+    push rax
+label0:
+    push QWORD [rsp + 0]
     mov rax, 5
     push rax
-    mov rax, 10
-    push rax
-    push QWORD [rsp + 8]
-    push QWORD [rsp + 8]
     pop rbx
     pop rax
     cmp rax, rbx
     setl al
     movzx rax, al
     push rax
-    push QWORD [rsp + 0]
     pop rax
     test rax, rax
-    jz label0
-    mov rax, 1
+    jz label1
+    mov rax, 200
+    push rax
+    push QWORD [rsp + 8]
+    pop rax
+    mov rbx, 8
+    mul rbx
+    mov rbx, rsp
+    add rbx, 16
+    add rbx, rax
+    mov rax, [rbx]
+    push rax
+    pop rax
+    pop rbx
+    xor rdx, rdx
+    div rbx
     push rax
     pop rax
     ; Convert integer in rax to ASCII
@@ -33,22 +103,22 @@ _start:
     dec rdi
     inc rcx
     test rax, rax
-    jnz label1
+    jnz label2
     mov BYTE [rdi], '0'
     dec rdi
     inc rcx
-    jmp label2
-label1:
+    jmp label3
+label2:
     test rax, rax
-    jz label2
+    jz label3
     xor rdx, rdx
     div rbx
     add dl, '0'
     mov [rdi], dl
     dec rdi
     inc rcx
-    jmp label1
-label2:
+    jmp label2
+label3:
     inc rdi
     mov rax, 1
     mov rsi, rdi
@@ -56,8 +126,18 @@ label2:
     mov rdx, rcx
     syscall
     add rsp, 32
+    mov rax, 1
+    push rax
+    push QWORD [rsp + 8]
+    pop rax
+    pop rbx
+    add rax, rbx
+    push rax
+    pop rax
+    mov [rsp + 0], rax
     add rsp, 0
-label0:
+    jmp label0
+label1:
     mov rax, 60
     mov rdi, 0
     syscall
