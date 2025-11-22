@@ -2,7 +2,9 @@ cobble: \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
+  CMakeFiles/cobble.dir/src/codegen/generation.cpp.o \
   CMakeFiles/cobble.dir/src/main.cpp.o \
+  CMakeFiles/cobble.dir/src/parsing/parser.cpp.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
@@ -38,7 +40,11 @@ cobble: \
 
 /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o:
 
+CMakeFiles/cobble.dir/src/codegen/generation.cpp.o:
+
 CMakeFiles/cobble.dir/src/main.cpp.o:
+
+CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
 
