@@ -183,7 +183,7 @@ public:
             {
                 gen.generate_binary_expression(bin_expr);
             }
-            void operator()(const NodeExprFuncCall* expr_func_call) const
+            void operator()(const NodeFuncCallExpr* expr_func_call) const
             {
                 //push arguments right-to-left
                 if (expr_func_call->exprs.has_value())

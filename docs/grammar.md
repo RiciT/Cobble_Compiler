@@ -5,8 +5,10 @@ $$
 [\text{Stmt}] &\to 
 \begin{cases} 
     def \space [\text{Type}] \space \text{ident} \space [= [\text{Expr}]]^?;\\
+    def \space [\text{Type}][] \space \text{ident} \space [= \space [\text{Expr}]^?];\\
     func \space [\text{Type}] \space \text{ident}([\text{ident}]^*)[\text{Scope}]\\
     \text{ident} = [\text{Expr}];\\
+    \text{ident}[\text{[Expr]}] = [\text{Expr}];\\
     \text{ident}([\text{Expr}]^*);\\
     \text{return} \space [\text{Expr}]^?;\\
     [\text{Scope}]\\
@@ -18,8 +20,8 @@ $$
 \\
 [\text{Type}] &\to 
 \begin{cases}
-void\\
-int \\
+bool\\
+int\\
 \end{cases}
 \\
 [\text{Scope}] &\to \{[\text{Stmt}^*]\}
@@ -51,6 +53,7 @@ else[\text{Scope}]\\
 [\text{Atom}] &\to \begin{cases}
 \text{int\_lit}\\
 \text{ident}\\
+\text{ident}[\text{[Expr]}]\\
 \text{([Expr])}
 \end{cases}
 \end{align}

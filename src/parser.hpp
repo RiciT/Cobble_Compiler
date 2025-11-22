@@ -9,6 +9,8 @@
 #include "unordered_bimap.hpp"
 
 #pragma region Nodes
+struct NodeExpr;
+
 struct NodeAtomIntLit {
 	Token int_lit;
 };
@@ -21,10 +23,17 @@ struct NodeAtomIdent {
 	Token ident;
 };
 
-struct NodeExpr;
+struct NodeAtomArrayAccess {
+	Token ident;
+	NodeExpr* index;
+};
 
 struct NodeAtomParen {
 	NodeExpr* expr;
+};
+
+struct NodeAtom {
+	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*, NodeAtomBoolLit*, NodeAtomArrayAccess*> primary_expr;
 };
 
 struct NodeBinExprAdd {
@@ -83,17 +92,13 @@ struct NodeBinExpr {
 		NodeBinExprLess*, NodeBinExprGreater*> bin_expr;
 };
 
-struct NodeAtom {
-	std::variant<NodeAtomIntLit*, NodeAtomIdent*, NodeAtomParen*, NodeAtomBoolLit*> primary_expr;
-};
-
-struct NodeExprFuncCall {
+struct NodeFuncCallExpr {
 	Token ident;
 	std::optional<std::vector<NodeExpr*>> exprs;
 };
 
 struct NodeExpr {
-	std::variant<NodeAtom*, NodeBinExpr*, NodeExprFuncCall*> expr;
+	std::variant<NodeAtom*, NodeBinExpr*, NodeFuncCallExpr*> expr;
 };
 
 struct NodeStmt;
@@ -169,9 +174,16 @@ struct NodeStmtWhile {
 	NodeScope* scope;
 };
 
+struct NodeStmtArrayAssign {
+	Token ident;
+	NodeExpr* index;
+	NodeExpr* value;
+};
+
 struct NodeStmt {
 	std::variant<NodeStmtExit*, NodeStmtPrint*, NodeStmtDef*, NodeScope*, NodeStmtIf*,
-		NodeStmtAssign*, NodeStmtWhile*, NodeStmtFunc*, NodeStmtFuncCall*, NodeStmtReturn*> stmt;
+	NodeStmtAssign*, NodeStmtWhile*, NodeStmtFunc*, NodeStmtFuncCall*, NodeStmtReturn*,
+	NodeStmtArrayAssign*> stmt;
 };
 
 struct NodeProgram {
@@ -237,22 +249,52 @@ public:
 			atom->primary_expr = atom_paren;
 			return atom;
 		}
+		if (peek().has_value() && peek().value().type == TokenType::ident &&
+			peek(1).has_value() && peek(1).value().type == TokenType::open_bracket)
+		{
+			Token ident = try_consume(TokenType::ident, "Expected identifier");
+			try_consume(TokenType::open_bracket, "Expected '['");
+
+			auto index_expr = parse_expr();
+			if (!index_expr.has_value())
+			{
+				std::cerr << "Expected index expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			try_consume(TokenType::close_bracket, "Expected ']'");
+
+			auto atom_array_access = m_allocator.alloc<NodeAtomArrayAccess>();
+			atom_array_access->ident = ident;
+			atom_array_access->index = index_expr.value();
+
+			auto atom = m_allocator.alloc<NodeAtom>();
+			atom->primary_expr = atom_array_access;
+			return atom;
+		}
 		return {};
 	}
 
 	std::optional<VarType> parse_type()
 	{
-		if (auto type = consume(); VariableBaseTypes.contains_value(type.type))
+		if (auto [type, _] = consume(); VariableBaseTypes.contains_value(type))
 		{
-			return VariableBaseTypes.at_value(type.type);
+			if (try_consume(TokenType::open_bracket))
+			{
+				//array size
+				auto [_, value] = try_consume(TokenType::int_lit, "Expected array size.");
+				try_consume(TokenType::close_bracket, "Expected ']'");
+				return VarType{ .base = VariableBaseTypes.at_value(type), .is_array = true, .array_size = std::stoull(value.value()) };
+			}
+			return VarType{ .base = VariableBaseTypes.at_value(type), .is_array = false, .array_size = 0 };
 		}
 
 		return {};
 	}
 
-	std::optional<NodeExprFuncCall*> parse_expr_func_call()
+	std::optional<NodeFuncCallExpr*> parse_expr_func_call()
 	{
-		auto expr_func_call = m_allocator.alloc<NodeExprFuncCall>();
+		auto expr_func_call = m_allocator.alloc<NodeFuncCallExpr>();
 		expr_func_call->ident = consume();
 		consume();  // open paren
 
@@ -282,7 +324,7 @@ public:
 		if (peek().has_value() && peek().value().type == TokenType::ident
 			&& peek(1).has_value() && peek(1).value().type == TokenType::open_paren)
 		{
-			std::optional<NodeExprFuncCall*> func_call_lhs = parse_expr_func_call();
+			std::optional<NodeFuncCallExpr*> func_call_lhs = parse_expr_func_call();
 			if (!func_call_lhs.has_value()) { return {}; }
 			expr_lhs = m_allocator.alloc<NodeExpr>();
 			expr_lhs->expr = func_call_lhs.value();
@@ -544,7 +586,8 @@ public:
 				is_expr = true;
 			}
 
-			if (is_expr)
+			//arrays cant have initializer expressions for now
+			if (is_expr && !stmt_def->type.is_array)
 			{
 				if (auto expr = parse_expr()) {
 					stmt_def->expr = expr.value();
@@ -731,6 +774,40 @@ public:
 			}
 			try_consume(TokenType::semi, "Expected ';'");
 			auto stmt = m_allocator.emplace<NodeStmt>(assign);
+			return stmt;
+		}
+		//Array assignment
+		if (peek().has_value() && peek().value().type == TokenType::ident &&
+			peek(1).has_value() && peek(1).value().type == TokenType::open_bracket)
+		{
+			Token ident = try_consume(TokenType::ident).value();
+			consume(); // open bracket
+
+			auto index_expr = parse_expr();
+			if (!index_expr.has_value())
+			{
+				std::cerr << "Expected index expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			try_consume(TokenType::close_bracket, "Expected ']'");
+			try_consume(TokenType::equals, "Expected '='");
+
+			auto value_expr = parse_expr();
+			if (!value_expr.has_value())
+			{
+				std::cerr << "Expected value expression" << std::endl;
+				exit(EXIT_FAILURE);
+			}
+
+			try_consume(TokenType::semi, "Expected ';'");
+
+			auto stmt_array_assign = m_allocator.alloc<NodeStmtArrayAssign>();
+			stmt_array_assign->ident = ident;
+			stmt_array_assign->index = index_expr.value();
+			stmt_array_assign->value = value_expr.value();
+
+			auto stmt = m_allocator.emplace<NodeStmt>(stmt_array_assign);
 			return stmt;
 		}
 		//Scope
