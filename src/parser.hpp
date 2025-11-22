@@ -119,6 +119,7 @@ struct NodeStmtDef {
 	VarType type;
 	Token ident;
 	std::optional<NodeExpr*> expr{};
+	std::optional<NodeExpr*> array_size_expr{};
 };
 
 struct NodeFuncParam {
@@ -276,18 +277,11 @@ public:
 		return {};
 	}
 
-	std::optional<VarType> parse_type()
+	std::optional<VarType> parse_base_type()
 	{
 		if (auto [type, _] = consume(); VariableBaseTypes.contains_value(type))
 		{
-			if (try_consume(TokenType::open_bracket))
-			{
-				//array size
-				auto [_, value] = try_consume(TokenType::int_lit, "Expected array size.");
-				try_consume(TokenType::close_bracket, "Expected ']'");
-				return VarType{ .base = VariableBaseTypes.at_value(type), .is_array = true, .array_size = std::stoull(value.value()) };
-			}
-			return VarType{ .base = VariableBaseTypes.at_value(type), .is_array = false, .array_size = 0 };
+			return VarType{ .base = VariableBaseTypes.at_value(type) };
 		}
 
 		return {};
@@ -560,7 +554,7 @@ public:
 
 			auto stmt_def = m_allocator.alloc<NodeStmtDef>();
 
-			if (auto type = parse_type())
+			if (auto type = parse_base_type())
 			{
 				stmt_def->type = type.value();
 			}
@@ -568,6 +562,22 @@ public:
 			{
 				std::cerr << "Expected type after 'def'" << std::endl;
 				exit(EXIT_FAILURE);
+			}
+
+			//check for array syntax: int[expr]
+			if (try_consume(TokenType::open_bracket))
+			{
+				auto size_expr = parse_expr();
+				if (!size_expr.has_value())
+				{
+					std::cerr << "Expected array size expression" << std::endl;
+					exit(EXIT_FAILURE);
+				}
+
+				stmt_def->array_size_expr = size_expr.value();
+				stmt_def->type.is_array = true;
+
+				try_consume(TokenType::close_bracket, "Expected ']'");
 			}
 
 			if (peek().has_value() && peek().value().type == TokenType::ident)
@@ -613,7 +623,7 @@ public:
 			consume();
 			auto stmt_func = m_allocator.alloc<NodeStmtFunc>();
 
-			if (auto type = parse_type())
+			if (auto type = parse_base_type())
 			{
 				stmt_func->return_type = type.value();
 			}
@@ -647,7 +657,7 @@ public:
 					//expect: def int paramName
 					try_consume(TokenType::def_, "Expected 'def' in parameter");
 
-					if (auto type = parse_type())
+					if (auto type = parse_base_type())
 					{
 						param.type = type.value();
 					}

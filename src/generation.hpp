@@ -322,18 +322,38 @@ public:
 
                 if (stmt_def->type.is_array)
                 {
-                    //allocating space for the array
-                    const size_t total_bytes = stmt_def->type.array_size * 8;
+                    //evaluate array size at compile time
+                    auto size_opt = gen.evaluate_const_expr(stmt_def->array_size_expr.value());
+                    if (!size_opt.has_value())
+                    {
+                        std::cerr << "Array size must be a compile-time constant expression" << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+
+                    if (size_opt.value() <= 0)
+                    {
+                        std::cerr << "Array size must be positive" << std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+
+                    size_t array_size = static_cast<size_t>(size_opt.value());
+
+                    //allocate space for array
+                    size_t total_bytes = array_size * 8;
                     gen.current_stream() << "    sub rsp, " << total_bytes << "\n";
 
+                    //create type with resolved size
+                    VarType resolved_type = stmt_def->type;
+                    resolved_type.array_size = array_size;
+
                     gen.m_vars.push_back({
-                        .type = stmt_def->type,
+                        .type = resolved_type,
                         .name = stmt_def->ident.value.value(),
                         .stack_loc = gen.m_stack_size,
                         .is_param = false
                     });
 
-                    gen.m_stack_size += stmt_def->type.array_size;
+                    gen.m_stack_size += array_size;
                 }
                 else
                 {
@@ -583,6 +603,7 @@ public:
                     exit(EXIT_FAILURE);
                 }
 
+                //WONT THROW AN ERROR FOR OVER INDEXING NEED TO FIX
                 //generate index expression
                 gen.generate_expression(stmt_array_assign->index);
 
@@ -609,6 +630,158 @@ public:
 
         StmtVisitor visitor { .gen = *this };
         std::visit(visitor, stmt->stmt);
+    }
+
+    //temporary helpers for evaluating const expression
+    std::optional<int64_t> evaluate_const_expr(const NodeExpr* expr)
+    {
+        struct ConstExprVisitor {
+            Generator& gen;
+
+            std::optional<int64_t> operator()(const NodeAtom* atom) const
+            {
+                return gen.evaluate_const_atom(atom);
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExpr* bin_expr) const
+            {
+                return gen.evaluate_const_binexpr(bin_expr);
+            }
+
+            std::optional<int64_t> operator()(const NodeFuncCallExpr*) const
+            {
+                return {};  // Function calls cannot be evaluated at compile time
+            }
+        };
+
+        ConstExprVisitor visitor{.gen = *this};
+        return std::visit(visitor, expr->expr);
+    }
+
+    std::optional<int64_t> evaluate_const_atom(const NodeAtom* atom)
+    {
+        struct AtomVisitor {
+            Generator& gen;
+
+            std::optional<int64_t> operator()(const NodeAtomIntLit* int_lit) const
+            {
+                return std::stoll(int_lit->int_lit.value.value());
+            }
+
+            std::optional<int64_t> operator()(const NodeAtomIdent*) const
+            {
+                return {};  // Variables cannot be evaluated at compile time
+            }
+
+            std::optional<int64_t> operator()(const NodeAtomParen* paren) const
+            {
+                return gen.evaluate_const_expr(paren->expr);
+            }
+
+            std::optional<int64_t> operator()(const NodeAtomBoolLit* bool_lit) const
+            {
+                return bool_lit->bool_lit.type == TokenType::true_ ? 1 : 0;
+            }
+
+            std::optional<int64_t> operator()(const NodeAtomArrayAccess*) const
+            {
+                return {};  // Array access cannot be evaluated at compile time
+            }
+        };
+
+        AtomVisitor visitor{.gen = *this};
+        return std::visit(visitor, atom->primary_expr);
+    }
+
+    std::optional<int64_t> evaluate_const_binexpr(const NodeBinExpr* bin_expr)
+    {
+        struct BinExprVisitor {
+            Generator& gen;
+
+            std::optional<int64_t> operator()(const NodeBinExprAdd* add) const
+            {
+                auto lhs = gen.evaluate_const_expr(add->lhs);
+                auto rhs = gen.evaluate_const_expr(add->rhs);
+                if (lhs && rhs) return *lhs + *rhs;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprSub* sub) const
+            {
+                auto lhs = gen.evaluate_const_expr(sub->lhs);
+                auto rhs = gen.evaluate_const_expr(sub->rhs);
+                if (lhs && rhs) return *lhs - *rhs;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprMult* mult) const
+            {
+                auto lhs = gen.evaluate_const_expr(mult->lhs);
+                auto rhs = gen.evaluate_const_expr(mult->rhs);
+                if (lhs && rhs) return *lhs * *rhs;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprDiv* div) const
+            {
+                auto lhs = gen.evaluate_const_expr(div->lhs);
+                auto rhs = gen.evaluate_const_expr(div->rhs);
+                if (lhs && rhs && *rhs != 0) return *lhs / *rhs;
+                return {};
+            }
+
+            // Add comparison operators if you have them
+            std::optional<int64_t> operator()(const NodeBinExprEq* eq) const
+            {
+                auto lhs = gen.evaluate_const_expr(eq->lhs);
+                auto rhs = gen.evaluate_const_expr(eq->rhs);
+                if (lhs && rhs) return (*lhs == *rhs) ? 1 : 0;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprNotEq* neq) const
+            {
+                auto lhs = gen.evaluate_const_expr(neq->lhs);
+                auto rhs = gen.evaluate_const_expr(neq->rhs);
+                if (lhs && rhs) return (*lhs != *rhs) ? 1 : 0;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprLess* lt) const
+            {
+                auto lhs = gen.evaluate_const_expr(lt->lhs);
+                auto rhs = gen.evaluate_const_expr(lt->rhs);
+                if (lhs && rhs) return (*lhs < *rhs) ? 1 : 0;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprGreater* gt) const
+            {
+                auto lhs = gen.evaluate_const_expr(gt->lhs);
+                auto rhs = gen.evaluate_const_expr(gt->rhs);
+                if (lhs && rhs) return (*lhs > *rhs) ? 1 : 0;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprLessEq* lte) const
+            {
+                auto lhs = gen.evaluate_const_expr(lte->lhs);
+                auto rhs = gen.evaluate_const_expr(lte->rhs);
+                if (lhs && rhs) return (*lhs <= *rhs) ? 1 : 0;
+                return {};
+            }
+
+            std::optional<int64_t> operator()(const NodeBinExprGreaterEq* gte) const
+            {
+                auto lhs = gen.evaluate_const_expr(gte->lhs);
+                auto rhs = gen.evaluate_const_expr(gte->rhs);
+                if (lhs && rhs) return (*lhs >= *rhs) ? 1 : 0;
+                return {};
+            }
+        };
+
+        BinExprVisitor visitor{.gen = *this};
+        return std::visit(visitor, bin_expr->bin_expr);
     }
 
     [[nodiscard]] std::string generate_program()

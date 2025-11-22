@@ -1,13 +1,4 @@
-def int[5] arr;
-
-arr[0] = 100;
-arr[1] = 200;
-arr[2] = 300;
-arr[3] = 400;
-arr[4] = 500;
-
-def int i = 0;
-while (i < 5) {
-    print(arr[i] / 200);
-    i = i + 1;
-}
+def int[(10 * 2) / 4] arr;  // Array of size 5
+arr[0] = 42;
+arr[5] = 5;
+print(arr[4]);
