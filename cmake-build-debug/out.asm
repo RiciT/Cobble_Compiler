@@ -13,7 +13,20 @@ _start:
     add rbx, 0
     add rbx, rax
     mov [rbx], rcx
-    mov rax, 4
+    mov rax, 3
+    push rax
+    mov rax, 2
+    push rax
+    pop rax
+    pop rbx
+    mul rbx
+    push rax
+    mov rax, 2
+    push rax
+    push QWORD [rsp + 8]
+    pop rax
+    pop rbx
+    sub rax, rbx
     push rax
     mov rax, 5
     push rax
@@ -22,7 +35,7 @@ _start:
     mov rbx, 8
     mul rbx
     mov rbx, rsp
-    add rbx, 0
+    add rbx, 8
     add rbx, rax
     mov [rbx], rcx
     mov rax, 19
@@ -72,7 +85,7 @@ label1:
     pop rbx
     pop rax
     cmp rax, rbx
-    sete al
+    setne al
     movzx rax, al
     push rax
     mov rax, 1
@@ -120,7 +133,7 @@ label4:
     mov rbx, 8
     mul rbx
     mov rbx, rsp
-    add rbx, 8
+    add rbx, 16
     add rbx, rax
     mov rax, [rbx]
     push rax
@@ -171,7 +184,8 @@ func_ak:
     pop rax
     test rax, rax
     jz label2
-    push QWORD [rbp + 16]
+    mov rax, 1
+    push rax
     pop rax
     mov rsp, rbp
     pop rbp

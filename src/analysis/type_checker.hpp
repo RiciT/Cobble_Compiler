@@ -13,9 +13,9 @@ public:
     void analyse_program();
 
 private:
-    void analyse_scope(NodeScope* scope);
+    void analyse_scope(const NodeScope* scope);
     void analyse_stmt(NodeStmt* stmt);
-    void analyse_expr(NodeExpr* expr);
+    VarType analyse_expr(NodeExpr* expr);
 
     //Logic extracted from Generator
     struct Variable {
