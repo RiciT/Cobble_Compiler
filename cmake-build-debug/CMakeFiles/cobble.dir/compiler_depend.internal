@@ -679,6 +679,7 @@ CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.o
 
 CMakeFiles/cobble.dir/src/main.cpp.o
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ast/nodes.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp

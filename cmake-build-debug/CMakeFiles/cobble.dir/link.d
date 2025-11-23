@@ -2,6 +2,7 @@ cobble: \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
+  CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.o \
   CMakeFiles/cobble.dir/src/codegen/generation.cpp.o \
   CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.o \
   CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.o \
@@ -43,6 +44,8 @@ cobble: \
 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o:
+
+CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.o:
 
 CMakeFiles/cobble.dir/src/codegen/generation.cpp.o:
 

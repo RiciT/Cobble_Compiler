@@ -129,6 +129,30 @@ cobble/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/build
 .PHONY : cobble/fast
 
+src/analysis/type_checker.o: src/analysis/type_checker.cpp.o
+.PHONY : src/analysis/type_checker.o
+
+# target to build an object file
+src/analysis/type_checker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.o
+.PHONY : src/analysis/type_checker.cpp.o
+
+src/analysis/type_checker.i: src/analysis/type_checker.cpp.i
+.PHONY : src/analysis/type_checker.i
+
+# target to preprocess a source file
+src/analysis/type_checker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.i
+.PHONY : src/analysis/type_checker.cpp.i
+
+src/analysis/type_checker.s: src/analysis/type_checker.cpp.s
+.PHONY : src/analysis/type_checker.s
+
+# target to generate assembly for a file
+src/analysis/type_checker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.s
+.PHONY : src/analysis/type_checker.cpp.s
+
 src/codegen/generation.o: src/codegen/generation.cpp.o
 .PHONY : src/codegen/generation.o
 
@@ -306,6 +330,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cobble"
+	@echo "... src/analysis/type_checker.o"
+	@echo "... src/analysis/type_checker.i"
+	@echo "... src/analysis/type_checker.s"
 	@echo "... src/codegen/generation.o"
 	@echo "... src/codegen/generation.i"
 	@echo "... src/codegen/generation.s"

@@ -675,6 +675,7 @@ CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.o: /home/tamas/PERSON
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h
 
 CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ast/nodes.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp \
@@ -2004,6 +2005,8 @@ CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.o:
 
 /usr/include/c++/13/complex:
 
+/usr/include/c++/13/cmath:
+
 /usr/include/c++/13/pstl/pstl_config.h:
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
@@ -2418,6 +2421,8 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 
 /usr/include/c++/13/bits/requires_hosted.h:
 
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
 /usr/include/c++/13/limits:
@@ -2531,8 +2536,6 @@ CMakeFiles/cobble.dir/src/codegen/generation.cpp.o:
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
-
-/usr/include/c++/13/cmath:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 

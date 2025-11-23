@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/cobble.dir/link.d"
+  "CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.o"
+  "CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.o.d"
   "CMakeFiles/cobble.dir/src/codegen/generation.cpp.o"
   "CMakeFiles/cobble.dir/src/codegen/generation.cpp.o.d"
   "CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.o"
