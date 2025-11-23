@@ -1,6 +1,7 @@
 #pragma once //process only once if included
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -8,14 +9,17 @@
 
 class Tokenizer {
 public:
-	inline explicit Tokenizer(std::string  src)
-	: m_src(std::move(src))
+	inline explicit Tokenizer(const std::string& src)
+	: m_src(src)
 	{
 	}
 
 	inline std::vector<Token> tokenize() {
 		std::vector<Token> tokens;
-		std::string buf;
+
+		//reserve memory to prevent realloc
+		//guess source length / 2 - heuristic guess
+		tokens.reserve(m_src.length() / 2);
 
 		while (peek().has_value())
 		{
@@ -25,37 +29,34 @@ public:
 			//idents and keywords
 			if (std::isalpha(next_char))
 			{
-				buf.push_back(consume());
+				const size_t start_index = m_index;
+				consume();
 				while (peek().has_value() && std::isalnum(peek().value()))
 				{
-					buf.push_back(consume());
+					consume();
 				}
-				//really just a function
-				for (const auto&[keyword, tokentype] : KeyWordTokens)
+				std::string_view text = m_src.substr(start_index, m_index - start_index);
+
+				if (auto it = KeyWordTokens.find_by_key(text); it != KeyWordTokens.end())
 				{
-					if (buf == keyword)
-					{
-						tokens.push_back({ .type = tokentype, .line = m_line_counter });
-						buf.clear();
-						break;
-					}
+					tokens.push_back({ .type = it->second, .line = m_line_counter });
 				}
-				if (!buf.empty())
+				else
 				{
-					tokens.push_back({ .type = TokenType::ident, .value = buf, .line = m_line_counter });
-					buf.clear();
+					tokens.push_back({ .type = TokenType::ident, .value = text, .line = m_line_counter });
 				}
 			}
 			//int literals
 			else if (std::isdigit(next_char))
 			{
-				buf.push_back(consume());
+				const size_t start_index = m_index;
+				consume();
 				while (peek().has_value() && std::isdigit(peek().value()))
 				{
-					buf.push_back(consume());
+					consume();
 				}
-				tokens.push_back({ .type = TokenType::int_lit, .value = buf, .line = m_line_counter });
-				buf.clear();
+				std::string_view text = m_src.substr(start_index, m_index - start_index);
+				tokens.push_back({ .type = TokenType::int_lit, .value = text, .line = m_line_counter });
 			}
 			//single line comments
 			else if (Test_Double_SingleCharTokens(next_char, TokenType::fslash_sign, TokenType::fslash_sign))
@@ -76,7 +77,6 @@ public:
 					{
 						break;
 					}
-
 					consume();
 				}
 				if (peek().has_value()) { consume(); }
@@ -96,9 +96,7 @@ public:
 				{ consume(); consume(); tokens.push_back({ .type = TokenType::less_equals, .line = m_line_counter }); }
 			//empty space
 			else if (std::isspace(next_char))
-			{
-				consume();
-			}
+				{ consume(); }
 			//single char tokens
 			else if (auto token_char = SingleCharTokens.find_by_key(next_char); token_char != SingleCharTokens.end())
 			{
@@ -107,7 +105,7 @@ public:
 			}
 			else
 			{
-				std::cerr << "Could not tokenize something where peek() = " << peek().value() << " and buf = " << buf << "on line " << m_line_counter << std::endl;
+				std::cerr << "Could not tokenize something where peek() = " << peek().value() << " on line " << m_line_counter << std::endl;
 	 			exit(EXIT_FAILURE);
 			}
 		}
@@ -124,15 +122,15 @@ private:
 		}
 		else
 		{
-			return m_src.at(m_index + offset);
+			return m_src[m_index + offset];
 		}
 
 	}
 
 	char consume()
 	{
-		if (m_src.at(m_index) == '\n') { m_line_counter++; };
-		return m_src.at(m_index++);
+		if (m_src[m_index] == '\n') { m_line_counter++; };
+		return m_src[m_index++];
 	}
 
 	bool Test_Double_SingleCharTokens(const char next_char, const TokenType type1, const TokenType type2) const
@@ -145,6 +143,6 @@ private:
 	}
 
 	size_t m_line_counter = 0; //for errors
-	const std::string m_src; //m_ for members
+	const std::string_view m_src; //m_ for members
 	int m_index = 0;
 };

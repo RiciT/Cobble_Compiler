@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string_view>
 #include "common/unordered_bimap.hpp"
 
 enum class TokenType
@@ -49,7 +50,7 @@ enum class TokenType
     close_bracket
 };
 
-static const bidirectional_unordered_map<std::string, TokenType> KeyWordTokens = {
+static const bidirectional_unordered_map<std::string_view, TokenType> KeyWordTokens = {
     {"exit", TokenType::exit_},
     {"def", TokenType::def_},
     {"func", TokenType::func_},
@@ -90,6 +91,6 @@ static const bidirectional_unordered_map<char, TokenType> SingleCharTokens = {
 struct Token
 {
     TokenType type;
-    std::optional<std::string> value {};
+    std::optional<std::string_view> value {};
     size_t line = 1; //default to line 1
 };

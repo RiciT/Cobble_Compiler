@@ -85,7 +85,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
 
                 gen.m_vars.push_back({
                     .type = resolved_type,
-                    .name = stmt_def->ident.value.value(),
+                    .name = std::string(stmt_def->ident.value.value()),
                     .stack_loc = gen.m_stack_size,
                     .is_param = false
                 });
@@ -94,7 +94,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
             }
             else
             {
-                gen.m_vars.push_back({ .type = stmt_def->type, .name = stmt_def->ident.value.value(), .stack_loc = gen.m_stack_size });
+                gen.m_vars.push_back({ .type = stmt_def->type, .name = std::string(stmt_def->ident.value.value()), .stack_loc = gen.m_stack_size });
                 if (stmt_def->expr)
                     gen.generate_expression(stmt_def->expr.value());
                 else
@@ -223,7 +223,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
         {
             gen.m_emitter.set_section(AsmEmitter::Section::Functions);
 
-            const std::string func_label = "func_" + stmt_func->ident.value.value();
+            const std::string func_label = "func_" + std::string(stmt_func->ident.value.value());
 
             gen.m_emitter.emit_label(func_label);
             gen.m_emitter.emit("push", "rbp");
@@ -248,7 +248,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
                     // +16 because: +8 for return address, +8 for saved rbp
                     gen.m_vars.push_back({
                         .type = type,
-                        .name = ident.value.value(),
+                        .name = std::string(ident.value.value()),
                         .stack_loc = static_cast<size_t>(16 + param_index * 8),
                         .is_param = true
                     });
@@ -284,7 +284,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
             }
 
             //push parameters onto stack so it can be popped in order
-            const std::string func_label = "func_" + stmt_func_call->ident.value.value();
+            const std::string func_label = "func_" + std::string(stmt_func_call->ident.value.value());
             gen.m_emitter.emit("call", func_label);
 
             //clean up arguments from stack

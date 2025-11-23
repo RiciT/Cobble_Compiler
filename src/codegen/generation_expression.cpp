@@ -208,7 +208,7 @@ void Generator::generate_expression(const NodeExpr* expr)
             }
 
             //push parameters onto stack so it can be popped in order
-            const std::string func_label = "func_" + expr_func_call->ident.value.value();
+            const std::string func_label = "func_" + std::string(expr_func_call->ident.value.value());
             gen.m_emitter.emit("call", func_label);
 
             //clean up arguments from stack
@@ -236,7 +236,7 @@ std::optional<int64_t> Generator::evaluate_const_atom(const NodeAtom* atom)
 
         std::optional<int64_t> operator()(const NodeAtomIntLit* int_lit) const
         {
-            return std::stoll(int_lit->int_lit.value.value());
+            return std::stoll(std::string(int_lit->int_lit.value.value()));
         }
 
         std::optional<int64_t> operator()(const NodeAtomIdent*) const

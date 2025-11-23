@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	std::string arg2(argv[2]);
 
 	// --- Stage 1: Tokenization ---
-	Tokenizer tokenizer(std::move(contents));
+	Tokenizer tokenizer(contents);
 	std::vector<Token> tokens = tokenizer.tokenize();
 
 	// --- Stage 2: Parsing ---

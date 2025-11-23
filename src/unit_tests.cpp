@@ -18,16 +18,17 @@ protected:
     }
 };
 
-// TEST_F(TokenizerTest, PerformanceCheck)
-// {
-//     const std::string src = "def int x = 10 + 20 * 30; if (x) { exit(0); }";
-//
-//     // Run it 100,000 times
-//     for(int i = 0; i < 100000; ++i) {
-//         Tokenizer t(src);
-//         t.tokenize(); // Discard result
-//     }
-// }
+TEST_F(TokenizerTest, PerformanceCheck)
+{
+    const std::string src = "def int myverylongvariablenamethatexceedsssolimits = 100000000; "
+                      "if (mmyverylongvariablenamethatexceedsssolimits > 0) { exit(0); }";
+
+    // Run it a million times
+    for(int i = 0; i < 1000000; ++i) {
+        Tokenizer t(src);
+        t.tokenize();
+    }
+}
 
 TEST_F(TokenizerTest, IdentifiesKeywords) {
     const auto tokens = tokenize("exit def func if else return while print");

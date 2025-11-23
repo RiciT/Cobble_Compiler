@@ -15,39 +15,39 @@ public:
     void set_section(const Section section) { m_active_section = section; }
 
     //basic instructions
-    void emit(const std::string& mnemonic)
+    void emit(const std::string_view mnemonic)
     {
         current_section() << "    " << mnemonic << "\n";
     }
 
-    void emit(const std::string& mnemonic, const std::string& op1) {
+    void emit(const std::string_view mnemonic, const std::string_view op1) {
         current_section() << "    " << mnemonic << " " << op1 << "\n";
     }
 
-    void emit(const std::string& mnemonic, const unsigned long& op1) {
+    void emit(const std::string_view mnemonic, const unsigned long& op1) {
         current_section() << "    " << mnemonic << " " << op1 << "\n";
     }
 
-    void emit(const std::string& mnemonic, const std::string& op1, const std::string& op2) {
+    void emit(const std::string_view mnemonic, const std::string_view op1, const std::string_view op2) {
         current_section() << "    " << mnemonic << " " << op1 << ", " << op2 << "\n";
     }
 
-    void emit(const std::string& mnemonic, const std::string& op1, const unsigned long& op2) {
+    void emit(const std::string_view mnemonic, const std::string_view op1, const unsigned long& op2) {
         current_section() << "    " << mnemonic << " " << op1 << ", " << op2 << "\n";
     }
 
-    void emit_mov_offset(const std::string& reg1, const std::string& reg2, const int offset)
+    void emit_mov_offset(const std::string_view reg1, const std::string_view reg2, const int offset)
     {
         current_section() << "    mov [" << reg1 << " + " << offset << "], " << reg2 << "\n";
     }
 
     //structure instructions
-    void emit_label(const std::string& label) {
+    void emit_label(const std::string_view label) {
         current_section() << label << ":\n";
     }
 
     //comment
-    void emit_comment(const std::string& comment) {
+    void emit_comment(const std::string_view comment) {
         current_section() << "    ;; " << comment << "\n";
     }
 

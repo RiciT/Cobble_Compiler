@@ -15,7 +15,7 @@ namespace {
     //atom visitor
     struct ConstAtomVisitor {
         std::optional<int64_t> operator()(const NodeAtomIntLit* int_lit) const {
-            return std::stoll(int_lit->int_lit.value.value());
+            return std::stoll(std::string(int_lit->int_lit.value.value()));
         }
         std::optional<int64_t> operator()(const NodeAtomBoolLit* bool_lit) const {
             return bool_lit->bool_lit.type == TokenType::true_ ? 1 : 0;
@@ -116,7 +116,7 @@ VarType TypeChecker::analyse_expr(NodeExpr *expr)
                     });
 
                     if (it == tc.m_vars.end()) {
-                        tc.m_error_handler.report("Undeclared identifier: " + ident->ident.value.value(), ident->ident);
+                        tc.m_error_handler.report("Undeclared identifier: " + std::string(ident->ident.value.value()), ident->ident);
                         return VarType::make_int_lit(); //dummy return
                     }
                     return it->type;
@@ -129,7 +129,7 @@ VarType TypeChecker::analyse_expr(NodeExpr *expr)
                         return v.name == acc->ident.value.value();
                     });
                     if (it == tc.m_vars.end()) {
-                        tc.m_error_handler.report("Undeclared identifier: " + acc->ident.value.value(), acc->ident);
+                        tc.m_error_handler.report("Undeclared identifier: " + std::string(acc->ident.value.value()), acc->ident);
                         return VarType::make_int_lit();
                     }
                     if (!it->type.is_array) {
@@ -192,7 +192,7 @@ VarType TypeChecker::analyse_expr(NodeExpr *expr)
             });
 
             if (func_it == tc.m_prog.stmts.end()) {
-                tc.m_error_handler.report("Call to undefined function: " + call->ident.value.value(), call->ident);
+                tc.m_error_handler.report("Call to undefined function: " + std::string(call->ident.value.value()), call->ident);
                 return VarType::make_int_lit();
             }
 
@@ -232,7 +232,7 @@ void TypeChecker::analyse_stmt(NodeStmt *stmt)
             });
 
             if (it != tc.m_vars.end()) {
-                tc.m_error_handler.report("Variable redefinition: " + stmt_def->ident.value.value(), stmt_def->ident);
+                tc.m_error_handler.report("Variable redefinition: " + std::string(stmt_def->ident.value.value()), stmt_def->ident);
                 return;
             }
 
@@ -249,14 +249,14 @@ void TypeChecker::analyse_stmt(NodeStmt *stmt)
                 VarType final_type = stmt_def->type;
                 if (size.has_value()) final_type.array_size = static_cast<size_t>(size.value());
 
-                tc.m_vars.push_back({.name = stmt_def->ident.value.value(), .type = final_type});
+                tc.m_vars.push_back({ .name = std::string(stmt_def->ident.value.value()), .type = final_type });
             } else {
                 if (stmt_def->expr.has_value()) {
                     if (const VarType expr_type = tc.analyse_expr(stmt_def->expr.value()); expr_type != stmt_def->type) {
                         tc.m_error_handler.report("Type mismatch in variable definition", stmt_def->ident);
                     }
                 }
-                tc.m_vars.push_back({.name = stmt_def->ident.value.value(), .type = stmt_def->type});
+                tc.m_vars.push_back({ .name = std::string(stmt_def->ident.value.value()), .type = stmt_def->type });
             }
         }
 
@@ -266,7 +266,7 @@ void TypeChecker::analyse_stmt(NodeStmt *stmt)
             });
 
             if (it == tc.m_vars.end()) {
-                tc.m_error_handler.report("Undeclared identifier in assignment: " + stmt_assign->ident.value.value(), stmt_assign->ident);
+                tc.m_error_handler.report("Undeclared identifier in assignment: " + std::string(stmt_assign->ident.value.value()), stmt_assign->ident);
                 return;
             }
 
@@ -280,7 +280,7 @@ void TypeChecker::analyse_stmt(NodeStmt *stmt)
                 return v.name == stmt_arr->ident.value.value();
             });
             if (it == tc.m_vars.end()) {
-                tc.m_error_handler.report("Undeclared identifier: " + stmt_arr->ident.value.value(), stmt_arr->ident);
+                tc.m_error_handler.report("Undeclared identifier: " + std::string(stmt_arr->ident.value.value()), stmt_arr->ident);
                 return;
             }
             if (!it->type.is_array) {
@@ -334,7 +334,7 @@ void TypeChecker::analyse_stmt(NodeStmt *stmt)
 
             if (stmt_func->params.has_value()) {
                 for(const auto&[type, ident] : stmt_func->params.value()) {
-                    tc.m_vars.push_back({.name = ident.value.value(), .type = type});
+                    tc.m_vars.push_back({ .name = std::string(ident.value.value()), .type = type });
                 }
             }
 
@@ -353,7 +353,7 @@ void TypeChecker::analyse_stmt(NodeStmt *stmt)
             });
 
             if (func_it == tc.m_prog.stmts.end()) {
-                tc.m_error_handler.report("Call to undefined function: " + call->ident.value.value(), call->ident);
+                tc.m_error_handler.report("Call to undefined function: " + std::string(call->ident.value.value()), call->ident);
                 return;
             }
 
