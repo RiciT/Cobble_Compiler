@@ -681,6 +681,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp \
@@ -983,6 +984,7 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o: /home/tamas/PERSONAL/Developing/
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp \
   /usr/include/alloca.h \
@@ -1279,6 +1281,7 @@ CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.o: /home/tamas/PERSONAL/
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/operator_precedence.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp \
@@ -1576,6 +1579,7 @@ CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSONAL/D
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp \
   /usr/include/alloca.h \
@@ -1998,6 +2002,8 @@ CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.o:
 
 /usr/include/c++/13/cstdint:
 
+/usr/include/c++/13/complex:
+
 /usr/include/c++/13/pstl/pstl_config.h:
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
@@ -2380,6 +2386,8 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 
 /usr/include/stdc-predef.h:
 
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp:
+
 /usr/include/c++/13/bits/stl_iterator_base_types.h:
 
 /usr/include/stdio.h:
@@ -2449,8 +2457,6 @@ CMakeFiles/cobble.dir/src/codegen/generation.cpp.o:
 /usr/include/c++/13/bits/locale_classes.h:
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/c++/13/complex:
 
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 

@@ -16,10 +16,12 @@ public:
 	inline std::vector<Token> tokenize() {
 		std::vector<Token> tokens;
 		std::string buf;
+
 		while (peek().has_value())
 		{
 			// ReSharper disable once CppTooWideScopeInitStatement
 			char next_char = peek().value();
+
 			//idents and keywords
 			if (std::isalpha(next_char))
 			{
@@ -33,14 +35,14 @@ public:
 				{
 					if (buf == keyword)
 					{
-						tokens.push_back({.type = tokentype});
+						tokens.push_back({ .type = tokentype, .line = m_line_counter });
 						buf.clear();
 						break;
 					}
 				}
 				if (!buf.empty())
 				{
-					tokens.push_back({.type = TokenType::ident, .value = buf});
+					tokens.push_back({ .type = TokenType::ident, .value = buf, .line = m_line_counter });
 					buf.clear();
 				}
 			}
@@ -52,9 +54,8 @@ public:
 				{
 					buf.push_back(consume());
 				}
-				tokens.push_back({.type = TokenType::int_lit, .value = buf});
+				tokens.push_back({ .type = TokenType::int_lit, .value = buf, .line = m_line_counter });
 				buf.clear();
-				continue;
 			}
 			//single line comments
 			else if (Test_Double_SingleCharTokens(next_char, TokenType::fslash_sign, TokenType::fslash_sign))
@@ -83,16 +84,16 @@ public:
 			}
 			//==
 			else if (Test_Double_SingleCharTokens(next_char, TokenType::equals, TokenType::equals))
-				{ consume(); consume(); tokens.push_back({ .type = TokenType::equals_equals }); }
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::equals_equals, .line = m_line_counter }); }
 			//!=
 			else if (Test_Double_SingleCharTokens(next_char, TokenType::exclamation_point, TokenType::equals))
-				{ consume(); consume(); tokens.push_back({ .type = TokenType::not_equals }); }
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::not_equals, .line = m_line_counter }); }
 			//>=
 			else if (Test_Double_SingleCharTokens(next_char, TokenType::greater, TokenType::equals))
-				{ consume(); consume(); tokens.push_back({ .type = TokenType::greater_equals }); }
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::greater_equals, .line = m_line_counter }); }
 			//<=
 			else if (Test_Double_SingleCharTokens(next_char, TokenType::less, TokenType::equals))
-				{ consume(); consume(); tokens.push_back({ .type = TokenType::less_equals }); }
+				{ consume(); consume(); tokens.push_back({ .type = TokenType::less_equals, .line = m_line_counter }); }
 			//empty space
 			else if (std::isspace(next_char))
 			{
@@ -102,11 +103,11 @@ public:
 			else if (auto token_char = SingleCharTokens.find_by_key(next_char); token_char != SingleCharTokens.end())
 			{
 				consume();
-				tokens.push_back({.type = token_char->second});
+				tokens.push_back({ .type = token_char->second, .line = m_line_counter });
 			}
 			else
 			{
-				std::cerr << "Could not tokenize something where peek() = " << peek().value() << " and buf = " << buf << std::endl;
+				std::cerr << "Could not tokenize something where peek() = " << peek().value() << " and buf = " << buf << "on line " << m_line_counter << std::endl;
 	 			exit(EXIT_FAILURE);
 			}
 		}
@@ -128,12 +129,13 @@ private:
 
 	}
 
-	inline char consume()
+	char consume()
 	{
+		if (m_src.at(m_index) == '\n') { m_line_counter++; };
 		return m_src.at(m_index++);
 	}
 
-	inline bool Test_Double_SingleCharTokens(const char next_char, const TokenType type1, const TokenType type2) const
+	bool Test_Double_SingleCharTokens(const char next_char, const TokenType type1, const TokenType type2) const
 	{
 		return SingleCharTokens.count(next_char) &&
 						 SingleCharTokens.at(next_char) == type1 &&
@@ -142,6 +144,7 @@ private:
 						 SingleCharTokens.at(peek(1).value()) == type2;
 	}
 
+	size_t m_line_counter = 0; //for errors
 	const std::string m_src; //m_ for members
 	int m_index = 0;
 };

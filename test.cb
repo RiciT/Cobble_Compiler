@@ -1,5 +1,5 @@
 def int[(10 * 2) / 4] arr;  // Array of size 5
-arr[0] = 42;
+arr[0] = 4;
 arr[4] = 5;
 {
     def int x = 19;
@@ -14,5 +14,5 @@ func int ak (def int a, def bool ha) {
     return 100000;
 }
 
-print(ak(1, 5 != 10));
+print(ak(1, 5 == 10));
 print(arr[4]);

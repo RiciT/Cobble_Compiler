@@ -3,7 +3,7 @@ _start:
     sub rsp, 40
     mov rax, 0
     push rax
-    mov rax, 42
+    mov rax, 4
     push rax
     pop rcx
     pop rax
@@ -72,7 +72,7 @@ label1:
     pop rbx
     pop rax
     cmp rax, rbx
-    setne al
+    sete al
     movzx rax, al
     push rax
     mov rax, 1

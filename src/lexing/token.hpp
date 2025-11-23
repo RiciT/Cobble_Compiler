@@ -91,4 +91,5 @@ struct Token
 {
     TokenType type;
     std::optional<std::string> value {};
+    size_t line = 1; //default to line 1
 };

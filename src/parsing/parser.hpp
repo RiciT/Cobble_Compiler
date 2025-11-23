@@ -6,10 +6,11 @@
 
 #include "common/arena_allocator.hpp"
 #include "ast/nodes.hpp"
+#include "diagnostics/error_handler.hpp"
 
 class Parser {
 public:
-	explicit Parser(std::vector<Token> tokens);
+	explicit Parser(std::vector<Token> tokens, ErrorHandler& error_handler);
 
 	std::optional<NodeProgram> parse_prog();
 
@@ -24,10 +25,11 @@ private:
 
 	[[nodiscard]] std::optional<Token> peek(const int offset = 0) const;
 	Token consume();
-	Token try_consume(const TokenType type, const std::string& err_msg);
+	std::optional<Token> try_consume(const TokenType type, const std::string& err_msg);
 	std::optional<Token> try_consume(const TokenType type);
 
 	const std::vector<Token> m_tokens;
 	size_t m_index = 0;
 	ArenaAllocator m_allocator;
+	ErrorHandler& m_error_handler;
 };

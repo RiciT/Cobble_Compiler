@@ -31,17 +31,16 @@ std::optional<NodeAtom*> Parser::parse_atom()
 	if (peek().has_value() && peek().value().type == TokenType::ident &&
 		peek(1).has_value() && peek(1).value().type == TokenType::open_bracket)
 	{
-		Token ident = try_consume(TokenType::ident, "Expected identifier");
-		try_consume(TokenType::open_bracket, "Expected '['");
+		auto id = try_consume(TokenType::ident, "Expected identifier");
+		if (!id.has_value()) return {};
+		Token ident = id.value();
+
+		if (!try_consume(TokenType::open_bracket, "Expected '['").has_value()) return {};
 
 		auto index_expr = parse_expr();
-		if (!index_expr.has_value())
-		{
-			std::cerr << "Expected index expression" << std::endl;
-			exit(EXIT_FAILURE);
-		}
+		if (!index_expr.has_value()) { m_error_handler.report("Expected expression for indexing for array assignment", peek(-1).value()); return {}; }
 
-		try_consume(TokenType::close_bracket, "Expected ']'");
+		if (!try_consume(TokenType::close_bracket, "Expected ']'").has_value()) return {};
 
 		auto atom_array_access = m_allocator.alloc<NodeAtomArrayAccess>();
 		atom_array_access->ident = ident;
@@ -62,12 +61,9 @@ std::optional<NodeAtom*> Parser::parse_atom()
 	if (auto open_paren = try_consume(TokenType::open_paren))
 	{
 		const auto expr = parse_expr();
-		if (!expr.has_value())
-		{
-			std::cerr << "Expected expression" << std::endl;
-			exit(EXIT_FAILURE);
-		}
-		try_consume(TokenType::close_paren, "Expected ')'");
+		if (!expr.has_value()) { m_error_handler.report("Expected expression", peek(-1).value()); return {}; }
+		if (!try_consume(TokenType::close_paren, "Expected ')'").has_value()) return {};
+
 		auto atom_paren = m_allocator.alloc<NodeAtomParen>();
 		atom_paren->expr = expr.value();
 		auto atom = m_allocator.alloc<NodeAtom>();
@@ -79,7 +75,7 @@ std::optional<NodeAtom*> Parser::parse_atom()
 
 std::optional<VarType> Parser::parse_base_type()
 {
-	if (auto [type, _] = consume(); VariableBaseTypes.contains_value(type))
+	if (auto [type, _, __] = consume(); VariableBaseTypes.contains_value(type))
 	{
 		return VarType{ .base = VariableBaseTypes.at_value(type) };
 	}
@@ -100,11 +96,11 @@ std::optional<NodeFuncCallExpr*> Parser::parse_expr_func_call()
 			exprs.push_back(expr.value());
 			if (try_consume(TokenType::comma)) continue;
 			if (peek().has_value() && peek().value().type == TokenType::close_paren) break;
-			std::cerr << "Expected ')' or ',' in func call" << std::endl;
-			exit(EXIT_FAILURE);
+			m_error_handler.report("Expected ')' or ',' in func call", peek(-1).value());
+			return {};
 		}
 	}
-	try_consume(TokenType::close_paren, "Expected ')'");
+	if (!try_consume(TokenType::close_paren, "Expected ')'").has_value()) return {};
 
 	if (!exprs.empty())
 		expr_func_call->exprs = exprs;
@@ -120,7 +116,7 @@ std::optional<NodeExpr*> Parser::parse_expr(const int minimum_precedence)
 		&& peek(1).has_value() && peek(1).value().type == TokenType::open_paren)
 	{
 		std::optional<NodeFuncCallExpr*> func_call_lhs = parse_expr_func_call();
-		if (!func_call_lhs.has_value()) { return {}; }
+		if (!func_call_lhs.has_value()) { m_error_handler.report("Expected function call", peek(-1).value()); return {}; }
 		expr_lhs = m_allocator.alloc<NodeExpr>();
 		expr_lhs->expr = func_call_lhs.value();
 	}
@@ -128,7 +124,7 @@ std::optional<NodeExpr*> Parser::parse_expr(const int minimum_precedence)
 	{
 		//try atom
 		std::optional<NodeAtom*> atom_lhs = parse_atom();
-		if (!atom_lhs.has_value()) { return {}; }
+		if (!atom_lhs.has_value()) { m_error_handler.report("Expected atom", peek(-1).value()); return {}; }
 		expr_lhs = m_allocator.alloc<NodeExpr>();
 		expr_lhs->expr = atom_lhs.value();
 	}
@@ -144,20 +140,13 @@ std::optional<NodeExpr*> Parser::parse_expr(const int minimum_precedence)
 			if (!prec.has_value() || prec < minimum_precedence)
 				break;
 		}
-		else
-		{
-			break;
-		}
+		else { break; }
 
-		auto [type, value] = consume();
+		auto [type, _, line] = consume();
 		const int next_minimum_precedence = prec.value() + 1;
 		auto expr_rhs = parse_expr(next_minimum_precedence);
 
-		if (!expr_rhs.has_value())
-		{
-			std::cerr << "Unable to parse expression" << std::endl;
-			exit(EXIT_FAILURE);
-		}
+		if (!expr_rhs.has_value()) { m_error_handler.report("Unable to parse expression", peek(-1).value()); return {}; }
 
 		auto expr = m_allocator.alloc<NodeBinExpr>();
 		const auto node_expr_lhs = m_allocator.alloc<NodeExpr>();
@@ -253,7 +242,7 @@ std::optional<NodeExpr*> Parser::parse_expr(const int minimum_precedence)
 			lt->rhs = expr_rhs.value();
 			expr->bin_expr = lt;
 		}
-		else { assert(false); } //Should be unreachable
+		else { m_error_handler.report("Expected an operator", line); return {}; }
 		expr_lhs->expr = expr;
 
 	}

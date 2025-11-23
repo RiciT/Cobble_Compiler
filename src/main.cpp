@@ -10,12 +10,13 @@
 
 int main(int argc, char* argv[]) 
 {
+	//Setup
 	if(argc != 3) {
 		std::cerr << "Incorrect usage. Correct usage: " << std::endl;
 		std::cerr << "cobble <input.cb> <output-path>" << std::endl;
 		return EXIT_FAILURE;
 	}
-	 
+
 	std::string contents;
 	{
 		std::stringstream content_stream;
@@ -23,28 +24,41 @@ int main(int argc, char* argv[])
 		content_stream << input.rdbuf();
 		contents = content_stream.str();
 	}
+	std::string arg2(argv[2]);
 
+	// --- Stage 1: Tokenization ---
 	Tokenizer tokenizer(std::move(contents));
 	std::vector<Token> tokens = tokenizer.tokenize();
 
-	Parser parser(std::move(tokens));
+	// --- Stage 2: Parsing ---
+	ErrorHandler error_handler;
+
+	Parser parser(std::move(tokens), error_handler);
 	std::optional<NodeProgram> prog = parser.parse_prog();
 
-	if (!prog.has_value())
+	// Firewall 1: If parsing failed aka returned {} (nullopt) OR logged errors
+	if (!prog.has_value() || error_handler.has_errors())
 	{
-		std::cerr << "Invalid program" << std::endl;
-		exit(EXIT_FAILURE);
+		std::cerr << "Parsing failed:" << std::endl;
+		error_handler.dump_and_exit();
 	}
 
-	std::string arg2(argv[2]);
+	// --- Stage 3: Analysis ---
+	//we can safely run the analyser here because we know that the AST is structurally valid
 
+	// next step is to create type checker - analyser
+
+	// --- Stage 4: Generation ---
+	//we can safely generate now since the types are checker here
 	{
 		Generator generator(prog.value());
 		std::fstream file(arg2+"out.asm", std::ios::out);
 		file << generator.generate_program();
 	}
 
+	// Creating Object file from ASM
 	system(("nasm -felf64 " + arg2 + "out.asm").c_str());
+	// Creating executable from Object file
 	system(("ld -o " + arg2 + "out " + arg2 + "out.o").c_str());
 
 	return EXIT_SUCCESS;
