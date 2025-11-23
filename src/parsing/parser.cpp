@@ -17,14 +17,42 @@ std::optional<NodeProgram> Parser::parse_prog()
 		{
 			prog.stmts.push_back(stmt.value());
 		}
-		else { break; }
-		//else { m_error_handler.error("Invalid Statement"); }
+		else { synchronize(); }
 	}
 	return prog;
 
 }
 
 //helpers
+void Parser::synchronize()
+{
+	if (!peek().has_value()) return; //we are at the last token
+	consume(); //advance past the problematic token
+
+	while (peek().has_value())
+	{
+		//if just passed a semicolon we are most likely good to restart
+		if (peek(-1).value().type == TokenType::semi) return;
+
+		//if the next token starts a statement aka is a keyword we are good
+		switch (peek().value().type) {
+			case TokenType::func_:
+			case TokenType::def_:
+			case TokenType::if_:
+			case TokenType::while_:
+			case TokenType::print_:
+			case TokenType::return_:
+			case TokenType::exit_:
+			case TokenType::close_curly: //end of scope is also a sync point
+				return;
+			default:
+				break;
+		}
+
+		consume();
+	}
+}
+
 [[nodiscard]] std::optional<Token> Parser::peek(const int offset) const
 {
 	if (m_index + offset >= m_tokens.size()) { return {}; }

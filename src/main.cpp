@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[])
 {
-	//Setup
+	// --- Stage 0: Setup ---
 	if(argc != 3) {
 		std::cerr << "Incorrect usage. Correct usage: " << std::endl;
 		std::cerr << "cobble <input.cb> <output-path>" << std::endl;

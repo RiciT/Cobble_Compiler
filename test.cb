@@ -1,4 +1,5 @@
-def int[(10 * 2) / 4] arr;  // Array of size 5
+def int[(10 * 2) / 4] arr;
+// Array of size 5
 arr[0] = 4;
 def int y = 2 * 3;
 y = 5;

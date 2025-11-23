@@ -1,9 +1,5 @@
 #pragma once
 
-#include <variant>
-#include <cassert>
-#include <complex>
-
 #include "common/arena_allocator.hpp"
 #include "ast/nodes.hpp"
 #include "diagnostics/error_handler.hpp"
@@ -27,6 +23,8 @@ private:
 	Token consume();
 	std::optional<Token> try_consume(const TokenType type, const std::string& err_msg);
 	std::optional<Token> try_consume(const TokenType type);
+
+	void synchronize();
 
 	const std::vector<Token> m_tokens;
 	size_t m_index = 0;
