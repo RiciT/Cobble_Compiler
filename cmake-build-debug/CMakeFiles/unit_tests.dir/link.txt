@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/unit_tests.dir/link.d CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o -o unit_tests  libcobble_core.a lib/libgtest_main.a lib/libgtest.a

@@ -1,0 +1,5 @@
+if(EXISTS "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/unit_tests[1]_tests.cmake")
+  include("/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/unit_tests[1]_tests.cmake")
+else()
+  add_test(unit_tests_NOT_BUILT unit_tests_NOT_BUILT)
+endif()

@@ -9,7 +9,7 @@
 #include "analysis/type_checker.hpp"
 #include "codegen/generation.hpp"
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
 	//Setup
 	if(argc != 3) {

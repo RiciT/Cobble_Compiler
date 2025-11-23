@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/google_tests_run.dir/link.d CMakeFiles/google_tests_run.dir/__/src/unit_tests.cpp.o -o google_tests_run  libgtest.a libgtest_main.a libgtest.a

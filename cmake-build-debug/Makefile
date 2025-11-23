@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compil
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/ctest $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
@@ -84,6 +94,51 @@ rebuild_cache:
 # Special rule for the target rebuild_cache
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"gmock\" \"gtest\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/snap/clion/393/bin/cmake/linux/x64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -117,6 +172,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named cobble_core
+
+# Build rule for target.
+cobble_core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cobble_core
+.PHONY : cobble_core
+
+# fast build rule for target.
+cobble_core/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/build
+.PHONY : cobble_core/fast
+
+#=============================================================================
 # Target rules for targets named cobble
 
 # Build rule for target.
@@ -129,12 +197,77 @@ cobble/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/build
 .PHONY : cobble/fast
 
+#=============================================================================
+# Target rules for targets named unit_tests
+
+# Build rule for target.
+unit_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 unit_tests
+.PHONY : unit_tests
+
+# fast build rule for target.
+unit_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/build
+.PHONY : unit_tests/fast
+
+#=============================================================================
+# Target rules for targets named gmock
+
+# Build rule for target.
+gmock: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock
+.PHONY : gmock
+
+# fast build rule for target.
+gmock/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build
+.PHONY : gmock/fast
+
+#=============================================================================
+# Target rules for targets named gmock_main
+
+# Build rule for target.
+gmock_main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock_main
+.PHONY : gmock_main
+
+# fast build rule for target.
+gmock_main/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
+.PHONY : gmock_main/fast
+
+#=============================================================================
+# Target rules for targets named gtest
+
+# Build rule for target.
+gtest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest
+.PHONY : gtest
+
+# fast build rule for target.
+gtest/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build
+.PHONY : gtest/fast
+
+#=============================================================================
+# Target rules for targets named gtest_main
+
+# Build rule for target.
+gtest_main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest_main
+.PHONY : gtest_main
+
+# fast build rule for target.
+gtest_main/fast:
+	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
+.PHONY : gtest_main/fast
+
 src/analysis/type_checker.o: src/analysis/type_checker.cpp.o
 .PHONY : src/analysis/type_checker.o
 
 # target to build an object file
 src/analysis/type_checker.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.o
 .PHONY : src/analysis/type_checker.cpp.o
 
 src/analysis/type_checker.i: src/analysis/type_checker.cpp.i
@@ -142,7 +275,7 @@ src/analysis/type_checker.i: src/analysis/type_checker.cpp.i
 
 # target to preprocess a source file
 src/analysis/type_checker.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.i
 .PHONY : src/analysis/type_checker.cpp.i
 
 src/analysis/type_checker.s: src/analysis/type_checker.cpp.s
@@ -150,7 +283,7 @@ src/analysis/type_checker.s: src/analysis/type_checker.cpp.s
 
 # target to generate assembly for a file
 src/analysis/type_checker.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/analysis/type_checker.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.s
 .PHONY : src/analysis/type_checker.cpp.s
 
 src/codegen/generation.o: src/codegen/generation.cpp.o
@@ -158,7 +291,7 @@ src/codegen/generation.o: src/codegen/generation.cpp.o
 
 # target to build an object file
 src/codegen/generation.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation.cpp.o
 .PHONY : src/codegen/generation.cpp.o
 
 src/codegen/generation.i: src/codegen/generation.cpp.i
@@ -166,7 +299,7 @@ src/codegen/generation.i: src/codegen/generation.cpp.i
 
 # target to preprocess a source file
 src/codegen/generation.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation.cpp.i
 .PHONY : src/codegen/generation.cpp.i
 
 src/codegen/generation.s: src/codegen/generation.cpp.s
@@ -174,7 +307,7 @@ src/codegen/generation.s: src/codegen/generation.cpp.s
 
 # target to generate assembly for a file
 src/codegen/generation.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation.cpp.s
 .PHONY : src/codegen/generation.cpp.s
 
 src/codegen/generation_expression.o: src/codegen/generation_expression.cpp.o
@@ -182,7 +315,7 @@ src/codegen/generation_expression.o: src/codegen/generation_expression.cpp.o
 
 # target to build an object file
 src/codegen/generation_expression.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.o
 .PHONY : src/codegen/generation_expression.cpp.o
 
 src/codegen/generation_expression.i: src/codegen/generation_expression.cpp.i
@@ -190,7 +323,7 @@ src/codegen/generation_expression.i: src/codegen/generation_expression.cpp.i
 
 # target to preprocess a source file
 src/codegen/generation_expression.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.i
 .PHONY : src/codegen/generation_expression.cpp.i
 
 src/codegen/generation_expression.s: src/codegen/generation_expression.cpp.s
@@ -198,7 +331,7 @@ src/codegen/generation_expression.s: src/codegen/generation_expression.cpp.s
 
 # target to generate assembly for a file
 src/codegen/generation_expression.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.s
 .PHONY : src/codegen/generation_expression.cpp.s
 
 src/codegen/generation_statement.o: src/codegen/generation_statement.cpp.o
@@ -206,7 +339,7 @@ src/codegen/generation_statement.o: src/codegen/generation_statement.cpp.o
 
 # target to build an object file
 src/codegen/generation_statement.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o
 .PHONY : src/codegen/generation_statement.cpp.o
 
 src/codegen/generation_statement.i: src/codegen/generation_statement.cpp.i
@@ -214,7 +347,7 @@ src/codegen/generation_statement.i: src/codegen/generation_statement.cpp.i
 
 # target to preprocess a source file
 src/codegen/generation_statement.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.i
 .PHONY : src/codegen/generation_statement.cpp.i
 
 src/codegen/generation_statement.s: src/codegen/generation_statement.cpp.s
@@ -222,7 +355,7 @@ src/codegen/generation_statement.s: src/codegen/generation_statement.cpp.s
 
 # target to generate assembly for a file
 src/codegen/generation_statement.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.s
 .PHONY : src/codegen/generation_statement.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -254,7 +387,7 @@ src/parsing/parser.o: src/parsing/parser.cpp.o
 
 # target to build an object file
 src/parsing/parser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o
 .PHONY : src/parsing/parser.cpp.o
 
 src/parsing/parser.i: src/parsing/parser.cpp.i
@@ -262,7 +395,7 @@ src/parsing/parser.i: src/parsing/parser.cpp.i
 
 # target to preprocess a source file
 src/parsing/parser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.i
 .PHONY : src/parsing/parser.cpp.i
 
 src/parsing/parser.s: src/parsing/parser.cpp.s
@@ -270,7 +403,7 @@ src/parsing/parser.s: src/parsing/parser.cpp.s
 
 # target to generate assembly for a file
 src/parsing/parser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.s
 .PHONY : src/parsing/parser.cpp.s
 
 src/parsing/parser_expression.o: src/parsing/parser_expression.cpp.o
@@ -278,7 +411,7 @@ src/parsing/parser_expression.o: src/parsing/parser_expression.cpp.o
 
 # target to build an object file
 src/parsing/parser_expression.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o
 .PHONY : src/parsing/parser_expression.cpp.o
 
 src/parsing/parser_expression.i: src/parsing/parser_expression.cpp.i
@@ -286,7 +419,7 @@ src/parsing/parser_expression.i: src/parsing/parser_expression.cpp.i
 
 # target to preprocess a source file
 src/parsing/parser_expression.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.i
 .PHONY : src/parsing/parser_expression.cpp.i
 
 src/parsing/parser_expression.s: src/parsing/parser_expression.cpp.s
@@ -294,7 +427,7 @@ src/parsing/parser_expression.s: src/parsing/parser_expression.cpp.s
 
 # target to generate assembly for a file
 src/parsing/parser_expression.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.s
 .PHONY : src/parsing/parser_expression.cpp.s
 
 src/parsing/parser_statement.o: src/parsing/parser_statement.cpp.o
@@ -302,7 +435,7 @@ src/parsing/parser_statement.o: src/parsing/parser_statement.cpp.o
 
 # target to build an object file
 src/parsing/parser_statement.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o
 .PHONY : src/parsing/parser_statement.cpp.o
 
 src/parsing/parser_statement.i: src/parsing/parser_statement.cpp.i
@@ -310,7 +443,7 @@ src/parsing/parser_statement.i: src/parsing/parser_statement.cpp.i
 
 # target to preprocess a source file
 src/parsing/parser_statement.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.i
 .PHONY : src/parsing/parser_statement.cpp.i
 
 src/parsing/parser_statement.s: src/parsing/parser_statement.cpp.s
@@ -318,8 +451,32 @@ src/parsing/parser_statement.s: src/parsing/parser_statement.cpp.s
 
 # target to generate assembly for a file
 src/parsing/parser_statement.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.s
 .PHONY : src/parsing/parser_statement.cpp.s
+
+src/unit_tests.o: src/unit_tests.cpp.o
+.PHONY : src/unit_tests.o
+
+# target to build an object file
+src/unit_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o
+.PHONY : src/unit_tests.cpp.o
+
+src/unit_tests.i: src/unit_tests.cpp.i
+.PHONY : src/unit_tests.i
+
+# target to preprocess a source file
+src/unit_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/unit_tests.cpp.i
+.PHONY : src/unit_tests.cpp.i
+
+src/unit_tests.s: src/unit_tests.cpp.s
+.PHONY : src/unit_tests.s
+
+# target to generate assembly for a file
+src/unit_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/unit_tests.cpp.s
+.PHONY : src/unit_tests.cpp.s
 
 # Help Target
 help:
@@ -328,8 +485,19 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... cobble"
+	@echo "... cobble_core"
+	@echo "... gmock"
+	@echo "... gmock_main"
+	@echo "... gtest"
+	@echo "... gtest_main"
+	@echo "... unit_tests"
 	@echo "... src/analysis/type_checker.o"
 	@echo "... src/analysis/type_checker.i"
 	@echo "... src/analysis/type_checker.s"
@@ -354,6 +522,9 @@ help:
 	@echo "... src/parsing/parser_statement.o"
 	@echo "... src/parsing/parser_statement.i"
 	@echo "... src/parsing/parser_statement.s"
+	@echo "... src/unit_tests.o"
+	@echo "... src/unit_tests.i"
+	@echo "... src/unit_tests.s"
 .PHONY : help
 
 

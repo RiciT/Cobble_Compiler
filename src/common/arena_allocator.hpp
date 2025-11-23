@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <memory>
 #include <utility>
+#include <new>
 
 class ArenaAllocator {
 public:
@@ -44,13 +45,20 @@ public:
             throw std::bad_alloc {};
         }
         m_offset = static_cast<std::byte*>(aligned_address) + sizeof(T);
-        return static_cast<T*>(aligned_address);
+        return new (aligned_address) T;
     }
 
     template <typename T, typename... Args>
     [[nodiscard]] T* emplace(Args&&... args)
     {
-        const auto allocated_memory = alloc<T>();
+        size_t remaining_num_bytes = m_size - static_cast<size_t>(m_offset - m_buffer);
+        auto pointer = static_cast<void*>(m_offset);
+        const auto allocated_memory = std::align(alignof(T), sizeof(T), pointer, remaining_num_bytes);
+        if (allocated_memory == nullptr) {
+            throw std::bad_alloc {};
+        }
+        m_offset = static_cast<std::byte*>(allocated_memory) + sizeof(T);
+
         return new (allocated_memory) T { std::forward<Args>(args)... };
     }
 

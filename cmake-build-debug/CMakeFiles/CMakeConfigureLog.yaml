@@ -564,3 +564,42 @@ events:
       Running the CXX compiler's linker: "/usr/bin/ld" "-v"
       GNU ld (GNU Binutils for Ubuntu) 2.42
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/clion/393/bin/cmake/linux/x64/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/snap/clion/393/bin/cmake/linux/x64/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "/snap/clion/393/bin/cmake/linux/x64/share/cmake-4.0/Modules/FindThreads.cmake:97 (check_c_source_compiles)"
+      - "/snap/clion/393/bin/cmake/linux/x64/share/cmake-4.0/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "lib/googletest_lib/googletest/cmake/internal_utils.cmake:66 (find_package)"
+      - "lib/googletest_lib/googletest/CMakeLists.txt:83 (config_compiler_and_linker)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-qLm6rm"
+      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-qLm6rm"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-qLm6rm'
+        
+        Run Build Command(s): /snap/clion/393/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_9aa67/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_9aa67.dir/build.make CMakeFiles/cmTC_9aa67.dir/build
+        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-qLm6rm'
+        Building C object CMakeFiles/cmTC_9aa67.dir/src.c.o
+        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -fdiagnostics-color=always -o CMakeFiles/cmTC_9aa67.dir/src.c.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-qLm6rm/src.c
+        Linking C executable cmTC_9aa67
+        /snap/clion/393/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9aa67.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_9aa67.dir/src.c.o -o cmTC_9aa67
+        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-qLm6rm'
+        
+      exitCode: 0
+...

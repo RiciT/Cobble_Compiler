@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcobble_core.a CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.o CMakeFiles/cobble_core.dir/src/codegen/generation.cpp.o CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.o CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o
+/usr/bin/ranlib libcobble_core.a
