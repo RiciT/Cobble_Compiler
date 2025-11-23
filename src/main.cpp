@@ -6,6 +6,7 @@
 
 #include "lexing/tokenization.hpp"
 #include "parsing/parser.hpp"
+#include "analysis/type_checker.hpp"
 #include "codegen/generation.hpp"
 
 int main(int argc, char* argv[]) 
@@ -45,8 +46,15 @@ int main(int argc, char* argv[])
 
 	// --- Stage 3: Analysis ---
 	//we can safely run the analyser here because we know that the AST is structurally valid
+	TypeChecker type_checker(prog.value(), error_handler);
+	type_checker.analyse_program();
 
-	// next step is to create type checker - analyser
+	// Firewall 2: If analyser logged errors
+	if (error_handler.has_errors())
+	{
+		std::cerr << "Analysis failed:" << std::endl;
+		error_handler.dump_and_exit();
+	}
 
 	// --- Stage 4: Generation ---
 	//we can safely generate now since the types are checker here
