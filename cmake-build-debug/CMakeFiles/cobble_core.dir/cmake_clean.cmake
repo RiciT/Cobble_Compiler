@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.o.d"
   "CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o"
   "CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o.d"
+  "CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o"
+  "CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o.d"
   "CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o"
   "CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o.d"
   "CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o"

@@ -358,6 +358,30 @@ src/codegen/generation_statement.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.s
 .PHONY : src/codegen/generation_statement.cpp.s
 
+src/lexing/tokenization.o: src/lexing/tokenization.cpp.o
+.PHONY : src/lexing/tokenization.o
+
+# target to build an object file
+src/lexing/tokenization.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o
+.PHONY : src/lexing/tokenization.cpp.o
+
+src/lexing/tokenization.i: src/lexing/tokenization.cpp.i
+.PHONY : src/lexing/tokenization.i
+
+# target to preprocess a source file
+src/lexing/tokenization.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.i
+.PHONY : src/lexing/tokenization.cpp.i
+
+src/lexing/tokenization.s: src/lexing/tokenization.cpp.s
+.PHONY : src/lexing/tokenization.s
+
+# target to generate assembly for a file
+src/lexing/tokenization.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.s
+.PHONY : src/lexing/tokenization.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -510,6 +534,9 @@ help:
 	@echo "... src/codegen/generation_statement.o"
 	@echo "... src/codegen/generation_statement.i"
 	@echo "... src/codegen/generation_statement.s"
+	@echo "... src/lexing/tokenization.o"
+	@echo "... src/lexing/tokenization.i"
+	@echo "... src/lexing/tokenization.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

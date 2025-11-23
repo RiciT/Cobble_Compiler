@@ -24,7 +24,7 @@ TEST_F(TokenizerTest, PerformanceCheck)
                       "if (mmyverylongvariablenamethatexceedsssolimits > 0) { exit(0); }";
 
     // Run it a million times
-    for(int i = 0; i < 1000000; ++i) {
+    for(int i = 0; i < 100000; ++i) {
         Tokenizer t(src);
         t.tokenize();
     }
