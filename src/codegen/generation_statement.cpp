@@ -1,16 +1,8 @@
+#include <cassert>
+#include <algorithm>
+#include <ranges>
+
 #include "generation.hpp"
-
-void Generator::generate_scope(const NodeScope* scope)
-{
-    begin_scope();
-
-    for (const NodeStmt* stmt : scope->stmts)
-    {
-        generate_statement(stmt);
-    }
-
-    end_scope();
-}
 
 void Generator::generate_if_predicate(const NodeIfPredicate* pred, const std::string& end_label)
 {
@@ -45,6 +37,16 @@ void Generator::generate_if_predicate(const NodeIfPredicate* pred, const std::st
     std::visit(visitor, pred->ifpred);
 }
 
+void Generator::generate_scope(const NodeScope* scope)
+{
+    begin_scope();
+    for (const NodeStmt* stmt : scope->stmts)
+    {
+        generate_statement(stmt);
+    }
+    end_scope();
+}
+
 void Generator::generate_statement(const NodeStmt* stmt)
 {
     //visitor kind of works like a Match statement so that we can decide which is it
@@ -59,29 +61,17 @@ void Generator::generate_statement(const NodeStmt* stmt)
         }
         void operator()(const NodeStmtDef* stmt_def) const
         {
-            const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
-                return var.name == stmt_def->ident.value.value(); });
-            if (it != gen.m_vars.cend())
-            {
-                std::cerr << "Identifier already used: " << stmt_def->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
+            //we assume unique identifiers thanks to TypeChecker
+            assert(std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
+                return var.name == stmt_def->ident.value.value(); }) == gen.m_vars.cend());
 
             if (stmt_def->type.is_array)
             {
                 //evaluate array size at compile time
                 const auto size_opt = gen.evaluate_const_expr(stmt_def->array_size_expr.value());
-                if (!size_opt.has_value())
-                {
-                    std::cerr << "Array size must be a compile-time constant expression" << std::endl;
-                    exit(EXIT_FAILURE);
-                }
 
-                if (size_opt.value() <= 0)
-                {
-                    std::cerr << "Array size must be positive" << std::endl;
-                    exit(EXIT_FAILURE);
-                }
+                assert(size_opt.has_value() && "Array size expression evaluation failed");
+                assert(size_opt.value() > 0 && "Array size must be positive");
 
                 const size_t array_size = static_cast<size_t>(size_opt.value());
 
@@ -144,11 +134,9 @@ void Generator::generate_statement(const NodeStmt* stmt)
         {
             const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var){
                 return var.name == stmt_assign->ident.value.value(); });
-            if (it == gen.m_vars.end())
-            {
-                std::cerr << "Undeclared identifier: " << stmt_assign->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
+
+            assert(it != gen.m_vars.end() && "Undeclared identifier in assignment");
+
             gen.generate_expression(stmt_assign->expr);
             gen.pop("rax");
 
@@ -337,17 +325,8 @@ void Generator::generate_statement(const NodeStmt* stmt)
                 return var.name == stmt_array_assign->ident.value.value();
             });
 
-            if (it == gen.m_vars.end())
-            {
-                std::cerr << "Undeclared identifier: " << stmt_array_assign->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
-
-            if (!it->type.is_array)
-            {
-                std::cerr << "Cannot index non-array: " << stmt_array_assign->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
+            assert(it != gen.m_vars.end() && "Undeclared identifier in array assignment");
+            assert(it->type.is_array && "Assigning to non-array");
 
             //WONT THROW AN ERROR FOR OVER INDEXING NEED TO FIX
             //generate index expression

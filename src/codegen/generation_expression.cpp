@@ -1,3 +1,7 @@
+#include <cassert>
+#include <algorithm>
+#include <ranges>
+
 #include "generation.hpp"
 
 void Generator::generate_atom(const NodeAtom* atom)
@@ -8,11 +12,7 @@ void Generator::generate_atom(const NodeAtom* atom)
             const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
                 return var.name == atom_ident->ident.value.value(); });
 
-            if (it == gen.m_vars.cend())
-            {
-                std::cerr << "Undeclared identifier: " << atom_ident->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
+            assert(it != gen.m_vars.cend() && "Undeclared identifier");
 
             if (it->is_param)
             {
@@ -55,17 +55,8 @@ void Generator::generate_atom(const NodeAtom* atom)
                 return var.name == atom_array_access->ident.value.value();
             });
 
-            if (it == gen.m_vars.end())
-            {
-                std::cerr << "Undeclared identifier: " << atom_array_access->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
-
-            if (!it->type.is_array)
-            {
-                std::cerr << "Cannot index non-array: " << atom_array_access->ident.value.value() << std::endl;
-                exit(EXIT_FAILURE);
-            }
+            assert(it != gen.m_vars.end() && "Undeclared identifier in array access");
+            assert(it->type.is_array && "Cannot index non-array");
 
             gen.generate_expression(atom_array_access->index);
             gen.pop("rax");
@@ -250,7 +241,7 @@ std::optional<int64_t> Generator::evaluate_const_atom(const NodeAtom* atom)
 
         std::optional<int64_t> operator()(const NodeAtomIdent*) const
         {
-            return {};  // Variables cannot be evaluated at compile time
+            return {};  //variables cannot be evaluated at compile time
         }
 
         std::optional<int64_t> operator()(const NodeAtomParen* paren) const
@@ -265,7 +256,7 @@ std::optional<int64_t> Generator::evaluate_const_atom(const NodeAtom* atom)
 
         std::optional<int64_t> operator()(const NodeAtomArrayAccess*) const
         {
-            return {};  // Array access cannot be evaluated at compile time
+            return {};  //array access cannot be evaluated at compile time
         }
     };
 
@@ -305,7 +296,6 @@ std::optional<int64_t> Generator::evaluate_const_binexpr(const NodeBinExpr* bin_
             return {};
         }
 
-        // Add comparison operators if you have them
         std::optional<int64_t> operator()(const NodeBinExprEq* eq) const
         {
             const auto lhs = gen.evaluate_const_expr(eq->lhs);
@@ -369,7 +359,7 @@ std::optional<int64_t> Generator::evaluate_const_expr(const NodeExpr* expr)
 
         std::optional<int64_t> operator()(const NodeFuncCallExpr*) const
         {
-            return {};  // Function calls cannot be evaluated at compile time
+            return {};  //function calls cannot be evaluated at compile time
         }
     };
 

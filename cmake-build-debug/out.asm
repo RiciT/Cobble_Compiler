@@ -21,6 +21,10 @@ _start:
     pop rbx
     mul rbx
     push rax
+    mov rax, 5
+    push rax
+    pop rax
+    mov [rsp + 0], rax
     mov rax, 2
     push rax
     push QWORD [rsp + 8]
@@ -127,7 +131,7 @@ label4:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, 4
+    mov rax, 3
     push rax
     pop rax
     mov rbx, 8

@@ -64,9 +64,9 @@ int main(int argc, char* argv[])
 		file << generator.generate_program();
 	}
 
-	// Creating Object file from ASM
+	//creating Object file from ASM
 	system(("nasm -felf64 " + arg2 + "out.asm").c_str());
-	// Creating executable from Object file
+	//creating executable from Object file
 	system(("ld -o " + arg2 + "out " + arg2 + "out.o").c_str());
 
 	return EXIT_SUCCESS;
