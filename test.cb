@@ -2,7 +2,17 @@ def int[(10 * 2) / 4] arr;  // Array of size 5
 arr[0] = 42;
 arr[4] = 5;
 {
-    def int x = 9;
+    def int x = 19;
     print(x);
 }
+def int x = 5;
+
+func int ak (def int a, def bool ha) {
+    if (ha) {
+        return a;
+    }
+    return 100000;
+}
+
+print(ak(1, 5 != 10));
 print(arr[4]);

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <variant>
+#include <cassert>
+#include <complex>
+
 #include "common/arena_allocator.hpp"
 #include "ast/nodes.hpp"
 
@@ -19,7 +23,7 @@ private:
 	std::optional<NodeStmt*> parse_stmt();
 
 	[[nodiscard]] std::optional<Token> peek(const int offset = 0) const;
-	inline Token consume();
+	Token consume();
 	Token try_consume(const TokenType type, const std::string& err_msg);
 	std::optional<Token> try_consume(const TokenType type);
 

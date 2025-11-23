@@ -153,6 +153,54 @@ src/codegen/generation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation.cpp.s
 .PHONY : src/codegen/generation.cpp.s
 
+src/codegen/generation_expression.o: src/codegen/generation_expression.cpp.o
+.PHONY : src/codegen/generation_expression.o
+
+# target to build an object file
+src/codegen/generation_expression.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.o
+.PHONY : src/codegen/generation_expression.cpp.o
+
+src/codegen/generation_expression.i: src/codegen/generation_expression.cpp.i
+.PHONY : src/codegen/generation_expression.i
+
+# target to preprocess a source file
+src/codegen/generation_expression.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.i
+.PHONY : src/codegen/generation_expression.cpp.i
+
+src/codegen/generation_expression.s: src/codegen/generation_expression.cpp.s
+.PHONY : src/codegen/generation_expression.s
+
+# target to generate assembly for a file
+src/codegen/generation_expression.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_expression.cpp.s
+.PHONY : src/codegen/generation_expression.cpp.s
+
+src/codegen/generation_statement.o: src/codegen/generation_statement.cpp.o
+.PHONY : src/codegen/generation_statement.o
+
+# target to build an object file
+src/codegen/generation_statement.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.o
+.PHONY : src/codegen/generation_statement.cpp.o
+
+src/codegen/generation_statement.i: src/codegen/generation_statement.cpp.i
+.PHONY : src/codegen/generation_statement.i
+
+# target to preprocess a source file
+src/codegen/generation_statement.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.i
+.PHONY : src/codegen/generation_statement.cpp.i
+
+src/codegen/generation_statement.s: src/codegen/generation_statement.cpp.s
+.PHONY : src/codegen/generation_statement.s
+
+# target to generate assembly for a file
+src/codegen/generation_statement.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/codegen/generation_statement.cpp.s
+.PHONY : src/codegen/generation_statement.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -201,6 +249,54 @@ src/parsing/parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser.cpp.s
 .PHONY : src/parsing/parser.cpp.s
 
+src/parsing/parser_expression.o: src/parsing/parser_expression.cpp.o
+.PHONY : src/parsing/parser_expression.o
+
+# target to build an object file
+src/parsing/parser_expression.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.o
+.PHONY : src/parsing/parser_expression.cpp.o
+
+src/parsing/parser_expression.i: src/parsing/parser_expression.cpp.i
+.PHONY : src/parsing/parser_expression.i
+
+# target to preprocess a source file
+src/parsing/parser_expression.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.i
+.PHONY : src/parsing/parser_expression.cpp.i
+
+src/parsing/parser_expression.s: src/parsing/parser_expression.cpp.s
+.PHONY : src/parsing/parser_expression.s
+
+# target to generate assembly for a file
+src/parsing/parser_expression.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_expression.cpp.s
+.PHONY : src/parsing/parser_expression.cpp.s
+
+src/parsing/parser_statement.o: src/parsing/parser_statement.cpp.o
+.PHONY : src/parsing/parser_statement.o
+
+# target to build an object file
+src/parsing/parser_statement.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.o
+.PHONY : src/parsing/parser_statement.cpp.o
+
+src/parsing/parser_statement.i: src/parsing/parser_statement.cpp.i
+.PHONY : src/parsing/parser_statement.i
+
+# target to preprocess a source file
+src/parsing/parser_statement.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.i
+.PHONY : src/parsing/parser_statement.cpp.i
+
+src/parsing/parser_statement.s: src/parsing/parser_statement.cpp.s
+.PHONY : src/parsing/parser_statement.s
+
+# target to generate assembly for a file
+src/parsing/parser_statement.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/parsing/parser_statement.cpp.s
+.PHONY : src/parsing/parser_statement.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -213,12 +309,24 @@ help:
 	@echo "... src/codegen/generation.o"
 	@echo "... src/codegen/generation.i"
 	@echo "... src/codegen/generation.s"
+	@echo "... src/codegen/generation_expression.o"
+	@echo "... src/codegen/generation_expression.i"
+	@echo "... src/codegen/generation_expression.s"
+	@echo "... src/codegen/generation_statement.o"
+	@echo "... src/codegen/generation_statement.i"
+	@echo "... src/codegen/generation_statement.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
 	@echo "... src/parsing/parser.o"
 	@echo "... src/parsing/parser.i"
 	@echo "... src/parsing/parser.s"
+	@echo "... src/parsing/parser_expression.o"
+	@echo "... src/parsing/parser_expression.i"
+	@echo "... src/parsing/parser_expression.s"
+	@echo "... src/parsing/parser_statement.o"
+	@echo "... src/parsing/parser_statement.i"
+	@echo "... src/parsing/parser_statement.s"
 .PHONY : help
 
 
