@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ast/nodes.hpp"
+#include "asm_emitter.hpp"
 
 class Generator {
 public:
@@ -26,7 +27,6 @@ private:
     void pop(const std::string& reg);
     void begin_scope();
     void end_scope();
-    std::stringstream& current_stream() const;
     std::string create_label();
 
     struct Variable 
@@ -39,9 +39,7 @@ private:
 
     const NodeProgram m_prog;
 
-    std::stringstream m_output;
-    std::stringstream m_functions;
-    std::stringstream* m_current_stream;
+   AsmEmitter m_emitter;
 
     size_t m_stack_size = 0;
     std::vector<Variable> m_vars {};

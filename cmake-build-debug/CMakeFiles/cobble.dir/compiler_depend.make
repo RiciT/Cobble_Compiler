@@ -3,6 +3,7 @@
 
 CMakeFiles/cobble.dir/src/codegen/generation.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.cpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ast/nodes.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp \
@@ -233,6 +234,7 @@ CMakeFiles/cobble.dir/src/codegen/generation.cpp.o: /home/tamas/PERSONAL/Develop
 
 CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ast/nodes.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
@@ -912,6 +914,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 
 /usr/include/syscall.h:
 
+/usr/include/linux/limits.h:
+
 /usr/include/c++/13/pstl/pstl_config.h:
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
@@ -1058,6 +1062,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 
 /usr/include/c++/13/bits/ranges_algobase.h:
 
+/usr/include/c++/13/bits/ostream_insert.h:
+
 /usr/include/c++/13/bits/stl_iterator_base_funcs.h:
 
 /usr/include/asm-generic/errno-base.h:
@@ -1090,10 +1096,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 
 /usr/include/c++/13/bits/move.h:
 
-/usr/include/c++/13/bits/locale_facets.h:
-
-/usr/include/c++/13/bits/localefwd.h:
-
 /usr/include/c++/13/bits/basic_string.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
@@ -1120,6 +1122,46 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp:
 
+/usr/include/c++/13/bits/exception.h:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+
+/usr/include/c++/13/bits/cxxabi_init_exception.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h:
+
+/usr/include/c++/13/typeinfo:
+
+/usr/include/c++/13/bits/hashtable_policy.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
+
+/usr/include/c++/13/bits/basic_ios.h:
+
+/usr/include/x86_64-linux-gnu/bits/time64.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
+
+/usr/include/c++/13/concepts:
+
+/usr/include/x86_64-linux-gnu/bits/floatn.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
+
+/usr/include/c++/13/memory:
+
+/usr/include/c++/13/bits/locale_facets.h:
+
+/usr/include/c++/13/bits/localefwd.h:
+
 /usr/include/c++/13/backward/binders.h:
 
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
@@ -1142,27 +1184,7 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 
 /usr/include/c++/13/bits/ranges_base.h:
 
-/usr/include/c++/13/bits/exception.h:
-
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
-
-/usr/include/c++/13/bits/ostream_insert.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
-
-/usr/include/c++/13/concepts:
-
-/usr/include/x86_64-linux-gnu/bits/floatn.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
-
-/usr/include/c++/13/memory:
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp:
 
 /usr/include/alloca.h:
 
@@ -1176,29 +1198,7 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 
 /usr/include/c++/13/algorithm:
 
-/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
-
-/usr/include/c++/13/string_view:
-
-/usr/include/features-time64.h:
-
 /usr/include/c++/13/bits/hash_bytes.h:
-
-/usr/include/c++/13/bits/cxxabi_init_exception.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h:
-
-/usr/include/c++/13/typeinfo:
-
-/usr/include/c++/13/bits/hashtable_policy.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
-
-/usr/include/c++/13/bits/basic_ios.h:
-
-/usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/c++/13/bits/functional_hash.h:
 
@@ -1247,6 +1247,12 @@ CMakeFiles/cobble.dir/src/parsing/parser.cpp.o:
 /usr/include/c++/13/bits/string_view.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
+
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/c++/13/string_view:
+
+/usr/include/features-time64.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp:
 
@@ -1483,5 +1489,3 @@ CMakeFiles/cobble.dir/src/codegen/generation.cpp.o:
 /usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
 
 /usr/include/linux/close_range.h:
-
-/usr/include/linux/limits.h:

@@ -1,4 +1,8 @@
 def int[(10 * 2) / 4] arr;  // Array of size 5
 arr[0] = 42;
 arr[4] = 5;
+{
+    def int x = 9;
+    print(x);
+}
 print(arr[4]);

@@ -3,10 +3,12 @@
 
 #include "generation.hpp"
 
+#include "asm_emitter.hpp"
+
 Generator::Generator(NodeProgram prog)
     : m_prog(std::move(prog))
 {
-    m_current_stream = &m_output;
+    m_emitter.set_section(AsmEmitter::Section::Main);
 }
 
 void Generator::generate_atom(const NodeAtom* atom)
@@ -39,7 +41,7 @@ void Generator::generate_atom(const NodeAtom* atom)
             }
         }
         void operator()(const NodeAtomIntLit* atom_int_lit) const {
-            gen.current_stream() << "    mov rax, " << atom_int_lit->int_lit.value.value() << "\n";
+            gen.m_emitter.emit("mov", "rax", atom_int_lit->int_lit.value.value());
             gen.push("rax");
         }
         void operator()(const NodeAtomBoolLit* atom_bool_lit) const
@@ -47,13 +49,12 @@ void Generator::generate_atom(const NodeAtom* atom)
             //true = 1, false = 0
             if (atom_bool_lit->bool_lit.type == TokenType::true_)
             {
-                gen.current_stream() << "    mov rax, 1\n";
+                gen.m_emitter.emit("mov", "rax", "1");
             }
             if (atom_bool_lit->bool_lit.type == TokenType::false_)
             {
-                gen.current_stream() << "    mov rax, 0\n";
+                gen.m_emitter.emit("mov", "rax", "0");
             }
-
             gen.push("rax");
         }
         void operator()(const NodeAtomParen* atom_paren) const {
@@ -81,17 +82,17 @@ void Generator::generate_atom(const NodeAtom* atom)
             gen.pop("rax");
 
             //calc offset
-            gen.current_stream() << "    mov rbx, 8\n";
-            gen.current_stream() << "    mul rbx\n";
+            gen.m_emitter.emit("mov", "rbx", "8");
+            gen.m_emitter.emit("mul", "rbx");
 
             //address
             const size_t base_offset = (gen.m_stack_size - it->stack_loc - it->type.array_size) * 8;
 
-            gen.current_stream() << "    mov rbx, rsp\n";
-            gen.current_stream() << "    add rbx, " << base_offset << "\n";
-            gen.current_stream() << "    add rbx, rax\n";
+            gen.m_emitter.emit("mov", "rbx", "rsp");
+            gen.m_emitter.emit("add", "rbx", base_offset);
+            gen.m_emitter.emit("add", "rbx", "rax");
 
-            gen.current_stream() << "    mov rax, [rbx]\n";
+            gen.m_emitter.emit("mov", "rax", "[rbx]");
             gen.push("rax");
         }
     };
@@ -108,7 +109,7 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(add->lhs);
             gen.pop("rax");
             gen.pop("rbx");
-            gen.current_stream() << "    add rax, rbx\n";
+            gen.m_emitter.emit("add", "rax", "rbx");
             gen.push("rax");
         }
         void operator()(const NodeBinExprSub* sub) const {
@@ -116,7 +117,7 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(sub->lhs);
             gen.pop("rax");
             gen.pop("rbx");
-            gen.current_stream() << "    sub rax, rbx\n";
+            gen.m_emitter.emit("sub", "rax", "rbx");
             gen.push("rax");
         }
         void operator()(const NodeBinExprMult* mult) const {
@@ -124,7 +125,7 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(mult->lhs);
             gen.pop("rax");
             gen.pop("rbx");
-            gen.current_stream() << "    mul rbx\n";
+            gen.m_emitter.emit("mul", "rbx");
             gen.push("rax");
         }
         void operator()(const NodeBinExprDiv* div) const {
@@ -132,8 +133,8 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(div->lhs);
             gen.pop("rax");
             gen.pop("rbx");
-            gen.current_stream() << "    xor rdx, rdx\n";
-            gen.current_stream() << "    div rbx\n";
+            gen.m_emitter.emit("xor", "rdx", "rdx");
+            gen.m_emitter.emit("div", "rbx");
             gen.push("rax");
         }
         void operator()(const NodeBinExprEq* eq) const {
@@ -141,9 +142,9 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(eq->rhs);
             gen.pop("rbx");
             gen.pop("rax");
-            gen.current_stream() << "    cmp rax, rbx\n";
-            gen.current_stream() << "    sete al\n";        // Set al to 1 if equal
-            gen.current_stream() << "    movzx rax, al\n";  // Zero-extend to full register
+            gen.m_emitter.emit("cmp", "rax", "rbx");
+            gen.m_emitter.emit("sete", "al"); //set al to 1 if equal
+            gen.m_emitter.emit("movzx", "rax", "al"); //zero-extend to full register
             gen.push("rax");
         }
         void operator()(const NodeBinExprNotEq* neq) const {
@@ -151,9 +152,9 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(neq->rhs);
             gen.pop("rbx");
             gen.pop("rax");
-            gen.current_stream() << "    cmp rax, rbx\n";
-            gen.current_stream() << "    setne al\n";
-            gen.current_stream() << "    movzx rax, al\n";
+            gen.m_emitter.emit("cmp", "rax", "rbx");
+            gen.m_emitter.emit("setne", "al");
+            gen.m_emitter.emit("movzx", "rax", "al");
             gen.push("rax");
         }
         void operator()(const NodeBinExprGreater* gt) const {
@@ -161,9 +162,9 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(gt->rhs);
             gen.pop("rbx");
             gen.pop("rax");
-            gen.current_stream() << "    cmp rax, rbx\n";
-            gen.current_stream() << "    setg al\n";
-            gen.current_stream() << "    movzx rax, al\n";
+            gen.m_emitter.emit("cmp", "rax", "rbx");
+            gen.m_emitter.emit("setg", "al");
+            gen.m_emitter.emit("movzx", "rax", "al");
             gen.push("rax");
         }
         void operator()(const NodeBinExprLess* lt) const {
@@ -171,9 +172,9 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(lt->rhs);
             gen.pop("rbx");
             gen.pop("rax");
-            gen.current_stream() << "    cmp rax, rbx\n";
-            gen.current_stream() << "    setl al\n";
-            gen.current_stream() << "    movzx rax, al\n";
+            gen.m_emitter.emit("cmp", "rax", "rbx");
+            gen.m_emitter.emit("setl", "al");
+            gen.m_emitter.emit("movzx", "rax", "al");
             gen.push("rax");
         }
         void operator()(const NodeBinExprGreaterEq* gte) const {
@@ -181,9 +182,9 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(gte->rhs);
             gen.pop("rbx");
             gen.pop("rax");
-            gen.current_stream() << "    cmp rax, rbx\n";
-            gen.current_stream() << "    setge al\n";
-            gen.current_stream() << "    movzx rax, al\n";
+            gen.m_emitter.emit("cmp", "rax", "rbx");
+            gen.m_emitter.emit("setge", "al");
+            gen.m_emitter.emit("movzx", "rax", "al");
             gen.push("rax");
         }
         void operator()(const NodeBinExprLessEq* lte) const {
@@ -191,9 +192,9 @@ void Generator::generate_binary_expression(const NodeBinExpr* bin_expr)
             gen.generate_expression(lte->rhs);
             gen.pop("rbx");
             gen.pop("rax");
-            gen.current_stream() << "    cmp rax, rbx\n";
-            gen.current_stream() << "    setle al\n";
-            gen.current_stream() << "    movzx rax, al\n";
+            gen.m_emitter.emit("cmp", "rax", "rbx");
+            gen.m_emitter.emit("setle", "al");
+            gen.m_emitter.emit("movzx", "rax", "al");
             gen.push("rax");
         }
     };
@@ -228,18 +229,17 @@ void Generator::generate_expression(const NodeExpr* expr)
 
             //push parameters onto stack so it can be popped in order
             const std::string func_label = "func_" + expr_func_call->ident.value.value();
-            gen.current_stream() << "    call " << func_label << "\n";
+            gen.m_emitter.emit("call", func_label);
 
             //clean up arguments from stack
             if (expr_func_call->exprs.has_value())
             {
                 if (const size_t args_size = expr_func_call->exprs.value().size(); args_size > 0)
                 {
-                    gen.current_stream() << "    add rsp, " << args_size * 8 << "\n";
+                    gen.m_emitter.emit("add", "rsp", args_size * 8);
                     gen.m_stack_size -= args_size;
                 }
             }
-
             gen.push("rax");
         }
     };
@@ -268,23 +268,23 @@ void Generator::generate_if_predicate(const NodeIfPredicate* pred, const std::st
 
         void operator()(const NodeIfPredElseIf* elseif_) const
         {
-            gen.current_stream() << "    ;; else if\n"; //comment
+            gen.m_emitter.emit_comment("else if");
             gen.generate_expression(elseif_->expr);
             gen.pop("rax");
             const std::string label = gen.create_label();
-            gen.current_stream() << "    test rax, rax\n";
-            gen.current_stream() << "    jz " << label << "\n";
+            gen.m_emitter.emit("test", "rax", "rax");
+            gen.m_emitter.emit("jz", label);
             gen.generate_scope(elseif_->scope);
-            gen.current_stream() << "    jmp " << end_label << "\n";
+            gen.m_emitter.emit("jmp", end_label);
             if (elseif_->ifpred.has_value())
             {
-                gen.current_stream() << label << ":\n";
+                gen.m_emitter.emit_label(label);
                 gen.generate_if_predicate(elseif_->ifpred.value(), end_label);
             }
         }
         void operator()(const NodeIfPredElse* else_) const
         {
-            gen.current_stream() << "    ;; else\n"; //comment
+            gen.m_emitter.emit_comment("else");
             gen.generate_scope(else_->scope);
         }
     };
@@ -301,9 +301,9 @@ void Generator::generate_statement(const NodeStmt* stmt)
         void operator()(const NodeStmtExit* stmt_exit) const
         {
             gen.generate_expression(stmt_exit->expr);
-            gen.current_stream() << "    mov rax, 60\n";
+            gen.m_emitter.emit("mov", "rax", "60");
             gen.pop("rdi");
-            gen.current_stream() << "    syscall\n";
+            gen.m_emitter.emit("syscall");
         }
         void operator()(const NodeStmtDef* stmt_def) const
         {
@@ -335,7 +335,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
 
                 //allocate space for array
                 const size_t total_bytes = array_size * 8;
-                gen.current_stream() << "    sub rsp, " << total_bytes << "\n";
+                gen.m_emitter.emit("sub", "rsp", total_bytes);
 
                 //create type with resolved size
                 VarType resolved_type = stmt_def->type;
@@ -358,7 +358,7 @@ void Generator::generate_statement(const NodeStmt* stmt)
                 else
                 {
                     //def initialize to 0
-                    gen.current_stream() << "    mov rax, 0\n";
+                    gen.m_emitter.emit("mov", "rax", "0");
                     gen.push("rax");
                 }
             }
@@ -372,20 +372,20 @@ void Generator::generate_statement(const NodeStmt* stmt)
             gen.generate_expression(stmt_if->expr);
             gen.pop("rax");
             const std::string label = gen.create_label();
-            gen.current_stream() << "    test rax, rax\n";
-            gen.current_stream() << "    jz " << label << "\n";
+            gen.m_emitter.emit("test", "rax", "rax");
+            gen.m_emitter.emit("jz", label);
             gen.generate_scope(stmt_if->scope);
             if (stmt_if->ifpred.has_value())
             {
                 const std::string end_label = gen.create_label();
-                gen.current_stream() << "    jmp " << end_label << "\n";
-                gen.current_stream() << label << ":\n";
+                gen.m_emitter.emit("jmp", end_label);
+                gen.m_emitter.emit_label(label);
                 gen.generate_if_predicate(stmt_if->ifpred.value(), end_label);
-                gen.current_stream() << end_label << ":\n";
+                gen.m_emitter.emit_label(end_label);
             }
             else
             {
-                gen.current_stream() << label << ":\n";
+                gen.m_emitter.emit_label(label);
             }
         }
         void operator()(const NodeStmtAssign* stmt_assign) const
@@ -403,30 +403,30 @@ void Generator::generate_statement(const NodeStmt* stmt)
             if (it->is_param)
             {
                 //parameters: positive offset from rbp
-                gen.current_stream() << "    mov [rbp + " << it->stack_loc << "], rax\n";
+                gen.m_emitter.emit_mov_offset("rbp", "rax", it->stack_loc);
             }
             else
             {
                 //local variables: calculated from rsp
-                gen.current_stream() << "    mov [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "], rax\n";
+                gen.m_emitter.emit_mov_offset("rsp", "rax", (gen.m_stack_size - it->stack_loc - 1) * 8);
             }
         }
         void operator()(const NodeStmtWhile* stmt_while) const
         {
             const std::string label = gen.create_label();
-            gen.current_stream() << label << ":\n";
+            gen.m_emitter.emit_label(label);
 
             gen.generate_expression(stmt_while->expr);
             gen.pop("rax");
-            gen.current_stream() << "    test rax, rax\n";
+            gen.m_emitter.emit("test", "rax", "rax");
             const std::string end_label = gen.create_label();
-            gen.current_stream() << "    jz " << end_label << "\n";
+            gen.m_emitter.emit("jz", end_label);
 
             gen.generate_scope(stmt_while->scope);
 
-            gen.current_stream() << "    jmp " << label << "\n";
+            gen.m_emitter.emit("jmp", label);
 
-            gen.current_stream() << end_label << ":\n";
+            gen.m_emitter.emit_label(end_label);
         }
         void operator()(const NodeStmtPrint* stmt_print) const
         {
@@ -435,59 +435,59 @@ void Generator::generate_statement(const NodeStmt* stmt)
             gen.generate_expression(stmt_print->expr);
             gen.pop("rax");  // Number to print is now in rax
 
-            // Convert integer to ASCII string
-            gen.current_stream() << "    ; Convert integer in rax to ASCII\n";
-            gen.current_stream() << "    mov rbx, 10\n";          // divisor
-            gen.current_stream() << "    mov rcx, 0\n";           // digit counter
-            gen.current_stream() << "    sub rsp, 32\n";          // allocate buffer on stack
-            gen.current_stream() << "    mov rdi, rsp\n";         // rdi = buffer address
-            gen.current_stream() << "    add rdi, 31\n";          // point to end of buffer
-            gen.current_stream() << "    mov BYTE [rdi], 10\n";   // add newline
-            gen.current_stream() << "    dec rdi\n";
-            gen.current_stream() << "    inc rcx\n";
+            //convert integer to ASCII string
+            gen.m_emitter.emit_comment("Convert integer in rax to ASCII");
+            gen.m_emitter.emit("mov", "rbx", "10");
+            gen.m_emitter.emit("mov", "rcx", "0");
+            gen.m_emitter.emit("sub", "rsp", "32");
+            gen.m_emitter.emit("mov", "rdi", "rsp");
+            gen.m_emitter.emit("add", "rdi", "31"); //point to end of buffer
+            gen.m_emitter.emit("mov", "BYTE [rdi]", "10"); //add newline
+            gen.m_emitter.emit("dec", "rdi");
+            gen.m_emitter.emit("inc", "rcx");
 
             const std::string convert_loop_label = gen.create_label();
             const std::string done_convert_label = gen.create_label();
-            // Handle the case where the number is 0
-            gen.current_stream() << "    test rax, rax\n";
-            gen.current_stream() << "    jnz " << convert_loop_label << "\n";
-            gen.current_stream() << "    mov BYTE [rdi], '0'\n";
-            gen.current_stream() << "    dec rdi\n";
-            gen.current_stream() << "    inc rcx\n";
-            gen.current_stream() << "    jmp " << done_convert_label << "\n";
+            //handle the case where the number is 0
+            gen.m_emitter.emit("test", "rax", "rax");
+            gen.m_emitter.emit("jnz", convert_loop_label);
+            gen.m_emitter.emit("mov", "BYTE [rdi]", "'0'");
+            gen.m_emitter.emit("dec", "rdi");
+            gen.m_emitter.emit("inc", "rcx");
+            gen.m_emitter.emit("jmp", done_convert_label);
 
-            gen.current_stream() << convert_loop_label << ":\n";
-            gen.current_stream() << "    test rax, rax\n";
-            gen.current_stream() << "    jz " << done_convert_label << "\n";
-            gen.current_stream() << "    xor rdx, rdx\n";         // clear rdx for division
-            gen.current_stream() << "    div rbx\n";              // rax = rax/10, rdx = rax%10
-            gen.current_stream() << "    add dl, '0'\n";          // convert digit to ASCII
-            gen.current_stream() << "    mov [rdi], dl\n";        // store character
-            gen.current_stream() << "    dec rdi\n";              // move buffer pointer back
-            gen.current_stream() << "    inc rcx\n";              // increment digit count
-            gen.current_stream() << "    jmp " << convert_loop_label << "\n";
+            gen.m_emitter.emit_label(convert_loop_label);
+            gen.m_emitter.emit("test", "rax", "rax");
+            gen.m_emitter.emit("jz", done_convert_label);
+            gen.m_emitter.emit("xor", "rdx", "rdx");      //clear rdx for division
+            gen.m_emitter.emit("div", "rbx");             //rax = rax/10, rdx = rax%10
+            gen.m_emitter.emit("add", "dl", "'0'");       //convert digit to ASCII
+            gen.m_emitter.emit("mov", "[rdi]", "dl");     //store character
+            gen.m_emitter.emit("dec", "rdi");             //move buffer pointer back
+            gen.m_emitter.emit("inc", "rcx");             //increment digit count
+            gen.m_emitter.emit("jmp", convert_loop_label);
 
-            gen.current_stream() << done_convert_label << ":\n";
-            gen.current_stream() << "    inc rdi\n";              // adjust to first digit
+            gen.m_emitter.emit_label(done_convert_label);
+            gen.m_emitter.emit("inc", "rdi");             //adjust to first digit
 
-            // Now print the buffer
-            gen.current_stream() << "    mov rax, 1\n";           // sys_write
-            gen.current_stream() << "    mov rsi, rdi\n";         // buffer address
-            gen.current_stream() << "    mov rdi, 1\n";           // stdout
-            gen.current_stream() << "    mov rdx, rcx\n";         // length = digit count
-            gen.current_stream() << "    syscall\n";
+            //now print the buffer
+            gen.m_emitter.emit("mov", "rax", "1");        //sys_write
+            gen.m_emitter.emit("mov", "rsi", "rdi");      //buffer address
+            gen.m_emitter.emit("mov", "rdi", "1");        //stdout
+            gen.m_emitter.emit("mov", "rdx", "rcx");      //length = digit count
+            gen.m_emitter.emit("syscall");
 
-            gen.current_stream() << "    add rsp, 32\n";          // clean up buffer
+            gen.m_emitter.emit("add", "rsp", "32");       //clean up buffer
         }
         void operator()(const NodeStmtFunc* stmt_func) const
         {
-            gen.m_current_stream = &gen.m_functions;
+            gen.m_emitter.set_section(AsmEmitter::Section::Functions);
 
             const std::string func_label = "func_" + stmt_func->ident.value.value();
 
-            gen.current_stream() << func_label << ":\n";
-            gen.current_stream() << "    push rbp\n";
-            gen.current_stream() << "    mov rbp, rsp\n";
+            gen.m_emitter.emit_label(func_label);
+            gen.m_emitter.emit("push", "rbp");
+            gen.m_emitter.emit("mov", "rbp", "rsp");
 
             //save the current state so function has its own scope
             const size_t saved_stack_size = gen.m_stack_size;
@@ -518,17 +518,17 @@ void Generator::generate_statement(const NodeStmt* stmt)
 
             gen.generate_scope(stmt_func->scope);
 
-            gen.current_stream() << "    mov rax, 0\n";
-            gen.current_stream() << "    mov rsp, rbp\n";
-            gen.current_stream() << "    pop rbp\n";
-            gen.current_stream() << "    ret\n";
+            gen.m_emitter.emit("mov", "rax", "0");
+            gen.m_emitter.emit("mov", "rsp", "rbp");
+            gen.m_emitter.emit("pop", "rbp");
+            gen.m_emitter.emit("ret");
 
             //restore state
             gen.m_stack_size = saved_stack_size;
             gen.m_vars = saved_vars;
             gen.m_scopes = saved_scopes;
 
-            gen.m_current_stream = &gen.m_output;
+            gen.m_emitter.set_section(AsmEmitter::Section::Main);
         }
         void operator()(const NodeStmtFuncCall* stmt_func_call) const
         {
@@ -545,18 +545,17 @@ void Generator::generate_statement(const NodeStmt* stmt)
 
             //push parameters onto stack so it can be popped in order
             const std::string func_label = "func_" + stmt_func_call->ident.value.value();
-            gen.current_stream() << "    call " << func_label << "\n";
+            gen.m_emitter.emit("call", func_label);
 
             //clean up arguments from stack
             if (stmt_func_call->exprs.has_value())
             {
                 if (const size_t args_size = stmt_func_call->exprs.value().size(); args_size > 0)
                 {
-                    gen.current_stream() << "    add rsp, " << args_size * 8 << "\n";
+                    gen.m_emitter.emit("add", "rsp", args_size * 8);
                     gen.m_stack_size -= args_size;
                 }
             }
-
 
             // TAKE OUT THIS PART SINCE THIS MESSES WITH STACK POINTER LOCATION
             // WILL NEED TO HANDLE EXPRESSION FUNC CALLS DIFFERENTLY
@@ -573,12 +572,12 @@ void Generator::generate_statement(const NodeStmt* stmt)
             else
             {
                 // no return value so default to 0
-                gen.current_stream() << "    mov rax, 0\n";
+                gen.m_emitter.emit("mov", "rax", "0");
             }
 
-            gen.current_stream() << "    mov rsp, rbp\n";
-            gen.current_stream() << "    pop rbp\n";
-            gen.current_stream() << "    ret\n";
+            gen.m_emitter.emit("mov", "rsp", "rbp");
+            gen.m_emitter.emit("pop", "rbp");
+            gen.m_emitter.emit("ret");
         }
         void operator()(const NodeStmtArrayAssign* stmt_array_assign) const
         {
@@ -609,23 +608,24 @@ void Generator::generate_statement(const NodeStmt* stmt)
             gen.pop("rax");  // index
 
             //calc offset
-            gen.current_stream() << "    mov rbx, 8\n";
-            gen.current_stream() << "    mul rbx\n";
+            gen.m_emitter.emit("mov", "rbx", "8");
+            gen.m_emitter.emit("mul", "rbx");
 
             //address
             const size_t base_offset = (gen.m_stack_size - it->stack_loc - it->type.array_size) * 8;
-            gen.current_stream() << "    mov rbx, rsp\n";
-            gen.current_stream() << "    add rbx, " << base_offset << "\n";
-            gen.current_stream() << "    add rbx, rax\n";
+            gen.m_emitter.emit("mov", "rbx", "rsp");
+            gen.m_emitter.emit("add", "rbx", base_offset);
+            gen.m_emitter.emit("add", "rbx", "rax");
 
             //store value
-            gen.current_stream() << "    mov [rbx], rcx\n";
+            gen.m_emitter.emit("mov", "[rbx]", "rcx");
         }
     };
 
     StmtVisitor visitor { .gen = *this };
     std::visit(visitor, stmt->stmt);
 }
+
 
 //temporary helpers for evaluating const expression
 std::optional<int64_t> Generator::evaluate_const_expr(const NodeExpr* expr)
@@ -769,10 +769,10 @@ std::optional<int64_t> Generator::evaluate_const_binexpr(const NodeBinExpr* bin_
     return std::visit(visitor, bin_expr->bin_expr);
 }
 
+
 [[nodiscard]] std::string Generator::generate_program()
 {
-    m_current_stream = &m_output;
-    m_output << "global _start\n_start:\n";
+    m_emitter.set_section(AsmEmitter::Section::Main);
 
     for (const NodeStmt* stmt : m_prog.stmts)
     {
@@ -780,22 +780,22 @@ std::optional<int64_t> Generator::evaluate_const_binexpr(const NodeBinExpr* bin_
     }
 
     //if no explicit exit, exit with 0
-    m_output << "    mov rax, 60\n";
-    m_output << "    mov rdi, 0\n";
-    m_output << "    syscall";
+    m_emitter.emit("mov", "rax", "60");
+    m_emitter.emit("mov", "rdi", "0");
+    m_emitter.emit("syscall");
 
-    return m_output.str() + "\n\n; Function stream starting here\n" + m_functions.str() + "\n";
+    return m_emitter.build_output();
 }
 
 void Generator::push(const std::string& reg)
 {
-    current_stream() << "    push " << reg << "\n";
+    m_emitter.emit("push", reg);
     m_stack_size++; //1 = 64bit
 }
 
 void Generator::pop(const std::string& reg)
 {
-    current_stream() << "    pop " << reg << "\n";
+    m_emitter.emit("pop", reg);
     m_stack_size--;
 }
 
@@ -815,7 +815,7 @@ void Generator::end_scope()
         else { slots_to_pop += 1; }
     }
 
-    current_stream() << "    add rsp, " << slots_to_pop * 8 << "\n";
+    m_emitter.emit("add", "rsp", slots_to_pop * 8);
     m_stack_size -= slots_to_pop;
 
     for (size_t i = 0; i < pop_count; i++)
@@ -823,11 +823,6 @@ void Generator::end_scope()
         m_vars.pop_back();
     }
     m_scopes.pop_back();
-}
-
-std::stringstream& Generator::current_stream() const
-{
-    return *m_current_stream;
 }
 
 std::string Generator::create_label()
