@@ -10,6 +10,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp \
@@ -345,6 +347,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
 
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
+
 /usr/include/c++/13/ext/concurrence.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp:
@@ -471,9 +475,7 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/move.h:
 
-/usr/include/c++/13/bits/basic_string.h:
-
-/usr/include/x86_64-linux-gnu/bits/endianness.h:
+/usr/include/c++/13/bits/memoryfwd.h:
 
 /usr/include/c++/13/bits/atomic_lockfree_defines.h:
 
@@ -487,15 +489,11 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/concept_check.h:
 
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.hpp:
+
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/c++/13/bits/node_handle.h:
-
-/usr/include/c++/13/cerrno:
-
-/usr/include/c++/13/ext/string_conversions.h:
-
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
@@ -517,20 +515,6 @@ libcobble_core.a:
 
 /usr/include/c++/13/cwchar:
 
-/usr/include/c++/13/variant:
-
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp:
-
-/usr/include/stdc-predef.h:
-
-/usr/include/c++/13/bits/stl_iterator.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
-
-/usr/include/c++/13/ext/numeric_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
-
 /usr/include/c++/13/concepts:
 
 /usr/include/c++/13/memory:
@@ -545,21 +529,19 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/cxxabi_forced.h:
 
+/usr/include/c++/13/variant:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp:
+
+/usr/include/stdc-predef.h:
+
 /usr/include/c++/13/bits/allocated_ptr.h:
 
 /usr/include/c++/13/bit:
 
-/usr/include/c++/13/bits/basic_string.tcc:
-
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp:
 
-/usr/include/alloca.h:
-
-/usr/include/c++/13/bits/refwrap.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
-
-/usr/include/c++/13/bits/fstream.tcc:
+/usr/include/c++/13/bits/basic_string.tcc:
 
 /usr/include/c++/13/ext/aligned_buffer.h:
 
@@ -572,16 +554,6 @@ libcobble_core.a:
 /usr/include/c++/13/bits/ostream_insert.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp:
-
-/usr/include/c++/13/bits/streambuf_iterator.h:
-
-/usr/include/c++/13/ostream:
-
-/usr/include/x86_64-linux-gnu/bits/confname.h:
-
-/usr/include/c++/13/bits/cpp_type_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
 
 /usr/include/c++/13/bits/iterator_concepts.h:
 
@@ -607,6 +579,26 @@ libcobble_core.a:
 
 /usr/include/c++/13/pstl/execution_defs.h:
 
+/usr/include/c++/13/bits/streambuf_iterator.h:
+
+/usr/include/c++/13/ostream:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/include/c++/13/bits/cpp_type_traits.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/c++/13/cerrno:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp:
+
+/usr/include/c++/13/exception:
+
+/usr/include/c++/13/pstl/glue_memory_defs.h:
+
+/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+
 /usr/include/c++/13/bits/basic_ios.h:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
@@ -616,6 +608,28 @@ libcobble_core.a:
 /usr/include/c++/13/bits/functional_hash.h:
 
 /usr/include/errno.h:
+
+/usr/include/c++/13/bits/basic_string.h:
+
+/usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/include/c++/13/bits/shared_ptr_base.h:
+
+/usr/include/wchar.h:
+
+/usr/include/c++/13/bits/invoke.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
+/usr/include/alloca.h:
+
+/usr/include/c++/13/bits/refwrap.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+
+/usr/include/c++/13/bits/fstream.tcc:
 
 /usr/include/c++/13/bits/stl_vector.h:
 
@@ -649,7 +663,15 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/cxxabi_init_exception.h:
 
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h:
+
+/usr/include/c++/13/typeinfo:
+
 /usr/include/c++/13/bits/exception.h:
+
+/usr/include/c++/13/bits/memory_resource.h:
+
+/usr/include/c++/13/streambuf:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
@@ -667,25 +689,19 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/ios_base.h:
 
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
-
 /usr/include/c++/13/bits/locale_classes.tcc:
 
-/usr/include/c++/13/bits/invoke.h:
+/usr/include/c++/13/bits/stl_iterator.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
-/usr/include/x86_64-linux-gnu/bits/environments.h:
+/usr/include/c++/13/ext/numeric_traits.h:
 
-/usr/include/c++/13/streambuf:
+/usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
-/usr/include/c++/13/bits/memory_resource.h:
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/arena_allocator.hpp:
 
-/usr/include/c++/13/bits/shared_ptr_base.h:
-
-/usr/include/wchar.h:
-
-/usr/include/c++/13/bits/memoryfwd.h:
+/usr/include/c++/13/ext/string_conversions.h:
 
 /usr/include/c++/13/ext/type_traits.h:
 
@@ -694,12 +710,6 @@ libcobble_core.a:
 /usr/include/c++/13/iostream:
 
 /usr/include/c++/13/istream:
-
-/usr/include/c++/13/exception:
-
-/usr/include/c++/13/pstl/glue_memory_defs.h:
-
-/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
 /usr/include/c++/13/pstl/pstl_config.h:
 
@@ -821,9 +831,9 @@ libcobble_core.a:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
-/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
-
 /usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
@@ -884,7 +894,3 @@ libcobble_core.a:
 /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h:
-
-/usr/include/c++/13/typeinfo:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h:

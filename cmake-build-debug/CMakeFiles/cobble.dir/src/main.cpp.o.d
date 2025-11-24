@@ -225,4 +225,6 @@ CMakeFiles/cobble.dir/src/main.cpp.o: \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp \
- /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp \
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.hpp

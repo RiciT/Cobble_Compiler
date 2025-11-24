@@ -11,6 +11,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/unordered_bimap.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/common/var_types.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp

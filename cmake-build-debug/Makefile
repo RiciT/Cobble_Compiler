@@ -358,6 +358,54 @@ src/codegen/generation_statement.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.s
 .PHONY : src/codegen/generation_statement.cpp.s
 
+src/ir/ir.o: src/ir/ir.cpp.o
+.PHONY : src/ir/ir.o
+
+# target to build an object file
+src/ir/ir.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o
+.PHONY : src/ir/ir.cpp.o
+
+src/ir/ir.i: src/ir/ir.cpp.i
+.PHONY : src/ir/ir.i
+
+# target to preprocess a source file
+src/ir/ir.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir.cpp.i
+.PHONY : src/ir/ir.cpp.i
+
+src/ir/ir.s: src/ir/ir.cpp.s
+.PHONY : src/ir/ir.s
+
+# target to generate assembly for a file
+src/ir/ir.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir.cpp.s
+.PHONY : src/ir/ir.cpp.s
+
+src/ir/ir_builder.o: src/ir/ir_builder.cpp.o
+.PHONY : src/ir/ir_builder.o
+
+# target to build an object file
+src/ir/ir_builder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.o
+.PHONY : src/ir/ir_builder.cpp.o
+
+src/ir/ir_builder.i: src/ir/ir_builder.cpp.i
+.PHONY : src/ir/ir_builder.i
+
+# target to preprocess a source file
+src/ir/ir_builder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.i
+.PHONY : src/ir/ir_builder.cpp.i
+
+src/ir/ir_builder.s: src/ir/ir_builder.cpp.s
+.PHONY : src/ir/ir_builder.s
+
+# target to generate assembly for a file
+src/ir/ir_builder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.s
+.PHONY : src/ir/ir_builder.cpp.s
+
 src/lexing/tokenization.o: src/lexing/tokenization.cpp.o
 .PHONY : src/lexing/tokenization.o
 
@@ -534,6 +582,12 @@ help:
 	@echo "... src/codegen/generation_statement.o"
 	@echo "... src/codegen/generation_statement.i"
 	@echo "... src/codegen/generation_statement.s"
+	@echo "... src/ir/ir.o"
+	@echo "... src/ir/ir.i"
+	@echo "... src/ir/ir.s"
+	@echo "... src/ir/ir_builder.o"
+	@echo "... src/ir/ir_builder.i"
+	@echo "... src/ir/ir_builder.s"
 	@echo "... src/lexing/tokenization.o"
 	@echo "... src/lexing/tokenization.i"
 	@echo "... src/lexing/tokenization.s"
