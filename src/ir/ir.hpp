@@ -31,29 +31,20 @@ struct IROperand {
 
 //opcodes
 enum class IROpcode {
-    //mov
-    MOV,
     //arithmetic
     ADD, SUB, MUL, DIV,
     //comparison
-    CMP,
+    EQ, NEQ, LT, GT,
     //control flow
     JMP,
-    JE,
-    JNE,
-    JG,
-    JL,
-    JGE,
-    JLE,
+    JMP_FALSE,
     //functions
     CALL,
     RET,
-    //memory / pointers
-    LEA,
+    //memory
     LOAD,
     STORE,
-    PUSH,
-    POP,
+    COPY,
     //meta
     LABEL,
     EXIT,
@@ -70,17 +61,11 @@ struct IRInstruction {
     std::string to_string() const;
 
     //helpers for cleaner code
-    static IRInstruction make_mov(const IROperand &dest, const IROperand &src) {
-        return {IROpcode::MOV, dest, src, IROperand::none()};
-    }
     static IRInstruction make_binary(const IROpcode op, const IROperand &dest, const IROperand &lhs, const IROperand &rhs) {
         return {op, dest, lhs, rhs};
     }
-    static IRInstruction make_cmp(const IROperand &lhs, const IROperand &rhs) {
-        return {IROpcode::CMP, IROperand::none(), lhs, rhs};
-    }
-    static IRInstruction make_jump(const IROpcode op, const std::string &label) {
-        return {op, IROperand::none(), IROperand::make_label(label), IROperand::none()};
+    static IRInstruction make_jump(const std::string &label, const bool isUncond = true) {
+        return {isUncond ? IROpcode::JMP : IROpcode::JMP_FALSE, IROperand::none(), IROperand::make_label(label), IROperand::none()};
     }
     static IRInstruction make_label(const std::string &label) {
         return {IROpcode::LABEL, IROperand::none(), IROperand::make_label(label), IROperand::none()};

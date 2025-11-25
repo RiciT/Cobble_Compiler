@@ -406,6 +406,54 @@ src/ir/ir_builder.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.s
 .PHONY : src/ir/ir_builder.cpp.s
 
+src/ir/ir_builder_expression.o: src/ir/ir_builder_expression.cpp.o
+.PHONY : src/ir/ir_builder_expression.o
+
+# target to build an object file
+src/ir/ir_builder_expression.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o
+.PHONY : src/ir/ir_builder_expression.cpp.o
+
+src/ir/ir_builder_expression.i: src/ir/ir_builder_expression.cpp.i
+.PHONY : src/ir/ir_builder_expression.i
+
+# target to preprocess a source file
+src/ir/ir_builder_expression.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.i
+.PHONY : src/ir/ir_builder_expression.cpp.i
+
+src/ir/ir_builder_expression.s: src/ir/ir_builder_expression.cpp.s
+.PHONY : src/ir/ir_builder_expression.s
+
+# target to generate assembly for a file
+src/ir/ir_builder_expression.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.s
+.PHONY : src/ir/ir_builder_expression.cpp.s
+
+src/ir/ir_builder_statement.o: src/ir/ir_builder_statement.cpp.o
+.PHONY : src/ir/ir_builder_statement.o
+
+# target to build an object file
+src/ir/ir_builder_statement.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o
+.PHONY : src/ir/ir_builder_statement.cpp.o
+
+src/ir/ir_builder_statement.i: src/ir/ir_builder_statement.cpp.i
+.PHONY : src/ir/ir_builder_statement.i
+
+# target to preprocess a source file
+src/ir/ir_builder_statement.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.i
+.PHONY : src/ir/ir_builder_statement.cpp.i
+
+src/ir/ir_builder_statement.s: src/ir/ir_builder_statement.cpp.s
+.PHONY : src/ir/ir_builder_statement.s
+
+# target to generate assembly for a file
+src/ir/ir_builder_statement.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.s
+.PHONY : src/ir/ir_builder_statement.cpp.s
+
 src/lexing/tokenization.o: src/lexing/tokenization.cpp.o
 .PHONY : src/lexing/tokenization.o
 
@@ -588,6 +636,12 @@ help:
 	@echo "... src/ir/ir_builder.o"
 	@echo "... src/ir/ir_builder.i"
 	@echo "... src/ir/ir_builder.s"
+	@echo "... src/ir/ir_builder_expression.o"
+	@echo "... src/ir/ir_builder_expression.i"
+	@echo "... src/ir/ir_builder_expression.s"
+	@echo "... src/ir/ir_builder_statement.o"
+	@echo "... src/ir/ir_builder_statement.i"
+	@echo "... src/ir/ir_builder_statement.s"
 	@echo "... src/lexing/tokenization.o"
 	@echo "... src/lexing/tokenization.i"
 	@echo "... src/lexing/tokenization.s"

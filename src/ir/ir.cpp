@@ -1,29 +1,24 @@
 #include "ir.hpp"
 #include  <sstream>
 
-//helper for opcodes in nasm
+//helper for to string
 static std::string opcode_to_string(const IROpcode op) {
     switch(op) {
-        case IROpcode::MOV: return "mov";
         case IROpcode::ADD: return "add";
         case IROpcode::SUB: return "sub";
         case IROpcode::MUL: return "mul";
         case IROpcode::DIV: return "div";
-        case IROpcode::CMP: return "cmp";
+        case IROpcode::EQ: return "=";
+        case IROpcode::NEQ: return "!=";
+        case IROpcode::LT: return "<";
+        case IROpcode::GT: return ">";
         case IROpcode::JMP: return "jmp";
-        case IROpcode::JE:  return "je";
-        case IROpcode::JNE: return "jne";
-        case IROpcode::JG:  return "jg";
-        case IROpcode::JL:  return "jl";
-        case IROpcode::JGE: return "jge";
-        case IROpcode::JLE: return "jle";
+        case IROpcode::JMP_FALSE: return "jmp_false";
         case IROpcode::CALL: return "call";
+        case IROpcode::COPY: return "copy";
         case IROpcode::RET: return "ret";
-        case IROpcode::LEA: return "lea";
         case IROpcode::LOAD: return "load";
         case IROpcode::STORE: return "store";
-        case IROpcode::PUSH: return "push";
-        case IROpcode::POP: return "pop";
         case IROpcode::LABEL: return ""; // Label handles itself
         case IROpcode::EXIT: return "exit";
         case IROpcode::PRINT: return "print";

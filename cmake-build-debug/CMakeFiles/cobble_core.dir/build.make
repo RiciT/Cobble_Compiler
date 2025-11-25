@@ -156,10 +156,38 @@ CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.cpp -o CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.s
 
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o: CMakeFiles/cobble_core.dir/flags.make
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_expression.cpp
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o: CMakeFiles/cobble_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o -MF CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o.d -o CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_expression.cpp
+
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_expression.cpp > CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.i
+
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_expression.cpp -o CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.s
+
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o: CMakeFiles/cobble_core.dir/flags.make
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o: CMakeFiles/cobble_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o -MF CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o.d -o CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp
+
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp > CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.i
+
+CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp -o CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.s
+
 CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o: CMakeFiles/cobble_core.dir/flags.make
 CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.cpp
 CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o: CMakeFiles/cobble_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o -MF CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o.d -o CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.cpp
 
 CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.i: cmake_force
@@ -173,7 +201,7 @@ CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.s: cmake_force
 CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o: CMakeFiles/cobble_core.dir/flags.make
 CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp
 CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o: CMakeFiles/cobble_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o -MF CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o.d -o CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp
 
 CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.i: cmake_force
@@ -187,7 +215,7 @@ CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.s: cmake_force
 CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o: CMakeFiles/cobble_core.dir/flags.make
 CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_expression.cpp
 CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o: CMakeFiles/cobble_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o -MF CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o.d -o CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_expression.cpp
 
 CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.i: cmake_force
@@ -201,7 +229,7 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.s: cmake_force
 CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: CMakeFiles/cobble_core.dir/flags.make
 CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_statement.cpp
 CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: CMakeFiles/cobble_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o -MF CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o.d -o CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_statement.cpp
 
 CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.i: cmake_force
@@ -220,6 +248,8 @@ cobble_core_OBJECTS = \
 "CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o" \
 "CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o" \
 "CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.o" \
+"CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o" \
+"CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o" \
 "CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o" \
 "CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o" \
 "CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o" \
@@ -234,13 +264,15 @@ libcobble_core.a: CMakeFiles/cobble_core.dir/src/codegen/generation_expression.c
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.o
+libcobble_core.a: CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o
+libcobble_core.a: CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o
 libcobble_core.a: CMakeFiles/cobble_core.dir/build.make
 libcobble_core.a: CMakeFiles/cobble_core.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX static library libcobble_core.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX static library libcobble_core.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/cobble_core.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cobble_core.dir/link.txt --verbose=$(VERBOSE)
 

@@ -14,11 +14,8 @@ public:
 
 private:
     void generate_stmt(const NodeStmt* stmt);
-
     void generate_if_predicate(const NodeIfPredicate *pred, const std::string &end_label);
-
     void generate_scope(const NodeScope* scope);
-
     IROperand generate_expr(const NodeExpr* expr);
     IROperand generate_binexpr(const NodeBinExpr* bin_expr);
     IROperand generate_atom(const NodeAtom* atom);
@@ -30,12 +27,14 @@ private:
 
     struct VarInfo {
         IROperand reg; //the vreg holding this variable
+        VarType type;
+        std::string name;
         bool is_array;
         size_t array_size;
     };
 
-    void push_scope();
-    void pop_scope();
+    void begin_scope();
+    void end_scope();
     VarInfo* find_var(const std::string& name);
     void add_var(const std::string& name, VarInfo var);
 
