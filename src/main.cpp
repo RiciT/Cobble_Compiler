@@ -4,8 +4,6 @@
 #include <optional>
 #include <vector>
 
-//#include "ir/ir_builder.hpp"
-
 #include "lexing/tokenization.hpp"
 #include "parsing/parser.hpp"
 #include "analysis/type_checker.hpp"
@@ -63,7 +61,7 @@ int main(int argc, char* argv[])
 	// --- Stage 4: IR Generation (Lowering AST) ---
 	//converts ast tree into a linear list of instructions
 	IRBuilder builder(prog.value());
-	IRProgram ir_prog = builder.generate_ir();
+	IRProgram ir_prog = builder.build_ir();
 	ir_prog.debug_print();
 
 	// --- Stage 5: Generation ---

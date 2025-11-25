@@ -55,11 +55,11 @@ std::string IRInstruction::to_string() const
 
 void IRProgram::debug_print() const
 {
-    for (const auto& func : functions) {
+    for (const auto func: functions) {
         std::cout << "FUNCTION " << func.name << ":\n";
-        for (const auto&[_, instructions] : func.blocks) {
-            //std::cout << "  BLOCK " << block.name << ":\n";
-            for (const auto& instr : instructions) {
+        for (const auto block: func.blocks) {
+            std::cout << "  BLOCK " << block.name << ":\n";
+            for (const auto instr: block.instructions) {
                 std::cout << instr.to_string() << "\n";
             }
         }

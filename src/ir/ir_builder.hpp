@@ -5,20 +5,21 @@
 
 #include "ast/nodes.hpp"
 #include "ir.hpp"
+#include "common/arena_allocator.hpp"
 
 class IRBuilder {
 public:
     explicit IRBuilder(NodeProgram prog);
 
-    [[nodiscard]] IRProgram generate_ir();
+    [[nodiscard]] IRProgram build_ir();
 
 private:
-    void generate_stmt(const NodeStmt* stmt);
-    void generate_if_predicate(const NodeIfPredicate *pred, const std::string &end_label);
-    void generate_scope(const NodeScope* scope);
-    IROperand generate_expr(const NodeExpr* expr);
-    IROperand generate_binexpr(const NodeBinExpr* bin_expr);
-    IROperand generate_atom(const NodeAtom* atom);
+    void build_statement(const NodeStmt* stmt);
+    void build_if_predicate(const NodeIfPredicate *pred, const std::string &end_label);
+    void build_scope(const NodeScope* scope);
+    IROperand build_expr(const NodeExpr* expr);
+    IROperand build_binexpr(const NodeBinExpr* bin_expr);
+    IROperand build_atom(const NodeAtom* atom);
 
     //helpers
     IROperand create_vreg() const;
@@ -40,7 +41,6 @@ private:
 
     //state
     NodeProgram m_prog;
-    IRProgram m_result;
 
     //pointer to the function being built
     IRFunction* m_current_func = nullptr;
@@ -48,7 +48,6 @@ private:
     IRBasicBlock* m_current_block = nullptr;
 
     size_t m_label_counter = 0;
-
     //stack of symbol tables (name -> vreg)
     std::vector<std::unordered_map<std::string, VarInfo>> m_scopes;
 };
