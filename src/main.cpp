@@ -60,9 +60,9 @@ int main(int argc, char* argv[])
 	// RIGHT NOW THIS ISNT INTEGRATED INTO THE LOGIC JUST TESTING
 	// --- Stage 4: IR Generation (Lowering AST) ---
 	//converts ast tree into a linear list of instructions
-	IRBuilder builder(prog.value());
-	IRProgram ir_prog = builder.build_ir();
-	ir_prog.debug_print();
+	// IRBuilder builder(prog.value());
+	// IRProgram ir_prog = builder.build_ir();
+	// ir_prog.debug_print();
 
 	// --- Stage 5: Generation ---
 	//we can safely generate now since the types are checker here

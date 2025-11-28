@@ -1,21 +1,2 @@
-def int[(10 * 2) / 4] arr;
-// Array of size 5
-arr[0] = 4;
-def int y = 2 * 3;
-y = 5;
-arr[y - 2] = 5;
-{
-    def int x = 19;
-    print(x);
-}
-def int x = 5;
-
-func int ak (def int a, def bool ha) {
-    if (ha) {
-        return 1;
-    }
-    return 100000;
-}
-
-print(ak(1, 5 != 10));
-print(arr[3]);
+def int x = 10;
+print(x);

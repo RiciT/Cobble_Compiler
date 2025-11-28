@@ -12,11 +12,10 @@ IRProgram IRBuilder::build_ir()
 {
     IRProgram program;
 
-    IRFunction main_func;
+    IRFunction main_func_def;
+    program.functions.push_back(main_func_def);
+    IRFunction& main_func = program.functions.back();
     main_func.name = "_start";
-    // program.functions.push_back(main_func); //should be here so as to push statements into it
-    // however now i dont know how to put it here since then the changes to it dont register later
-    // however i cant use pointers because they will be deleted so i need some kind of allocator here as well
 
     // for (const NodeStmt* stmt : m_prog.stmts)
     // {
@@ -37,7 +36,7 @@ IRProgram IRBuilder::build_ir()
     exit_block.instructions = exit_vector;
 
     main_func.blocks.push_back(std::move(exit_block));
-    program.functions.push_back(main_func);
+
     return program;
 }
 
