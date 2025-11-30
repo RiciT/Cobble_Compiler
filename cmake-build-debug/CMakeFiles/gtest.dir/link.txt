@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/gtest.dir/link.d CMakeFiles/gtest.dir/src/unit_tests.cpp.o -o gtest  -lgtest_main
