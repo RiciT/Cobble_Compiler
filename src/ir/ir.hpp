@@ -31,24 +31,13 @@ struct IROperand {
 
 //opcodes
 enum class IROpcode {
-    //arithmetic
-    ADD, SUB, MUL, DIV,
-    //comparison
-    EQ, NEQ, LT, GT,
-    //control flow
-    JMP,
-    JMP_FALSE,
-    //functions
-    CALL,
-    RET,
-    //memory
-    LOAD,
-    STORE,
-    COPY,
-    //meta
+    GOTO, GOFALSE,
     LABEL,
+    ADD, SUB, MUL, DIV,
+    ALLOC,
+    PRINT,
     EXIT,
-    PRINT
+    COPY,
 };
 
 //instructions
