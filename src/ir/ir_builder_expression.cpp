@@ -138,7 +138,8 @@ IROperand IRBuilder::build_binexpr(const NodeBinExpr* bin_expr) {
 IROperand IRBuilder::build_atom(const NodeAtom* atom) {
     struct AtomVisitor {
         IRBuilder& irb;
-        IROperand operator()(const NodeAtomIdent* atom_ident) const{
+        IROperand operator()(const NodeAtomIdent* atom_ident) const
+        {
             const auto it = std::ranges::find_if(std::as_const(irb.m_vars), [&](const VarInfo& var){
                 return var.name == atom_ident->ident.value.value();
             });
@@ -146,7 +147,8 @@ IROperand IRBuilder::build_atom(const NodeAtom* atom) {
 
             return it->reg;
         }
-        IROperand operator()(const NodeAtomIntLit* atom_int_lit) const {
+        IROperand operator()(const NodeAtomIntLit* atom_int_lit) const
+        {
             //now we are only handling it separately not inside an expr so this works fine for now
             const auto reg = irb.create_vreg();
             irb.m_current_block->instructions.push_back({ .opcode = IROpcode::COPY, .dest = reg,
@@ -162,7 +164,8 @@ IROperand IRBuilder::build_atom(const NodeAtom* atom) {
                     atom_bool_lit->bool_lit.type == TokenType::false_ ? 0 : -1) });
             return reg;
         }
-        IROperand operator()(const NodeAtomParen* atom_paren) const {
+        IROperand operator()(const NodeAtomParen* atom_paren) const
+        {
             return irb.build_expr(atom_paren->expr);
         }
         IROperand operator()(const NodeAtomArrayAccess* atom_array_access) const

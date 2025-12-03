@@ -1,13 +1,6 @@
-#include "ir_builder.hpp"
+#include <cassert>
 
-void IRBuilder::build_scope(const NodeScope* scope) {
-    begin_scope();
-    for (const NodeStmt* stmt : scope->stmts)
-    {
-        build_statement(stmt);
-    }
-    end_scope();
-}
+#include "ir_builder.hpp"
 
 void IRBuilder::build_statement(const NodeStmt* stmt) {
     struct StmtVisitor {
@@ -20,9 +13,28 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         void operator()(const NodeStmtDef* stmt_def) const
         {
             //we assume unique identifiers thanks to TypeChecker
-            // assert(std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
-            //     return var.name == stmt_def->ident.value.value(); }) == gen.m_vars.cend());
-            //
+            assert(std::ranges::find_if(std::as_const(irb.m_vars), [&](const VarInfo& var){
+                return var.name == stmt_def->ident.value.value(); }) == irb.m_vars.cend());
+
+            if (stmt_def->type.is_array)
+            {
+                //do smth
+            }
+            else
+            {
+                IROperand reg;
+                if (stmt_def->expr)
+                {
+                    reg = irb.build_expr(stmt_def->expr.value());
+                }
+                else
+                {
+                    //def init to 0
+                    reg = irb.create_vreg();
+                    irb.m_current_block->instructions.push_back({ IROpcode::COPY, reg, IROperand::make_lit(0) });
+                }
+                irb.m_vars.push_back({ .reg = reg, .type = stmt_def->type, .name = std::string(stmt_def->ident.value.value()) });
+            }
             // if (stmt_def->type.is_array)
             // {
             //     //evaluate array size at compile time
@@ -50,19 +62,7 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             //
             //     gen.m_stack_size += array_size;
             // }
-            // else
-            // {
-            //     gen.m_vars.push_back({ .type = stmt_def->type, .name = std::string(stmt_def->ident.value.value()), .stack_loc = gen.m_stack_size });
-            //     if (stmt_def->expr)
-            //         gen.generate_expression(stmt_def->expr.value());
-            //     else
-            //     {
-            //         //def initialize to 0
-            //         gen.m_emitter.emit("mov", "rax", "0");
-            //         gen.push("rax");
-            //     }
-            // }
-        }
+        } //do arrays
         void operator()(const NodeScope* scope) const
         {
             irb.build_scope(scope);
@@ -75,7 +75,7 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             const auto if_in_label_id = irb.m_label_id;
             //save current block name
             const auto current_block_name = irb.m_current_block->name;
-            //GOFALSE LX_enter tX
+            //GOTRUE LX_enter tX
             irb.m_current_block->instructions.push_back({ IROpcode::GOTRUE,
                 irb.create_label(true), expr_reg});
 
@@ -103,41 +103,37 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeStmtAssign* stmt_assign) const
         {
-            // const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var){
-            //     return var.name == stmt_assign->ident.value.value(); });
-            //
-            // assert(it != gen.m_vars.end() && "Undeclared identifier in assignment");
-            //
-            // gen.generate_expression(stmt_assign->expr);
-            // gen.pop("rax");
-            //
-            // if (it->is_param)
-            // {
-            //     //parameters: positive offset from rbp
-            //     gen.m_emitter.emit_mov_offset("rbp", "rax", it->stack_loc);
-            // }
-            // else
-            // {
-            //     //local variables: calculated from rsp
-            //     gen.m_emitter.emit_mov_offset("rsp", "rax", (gen.m_stack_size - it->stack_loc - 1) * 8);
-            // }
+            const auto it = std::ranges::find_if(irb.m_vars, [&](const VarInfo& var){
+                return var.name == stmt_assign->ident.value.value(); });
+
+            assert(it != irb.m_vars.end() && "Undeclared identifier in assignment");
+
+            const auto reg = irb.build_expr(stmt_assign->expr);
+            irb.m_current_block->instructions.push_back({IROpcode::COPY, it->reg, reg });
         }
         void operator()(const NodeStmtWhile* stmt_while) const
         {
-            // const std::string label = gen.create_label();
-            // gen.m_emitter.emit_label(label);
-            //
-            // gen.generate_expression(stmt_while->expr);
-            // gen.pop("rax");
-            // gen.m_emitter.emit("test", "rax", "rax");
-            // const std::string end_label = gen.create_label();
-            // gen.m_emitter.emit("jz", end_label);
-            //
-            // gen.generate_scope(stmt_while->scope);
-            //
-            // gen.m_emitter.emit("jmp", label);
-            //
-            // gen.m_emitter.emit_label(end_label);
+            auto const while_label_id = irb.m_label_id;
+            const auto current_block_name = irb.m_current_block->name;
+
+            irb.m_current_block->instructions.push_back({ IROpcode::LABEL,
+                irb.create_label(false)});
+            auto const expr_reg = irb.build_expr(stmt_while->expr);
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTRUE,
+                irb.create_label(true, while_label_id), expr_reg});
+
+            //basic block
+            irb.m_current_func->blocks.push_back({ .name = "while"+std::to_string(while_label_id), .instructions = {
+                IRInstruction{ IROpcode::LABEL, irb.create_label(true, while_label_id) }
+            } });
+            irb.m_current_block = &irb.m_current_func->blocks.back();
+            irb.build_scope(stmt_while->scope);
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
+                irb.create_label(false, while_label_id) });
+
+            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
+                return block.name == current_block_name;
+            });
         }
         void operator()(const NodeStmtPrint* stmt_print) const
         {
@@ -336,4 +332,13 @@ void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end
 
     PredVisitor visitor{ .irb = *this, .end_label_id = end_label_id };
     std::visit(visitor, pred->ifpred);
+}
+
+void IRBuilder::build_scope(const NodeScope* scope) {
+    begin_scope();
+    for (const NodeStmt* stmt : scope->stmts)
+    {
+        build_statement(stmt);
+    }
+    end_scope();
 }
