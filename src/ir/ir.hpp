@@ -17,6 +17,7 @@ struct IROperand {
 
     static IROperand make_reg(const size_t id) { IROperand op; op.type = VirtualReg; op.val_id = id; return op; }
     static IROperand make_lit(const size_t val) { IROperand op; op.type = IntLiteral; op.val_id = val; return op; }
+    static IROperand make_lit(const std::string_view val) { IROperand op; op.type = IntLiteral; op.val_id = stoi(std::string(val)); return op; }
     static IROperand make_label(const std::string& label) { IROperand op; op.type = Label; op.label = std::move(label); return op; }
     static IROperand none() { return {}; }
 

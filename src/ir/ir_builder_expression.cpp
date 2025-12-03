@@ -3,15 +3,15 @@
 IROperand IRBuilder::build_expr(const NodeExpr* expr) {
     struct ExprVisitor {
         IRBuilder& irb;
-        void operator()(const NodeAtom* atom) const
+        IROperand operator()(const NodeAtom* atom) const
         {
-            // gen.generate_atom(atom);
+            return irb.build_atom(atom);
         }
-        void operator()(const NodeBinExpr* bin_expr) const
+        IROperand operator()(const NodeBinExpr* bin_expr) const
         {
             // gen.generate_binary_expression(bin_expr);
         }
-        void operator()(const NodeFuncCallExpr* expr_func_call) const
+        IROperand operator()(const NodeFuncCallExpr* expr_func_call) const
         {
             //push arguments right-to-left
             // if (expr_func_call->exprs.has_value())
@@ -42,7 +42,7 @@ IROperand IRBuilder::build_expr(const NodeExpr* expr) {
     };
 
     ExprVisitor visitor{ .irb = *this };
-    std::visit(visitor, expr->expr);
+    return std::visit(visitor, expr->expr);
 }
 
 IROperand IRBuilder::build_binexpr(const NodeBinExpr* bin_expr) {
@@ -147,9 +147,9 @@ struct BinExprVisitor {
 }
 
 IROperand IRBuilder::build_atom(const NodeAtom* atom) {
-struct AtomVisitor {
+    struct AtomVisitor {
         IRBuilder& irb;
-        void operator()(const NodeAtomIdent* atom_ident) const{
+        IROperand operator()(const NodeAtomIdent* atom_ident) const{
             // const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
             //     return var.name == atom_ident->ident.value.value(); });
             //
@@ -170,12 +170,14 @@ struct AtomVisitor {
             //     gen.push(offset.str());
             // }
         }
-        void operator()(const NodeAtomIntLit* atom_int_lit) const {
-
-            // gen.m_emitter.emit("mov", "rax", atom_int_lit->int_lit.value.value());
-            // gen.push("rax");
+        IROperand operator()(const NodeAtomIntLit* atom_int_lit) const {
+            //now we are only handling it separately not inside an expr so this works fine for now
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ .opcode = IROpcode::COPY, .dest = reg,
+                .src1 = IROperand::make_lit(atom_int_lit->int_lit.value.value()) });
+            return reg;
         }
-        void operator()(const NodeAtomBoolLit* atom_bool_lit) const
+        IROperand operator()(const NodeAtomBoolLit* atom_bool_lit) const
         {
             //true = 1, false = 0
             // if (atom_bool_lit->bool_lit.type == TokenType::true_)
@@ -188,10 +190,10 @@ struct AtomVisitor {
             // }
             // gen.push("rax");
         }
-        void operator()(const NodeAtomParen* atom_paren) const {
+        IROperand operator()(const NodeAtomParen* atom_paren) const {
             // gen.generate_expression(atom_paren->expr);
         }
-        void operator()(const NodeAtomArrayAccess* atom_array_access) const
+        IROperand operator()(const NodeAtomArrayAccess* atom_array_access) const
         {
             // const auto it = std::ranges::find_if(gen.m_vars, [&](const Variable& var) {
             //     return var.name == atom_array_access->ident.value.value();
@@ -219,5 +221,5 @@ struct AtomVisitor {
         }
     };
     AtomVisitor visitor({ .irb = *this });
-    std::visit(visitor, atom->primary_expr);
+    return std::visit(visitor, atom->primary_expr);
 }

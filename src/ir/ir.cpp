@@ -43,11 +43,12 @@ std::string IRInstruction::to_string() const
     if (std::set { IROpcode::ADD, IROpcode::SUB, IROpcode::MUL, IROpcode::DIV}.contains(opcode))
     {
         const char sign = opcode == IROpcode::ADD ? '+' : opcode == IROpcode::SUB ? '-' : opcode == IROpcode::MUL ? '*' : '/';
-        ss << operand_to_string(dest) << " = " << operand_to_string(src1) << space << sign << space << operand_to_string(src2);
+        ss << tab << operand_to_string(dest) << " = " << operand_to_string(src1) << space << sign << space << operand_to_string(src2);
+        return ss.str();
     }
+    if (opcode == IROpcode::COPY) { ss << tab << operand_to_string(dest) << " = " << operand_to_string(src1); return ss.str(); }
 
     ss << tab << opcode_to_string(opcode);
-
     if (dest.type != IROperand::None) ss << space << operand_to_string(dest);
     if (src1.type != IROperand::None) ss << space << operand_to_string(src1);
     if (src2.type != IROperand::None) ss << comma << space << operand_to_string(src2);
