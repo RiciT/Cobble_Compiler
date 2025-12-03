@@ -17,6 +17,7 @@ IRProgram IRBuilder::build_ir()
     const IRFunction main_func_def = { .name = "MAIN", .blocks = { IRBasicBlock{ .name = "def_enter", .instructions = std::vector{funcstart}} } };
     m_current_program->functions.push_back(main_func_def);
     m_current_func = &m_current_program->functions.front();
+    m_current_block = &m_current_func->blocks.front();
 
     for (const NodeStmt* stmt : m_prog.stmts)
     {

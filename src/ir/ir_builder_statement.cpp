@@ -65,7 +65,7 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeScope* scope) const
         {
-            // gen.generate_scope(scope);
+            irb.build_scope(scope);
         }
         void operator()(const NodeStmtIf* stmt_if) const
         {
@@ -292,29 +292,45 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
 
 void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end_label_id) {
     struct PredVisitor {
-        IRBuilder irb;
+        IRBuilder& irb;
         const size_t end_label_id;
 
         void operator()(const NodeIfPredElseIf* elseif_) const
         {
-            // gen.m_emitter.emit_comment("else if");
-            // gen.generate_expression(elseif_->expr);
-            // gen.pop("rax");
-            // const std::string label = gen.create_label();
-            // gen.m_emitter.emit("test", "rax", "rax");
-            // gen.m_emitter.emit("jz", label);
-            // gen.generate_scope(elseif_->scope);
-            // gen.m_emitter.emit("jmp", end_label);
-            // if (elseif_->ifpred.has_value())
-            // {
-            //     gen.m_emitter.emit_label(label);
-            //     gen.generate_if_predicate(elseif_->ifpred.value(), end_label);
-            // }
+            //save register of expr
+            const auto expr_reg = irb.build_expr(elseif_->expr);
+            //save label id of if label
+            const auto else_if_in_label_id = irb.m_label_id;
+            //save current block name
+            const auto current_block_name = irb.m_current_block->name;
+            //GOFALSE LX_enter tX
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTRUE,
+                irb.create_label(true), expr_reg});
+
+            //basic block of elseif statement
+            irb.m_current_func->blocks.push_back({ .name = "elseif"+std::to_string(else_if_in_label_id), .instructions = {
+                IRInstruction{ IROpcode::LABEL, irb.create_label(true, else_if_in_label_id) }
+            } });
+            irb.m_current_block = &irb.m_current_func->blocks.back();
+            irb.build_scope(elseif_->scope);
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
+                irb.create_label(false, end_label_id) });
+
+            //generate predicates if there are any
+            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
+                return block.name == current_block_name;
+            });
+            if (elseif_->ifpred.has_value())
+            {
+                irb.build_if_predicate(elseif_->ifpred.value(), else_if_in_label_id);
+            }
+            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
+                return block.name == current_block_name;
+            });
         }
         void operator()(const NodeIfPredElse* else_) const
         {
-            // gen.m_emitter.emit_comment("else");
-            // gen.generate_scope(else_->scope);
+            irb.build_scope(else_->scope);
         }
     };
 

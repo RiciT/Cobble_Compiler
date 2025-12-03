@@ -25,6 +25,10 @@ void Generator::generate_if_predicate(const NodeIfPredicate* pred, const std::st
                 gen.m_emitter.emit_label(label);
                 gen.generate_if_predicate(elseif_->ifpred.value(), end_label);
             }
+            else
+            {
+                gen.m_emitter.emit_label(label);
+            }
         }
         void operator()(const NodeIfPredElse* else_) const
         {
