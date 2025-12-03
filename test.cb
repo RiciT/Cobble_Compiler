@@ -1,2 +1,1 @@
-def int x = 10;
-print(x);
+print(5);

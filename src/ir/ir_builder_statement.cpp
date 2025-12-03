@@ -130,54 +130,14 @@ struct StmtVisitor {
         }
         void operator()(const NodeStmtPrint* stmt_print) const
         {
-            //PRINTING INTEGERS
+            IRBasicBlock print_block = { .name = "print", .instructions = {} };
+            irb.m_current_func->blocks.push_back(print_block);
+            irb.m_current_block = &irb.m_current_func->blocks.back();
 
-            // gen.generate_expression(stmt_print->expr);
-            // gen.pop("rax");  // Number to print is now in rax
-            //
-            // //convert integer to ASCII string
-            // gen.m_emitter.emit_comment("Convert integer in rax to ASCII");
-            // gen.m_emitter.emit("mov", "rbx", "10");
-            // gen.m_emitter.emit("mov", "rcx", "0");
-            // gen.m_emitter.emit("sub", "rsp", "32");
-            // gen.m_emitter.emit("mov", "rdi", "rsp");
-            // gen.m_emitter.emit("add", "rdi", "31"); //point to end of buffer
-            // gen.m_emitter.emit("mov", "BYTE [rdi]", "10"); //add newline
-            // gen.m_emitter.emit("dec", "rdi");
-            // gen.m_emitter.emit("inc", "rcx");
-            //
-            // const std::string convert_loop_label = gen.create_label();
-            // const std::string done_convert_label = gen.create_label();
-            // //handle the case where the number is 0
-            // gen.m_emitter.emit("test", "rax", "rax");
-            // gen.m_emitter.emit("jnz", convert_loop_label);
-            // gen.m_emitter.emit("mov", "BYTE [rdi]", "'0'");
-            // gen.m_emitter.emit("dec", "rdi");
-            // gen.m_emitter.emit("inc", "rcx");
-            // gen.m_emitter.emit("jmp", done_convert_label);
-            //
-            // gen.m_emitter.emit_label(convert_loop_label);
-            // gen.m_emitter.emit("test", "rax", "rax");
-            // gen.m_emitter.emit("jz", done_convert_label);
-            // gen.m_emitter.emit("xor", "rdx", "rdx");      //clear rdx for division
-            // gen.m_emitter.emit("div", "rbx");             //rax = rax/10, rdx = rax%10
-            // gen.m_emitter.emit("add", "dl", "'0'");       //convert digit to ASCII
-            // gen.m_emitter.emit("mov", "[rdi]", "dl");     //store character
-            // gen.m_emitter.emit("dec", "rdi");             //move buffer pointer back
-            // gen.m_emitter.emit("inc", "rcx");             //increment digit count
-            // gen.m_emitter.emit("jmp", convert_loop_label);
-            //
-            // gen.m_emitter.emit_label(done_convert_label);
-            // gen.m_emitter.emit("inc", "rdi");             //adjust to first digit
-            //
-            // //now print the buffer
-            // gen.m_emitter.emit("mov", "rax", "1");        //sys_write
-            // gen.m_emitter.emit("mov", "rsi", "rdi");      //buffer address
-            // gen.m_emitter.emit("mov", "rdi", "1");        //stdout
-            // gen.m_emitter.emit("mov", "rdx", "rcx");      //length = digit count
-            // gen.m_emitter.emit("syscall");
-            //
-            // gen.m_emitter.emit("add", "rsp", "32");       //clean up buffer
+            const IROperand reg = irb.create_vreg();
+
+            const IRInstruction print = { IROpcode::PRINT, reg };
+            irb.m_current_block->instructions.push_back(print);
         }
         void operator()(const NodeStmtFunc* stmt_func) const
         {

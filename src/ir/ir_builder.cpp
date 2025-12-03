@@ -11,31 +11,22 @@ IRBuilder::IRBuilder(NodeProgram prog)
 IRProgram IRBuilder::build_ir()
 {
     IRProgram program;
+    // ReSharper disable once CppDFALocalValueEscapesFunction
+    m_current_program = &program; //the address is safe as everything is called from build_ir()
 
-    IRFunction main_func_def;
-    program.functions.push_back(main_func_def);
-    IRFunction& main_func = program.functions.back();
-    main_func.name = "_start";
+    const IRInstruction funcstart = { IROpcode::LABEL, { .type = IROperand::Type::Label, .label = "_start" } };
+    IRFunction main_func_def = { .name = "MAIN", .blocks = { IRBasicBlock{ .name = "def_enter", .instructions = std::vector{funcstart}} } };
+    m_current_program->functions.push_back(main_func_def);
+    m_current_func = &m_current_program->functions.front();
 
-    // for (const NodeStmt* stmt : m_prog.stmts)
-    // {
-    //     build_statement(stmt);
-    // }
+    for (const NodeStmt* stmt : m_prog.stmts)
+    {
+        build_statement(stmt);
+    }
 
-    IRInstruction exit;
-    exit.opcode = IROpcode::EXIT;
-    exit.dest = IROperand::none();
-    exit.src1 = IROperand::make_lit(0);
-    exit.src2 = IROperand::none();
-
-    std::vector<IRInstruction> exit_vector;
-    exit_vector.push_back(std::move(exit));
-
-    IRBasicBlock exit_block;
-    exit_block.name = "DEFAULT EXIT";
-    exit_block.instructions = exit_vector;
-
-    main_func.blocks.push_back(std::move(exit_block));
+    m_current_func = &m_current_program->functions.front();
+    const IRInstruction exit = { .opcode = IROpcode::EXIT, .src1 = IROperand::make_lit(0)};
+    m_current_func->blocks.push_back({ .name = "def_exit", .instructions = std::vector{exit} });
 
     return program;
 }
@@ -43,31 +34,25 @@ IRProgram IRBuilder::build_ir()
 //helpers
 IROperand IRBuilder::create_vreg() const
 {
-
+    return IROperand::make_reg(m_current_func->vreg_count++);
 }
 
-std::string IRBuilder::create_label()
+std::string IRBuilder::create_label(bool isEnter, bool isExit, std::string name)
+{
+    return (name == "" ? "L" : name) + (isEnter ? "_enter" : "") + (isExit ? "_exit" : "");
+}
+
+void IRBuilder::begin_scope()
 {
 
 }
 
-void IRBuilder::emit(const IRInstruction &instr) const
+void IRBuilder::end_scope()
 {
 
 }
 
-void IRBuilder::begin_scope() {
-
-}
-
-void IRBuilder::end_scope() {
-
-}
-
-IRBuilder::VarInfo* IRBuilder::find_var(const std::string& name) {
-
-}
-
-void IRBuilder::add_var(const std::string& name, VarInfo info) {
+void IRBuilder::flush_current_block()
+{
 
 }

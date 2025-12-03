@@ -5,7 +5,6 @@
 
 #include "ast/nodes.hpp"
 #include "ir.hpp"
-#include "common/arena_allocator.hpp"
 
 class IRBuilder {
 public:
@@ -23,8 +22,7 @@ private:
 
     //helpers
     IROperand create_vreg() const;
-    std::string create_label();
-    void emit(const IRInstruction &instr) const;
+    static std::string create_label(bool isEnter = false, bool isExit = false, std::string name = "");
 
     struct VarInfo {
         IROperand reg; //the vreg holding this variable
@@ -36,18 +34,17 @@ private:
 
     void begin_scope();
     void end_scope();
-    VarInfo* find_var(const std::string& name);
-    void add_var(const std::string& name, VarInfo var);
+    void flush_current_block();
 
     //state
     NodeProgram m_prog;
 
+    IRProgram* m_current_program = nullptr;
     //pointer to the function being built
     IRFunction* m_current_func = nullptr;
     //pointer to the block being built
     IRBasicBlock* m_current_block = nullptr;
-
-    size_t m_label_counter = 0;
     //stack of symbol tables (name -> vreg)
-    std::vector<std::unordered_map<std::string, VarInfo>> m_scopes;
+    std::vector<std::unordered_map<std::string, VarInfo>> m_scopes {};
+    std::vector<VarInfo> m_vars {};
 };

@@ -171,6 +171,7 @@ struct AtomVisitor {
             // }
         }
         void operator()(const NodeAtomIntLit* atom_int_lit) const {
+
             // gen.m_emitter.emit("mov", "rax", atom_int_lit->int_lit.value.value());
             // gen.push("rax");
         }

@@ -1,8 +1,7 @@
 global _start
 _start:
-    mov rax, 10
+    mov rax, 5
     push rax
-    push QWORD [rsp + 0]
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10

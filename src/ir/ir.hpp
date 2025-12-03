@@ -38,6 +38,7 @@ enum class IROpcode {
     PRINT,
     EXIT,
     COPY,
+    MOV,
 };
 
 //instructions
@@ -49,19 +50,7 @@ struct IRInstruction {
 
     std::string to_string() const;
 
-    //helpers for cleaner code
-    static IRInstruction make_binary(const IROpcode op, const IROperand &dest, const IROperand &lhs, const IROperand &rhs) {
-        return {op, dest, lhs, rhs};
-    }
-    static IRInstruction make_jump(const std::string &label, const bool isUncond = true) {
-        return {isUncond ? IROpcode::JMP : IROpcode::JMP_FALSE, IROperand::none(), IROperand::make_label(label), IROperand::none()};
-    }
-    static IRInstruction make_label(const std::string &label) {
-        return {IROpcode::LABEL, IROperand::none(), IROperand::make_label(label), IROperand::none()};
-    }
-    static IRInstruction make_ret(const IROperand &val) {
-        return {IROpcode::RET, IROperand::none(), val, IROperand::none()};
-    }
+    //helpers for cleaner code will go here
 };
 
 //structure
