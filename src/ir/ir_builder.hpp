@@ -23,8 +23,8 @@ private:
     //helpers
     IROperand create_vreg() const;
 
-    IROperand create_label(bool isEnter, std::string name);
-    IROperand create_label(bool isEnter, size_t id);
+    static IROperand create_label(bool isEnter, const std::string &name);
+    static IROperand create_label(bool isEnter, size_t id);
     IROperand create_label(bool isEnter);
 
     struct VarInfo {

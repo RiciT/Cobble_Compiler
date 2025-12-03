@@ -14,7 +14,7 @@ IRProgram IRBuilder::build_ir()
     m_current_program = &program; //the address is safe as everything is called from build_ir()
 
     const IRInstruction funcstart = { IROpcode::LABEL, { .type = IROperand::Type::Label, .label = "_start" } };
-    IRFunction main_func_def = { .name = "MAIN", .blocks = { IRBasicBlock{ .name = "def_enter", .instructions = std::vector{funcstart}} } };
+    const IRFunction main_func_def = { .name = "MAIN", .blocks = { IRBasicBlock{ .name = "def_enter", .instructions = std::vector{funcstart}} } };
     m_current_program->functions.push_back(main_func_def);
     m_current_func = &m_current_program->functions.front();
 
@@ -32,15 +32,15 @@ IROperand IRBuilder::create_vreg() const
 {
     return IROperand::make_reg(m_current_func->vreg_count++);
 }
-IROperand IRBuilder::create_label(bool isEnter, std::string name)
+IROperand IRBuilder::create_label(const bool isEnter, const std::string &name)
 {
     return IROperand::make_label(isEnter, 0, name);
 }
-IROperand IRBuilder::create_label(bool isEnter, size_t id)
+IROperand IRBuilder::create_label(const bool isEnter, const size_t id)
 {
     return IROperand::make_label(isEnter, id, "");
 }
-IROperand IRBuilder::create_label(bool isEnter)
+IROperand IRBuilder::create_label(const bool isEnter)
 {
     return IROperand::make_label(isEnter, m_label_id++, "");
 }
