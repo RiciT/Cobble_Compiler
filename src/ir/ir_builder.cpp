@@ -1,4 +1,3 @@
-#include <cassert>
 #include <ranges>
 
 #include "ir_builder.hpp"
@@ -24,10 +23,7 @@ IRProgram IRBuilder::build_ir()
         build_statement(stmt);
     }
 
-    m_current_func = &m_current_program->functions.front();
-    const IRInstruction exit = { .opcode = IROpcode::EXIT, .src1 = IROperand::make_lit(0)};
-    m_current_func->blocks.push_back({ .name = "def_exit", .instructions = std::vector{exit} });
-
+    m_current_block->instructions.push_back({ .opcode = IROpcode::EXIT, .src1 = IROperand::make_lit(0)});
     return program;
 }
 
@@ -36,22 +32,26 @@ IROperand IRBuilder::create_vreg() const
 {
     return IROperand::make_reg(m_current_func->vreg_count++);
 }
-
-std::string IRBuilder::create_label(bool isEnter, bool isExit, std::string name)
+IROperand IRBuilder::create_label(bool isEnter, std::string name)
 {
-    return (name == "" ? "L" : name) + (isEnter ? "_enter" : "") + (isExit ? "_exit" : "");
+    return IROperand::make_label(isEnter, 0, name);
 }
-
+IROperand IRBuilder::create_label(bool isEnter, size_t id)
+{
+    return IROperand::make_label(isEnter, id, "");
+}
+IROperand IRBuilder::create_label(bool isEnter)
+{
+    return IROperand::make_label(isEnter, m_label_id++, "");
+}
 void IRBuilder::begin_scope()
 {
 
 }
-
 void IRBuilder::end_scope()
 {
 
 }
-
 void IRBuilder::flush_current_block()
 {
 

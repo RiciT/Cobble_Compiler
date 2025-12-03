@@ -6,16 +6,10 @@
 //helper for to string
 static std::string opcode_to_string(const IROpcode op) {
     switch(op) {
-        case IROpcode::ADD: return "ADD";
-        case IROpcode::SUB: return "SUB";
-        case IROpcode::MUL: return "MUL";
-        case IROpcode::DIV: return "DIV";
-        case IROpcode::COPY: return "COPY";
         case IROpcode::GOTO: return "GOTO";
-        case IROpcode::GOFALSE: return "GOFALSE";
+        case IROpcode::GOTRUE: return "GOTRUE";
         case IROpcode::ALLOC: return "ALLOC";
         case IROpcode::MOV: return "MOV";
-        case IROpcode::LABEL: return ""; // Label handles itself
         case IROpcode::EXIT: return "EXIT";
         case IROpcode::PRINT: return "PRINT";
         default: return "???";
@@ -40,7 +34,16 @@ std::string IRInstruction::to_string() const
     const std::string comma = ",";
     if (opcode == IROpcode::LABEL) { ss << dest.label << ":"; return ss.str(); }
 
-    if (std::set { IROpcode::ADD, IROpcode::SUB, IROpcode::MUL, IROpcode::DIV}.contains(opcode))
+    if (std::set { IROpcode::ADD, IROpcode::SUB, IROpcode::MUL, IROpcode::DIV,
+        IROpcode::EQ, IROpcode::NEQ, IROpcode::GT, IROpcode::LT, IROpcode::GTE, IROpcode::LTE}.contains(opcode))
+    {
+        const std::string sign = opcode == IROpcode::ADD ? "+" : opcode == IROpcode::SUB ? "-" : opcode == IROpcode::MUL ? "*" :
+            opcode == IROpcode::DIV ? "/" : opcode == IROpcode::EQ ? "==" : opcode == IROpcode::NEQ ? "!=" :
+            opcode == IROpcode::GT ? ">" : opcode == IROpcode::LT ? "<" : opcode == IROpcode::GTE ? "<=" : ">=";
+        ss << tab << operand_to_string(dest) << " = " << operand_to_string(src1) << space << sign << space << operand_to_string(src2);
+        return ss.str();
+    }
+    if (std::set { IROpcode::EQ, IROpcode::NEQ, IROpcode::GT, IROpcode::LT, IROpcode::GTE, IROpcode::LTE}.contains(opcode))
     {
         const char sign = opcode == IROpcode::ADD ? '+' : opcode == IROpcode::SUB ? '-' : opcode == IROpcode::MUL ? '*' : '/';
         ss << tab << operand_to_string(dest) << " = " << operand_to_string(src1) << space << sign << space << operand_to_string(src2);

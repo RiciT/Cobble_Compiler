@@ -14,10 +14,8 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         IRBuilder& irb;
         void operator()(const NodeStmtExit* stmt_exit) const
         {
-            // gen.generate_expression(stmt_exit->expr);
-            // gen.m_emitter.emit("mov", "rax", "60");
-            // gen.pop("rdi");
-            // gen.m_emitter.emit("syscall");
+            const auto expr_reg = irb.build_expr(stmt_exit->expr);
+            irb.m_current_block->instructions.push_back({ .opcode = IROpcode::EXIT, .src1 = expr_reg});
         }
         void operator()(const NodeStmtDef* stmt_def) const
         {
@@ -71,24 +69,37 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeStmtIf* stmt_if) const
         {
-            // gen.generate_expression(stmt_if->expr);
-            // gen.pop("rax");
-            // const std::string label = gen.create_label();
-            // gen.m_emitter.emit("test", "rax", "rax");
-            // gen.m_emitter.emit("jz", label);
-            // gen.generate_scope(stmt_if->scope);
-            // if (stmt_if->ifpred.has_value())
-            // {
-            //     const std::string end_label = gen.create_label();
-            //     gen.m_emitter.emit("jmp", end_label);
-            //     gen.m_emitter.emit_label(label);
-            //     gen.generate_if_predicate(stmt_if->ifpred.value(), end_label);
-            //     gen.m_emitter.emit_label(end_label);
-            // }
-            // else
-            // {
-            //     gen.m_emitter.emit_label(label);
-            // }
+            //save register of expr
+            const auto expr_reg = irb.build_expr(stmt_if->expr);
+            //save label id of if label
+            const auto if_in_label_id = irb.m_label_id;
+            //save current block name
+            const auto current_block_name = irb.m_current_block->name;
+            //GOFALSE LX_enter tX
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTRUE,
+                irb.create_label(true), expr_reg});
+
+            //basic block of if statement
+            irb.m_current_func->blocks.push_back({ .name = "if"+std::to_string(if_in_label_id), .instructions = {
+                IRInstruction{ IROpcode::LABEL, irb.create_label(true, if_in_label_id) }
+            } });
+            irb.m_current_block = &irb.m_current_func->blocks.back();
+            irb.build_scope(stmt_if->scope);
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
+                irb.create_label(false, if_in_label_id) });
+
+            //generate predicates if there are any
+            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
+                return block.name == current_block_name;
+            });
+            if (stmt_if->ifpred.has_value())
+            {
+                irb.build_if_predicate(stmt_if->ifpred.value(), if_in_label_id);
+            }
+            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
+                return block.name == current_block_name;
+            });
+            irb.m_current_block->instructions.push_back({ IROpcode::LABEL, irb.create_label(false, if_in_label_id)});
         }
         void operator()(const NodeStmtAssign* stmt_assign) const
         {
@@ -130,10 +141,12 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeStmtPrint* stmt_print) const
         {
-            IRBasicBlock print_block = { .name = "print", .instructions = {} };
-            irb.m_current_func->blocks.push_back(print_block);
-            irb.m_current_block = &irb.m_current_func->blocks.back();
-
+            if (irb.m_current_block == nullptr)
+            {
+                IRBasicBlock print_block = { .name = "print", .instructions = {} };
+                irb.m_current_func->blocks.push_back(print_block);
+                irb.m_current_block = &irb.m_current_func->blocks.back();
+            }
             const IROperand reg = irb.build_expr(stmt_print->expr);
 
             const IRInstruction print = { IROpcode::PRINT, reg };
@@ -277,10 +290,10 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
     std::visit(visitor, stmt->stmt);
 }
 
-void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const std::string& end_label) {
+void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end_label_id) {
     struct PredVisitor {
         IRBuilder irb;
-        const std::string& end_label;
+        const size_t end_label_id;
 
         void operator()(const NodeIfPredElseIf* elseif_) const
         {
@@ -305,6 +318,6 @@ void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const std::strin
         }
     };
 
-    PredVisitor visitor{ .irb = *this, .end_label = end_label };
+    PredVisitor visitor{ .irb = *this, .end_label_id = end_label_id };
     std::visit(visitor, pred->ifpred);
 }

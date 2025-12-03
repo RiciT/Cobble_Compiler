@@ -50,93 +50,85 @@ IROperand IRBuilder::build_expr(const NodeExpr* expr) {
 IROperand IRBuilder::build_binexpr(const NodeBinExpr* bin_expr) {
     struct BinExprVisitor {
         IRBuilder& irb;
-        IROperand operator()(const NodeBinExprAdd* add) const {
+        IROperand operator()(const NodeBinExprAdd* add) const
+        {
             const auto reg1 = irb.build_expr(add->lhs);
             const auto reg2 = irb.build_expr(add->rhs);
             const auto reg = irb.create_vreg();
             irb.m_current_block->instructions.push_back({ IROpcode::ADD, reg, reg1, reg2 });
             return reg;
         }
-        IROperand operator()(const NodeBinExprSub* sub) const {
+        IROperand operator()(const NodeBinExprSub* sub) const
+        {
             const auto reg1 = irb.build_expr(sub->lhs);
             const auto reg2 = irb.build_expr(sub->rhs);
             const auto reg = irb.create_vreg();
             irb.m_current_block->instructions.push_back({ IROpcode::SUB, reg, reg1, reg2 });
             return reg;
         }
-        IROperand operator()(const NodeBinExprMult* mult) const {
+        IROperand operator()(const NodeBinExprMult* mult) const
+        {
             const auto reg1 = irb.build_expr(mult->lhs);
             const auto reg2 = irb.build_expr(mult->rhs);
             const auto reg = irb.create_vreg();
             irb.m_current_block->instructions.push_back({ IROpcode::MUL, reg, reg1, reg2 });
             return reg;
         }
-        IROperand operator()(const NodeBinExprDiv* div) const {
+        IROperand operator()(const NodeBinExprDiv* div) const
+        {
             const auto reg1 = irb.build_expr(div->lhs);
             const auto reg2 = irb.build_expr(div->rhs);
             const auto reg = irb.create_vreg();
             irb.m_current_block->instructions.push_back({ IROpcode::DIV, reg, reg1, reg2 });
             return reg;
         }
-        IROperand operator()(const NodeBinExprEq* eq) const {
-            // gen.generate_expression(eq->lhs);
-            // gen.generate_expression(eq->rhs);
-            // gen.pop("rbx");
-            // gen.pop("rax");
-            // gen.m_emitter.emit("cmp", "rax", "rbx");
-            // gen.m_emitter.emit("sete", "al"); //set al to 1 if equal
-            // gen.m_emitter.emit("movzx", "rax", "al"); //zero-extend to full register
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprEq* eq) const
+        {
+            const auto reg1 = irb.build_expr(eq->lhs);
+            const auto reg2 = irb.build_expr(eq->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::EQ, reg, reg1, reg2 });
+            return reg;
         }
-        IROperand operator()(const NodeBinExprNotEq* neq) const {
-            // gen.generate_expression(neq->lhs);
-            // gen.generate_expression(neq->rhs);
-            // gen.pop("rbx");
-            // gen.pop("rax");
-            // gen.m_emitter.emit("cmp", "rax", "rbx");
-            // gen.m_emitter.emit("setne", "al");
-            // gen.m_emitter.emit("movzx", "rax", "al");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprNotEq* neq) const
+        {
+            const auto reg1 = irb.build_expr(neq->lhs);
+            const auto reg2 = irb.build_expr(neq->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::NEQ, reg, reg1, reg2 });
+            return reg;
         }
-        IROperand operator()(const NodeBinExprGreater* gt) const {
-            // gen.generate_expression(gt->lhs);
-            // gen.generate_expression(gt->rhs);
-            // gen.pop("rbx");
-            // gen.pop("rax");
-            // gen.m_emitter.emit("cmp", "rax", "rbx");
-            // gen.m_emitter.emit("setg", "al");
-            // gen.m_emitter.emit("movzx", "rax", "al");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprGreater* gt) const
+        {
+            const auto reg1 = irb.build_expr(gt->lhs);
+            const auto reg2 = irb.build_expr(gt->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::GT, reg, reg1, reg2 });
+            return reg;
         }
-        IROperand operator()(const NodeBinExprLess* lt) const {
-            // gen.generate_expression(lt->lhs);
-            // gen.generate_expression(lt->rhs);
-            // gen.pop("rbx");
-            // gen.pop("rax");
-            // gen.m_emitter.emit("cmp", "rax", "rbx");
-            // gen.m_emitter.emit("setl", "al");
-            // gen.m_emitter.emit("movzx", "rax", "al");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprLess* lt) const
+        {
+            const auto reg1 = irb.build_expr(lt->lhs);
+            const auto reg2 = irb.build_expr(lt->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::LT, reg, reg1, reg2 });
+            return reg;
         }
-        IROperand operator()(const NodeBinExprGreaterEq* gte) const {
-            // gen.generate_expression(gte->lhs);
-            // gen.generate_expression(gte->rhs);
-            // gen.pop("rbx");
-            // gen.pop("rax");
-            // gen.m_emitter.emit("cmp", "rax", "rbx");
-            // gen.m_emitter.emit("setge", "al");
-            // gen.m_emitter.emit("movzx", "rax", "al");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprGreaterEq* gte) const
+        {
+            const auto reg1 = irb.build_expr(gte->lhs);
+            const auto reg2 = irb.build_expr(gte->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::GTE, reg, reg1, reg2 });
+            return reg;
         }
-        IROperand operator()(const NodeBinExprLessEq* lte) const {
-            // gen.generate_expression(lte->lhs);
-            // gen.generate_expression(lte->rhs);
-            // gen.pop("rbx");
-            // gen.pop("rax");
-            // gen.m_emitter.emit("cmp", "rax", "rbx");
-            // gen.m_emitter.emit("setle", "al");
-            // gen.m_emitter.emit("movzx", "rax", "al");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprLessEq* lte) const
+        {
+            const auto reg1 = irb.build_expr(lte->lhs);
+            const auto reg2 = irb.build_expr(lte->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::LTE, reg, reg1, reg2 });
+            return reg;
         }
     };
     BinExprVisitor visitor { .irb = *this };
