@@ -38,6 +38,18 @@ label1:
     add rsp, 32
     mov rax, 5
     push rax
+    mov rax, 3
+    push rax
+    mov rax, 1
+    push rax
+    pop rax
+    pop rbx
+    add rax, rbx
+    push rax
+    pop rax
+    pop rbx
+    mul rbx
+    push rax
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10

@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "ir_builder.hpp"
 
 IROperand IRBuilder::build_expr(const NodeExpr* expr) {
@@ -9,7 +11,7 @@ IROperand IRBuilder::build_expr(const NodeExpr* expr) {
         }
         IROperand operator()(const NodeBinExpr* bin_expr) const
         {
-            // gen.generate_binary_expression(bin_expr);
+            return irb.build_binexpr(bin_expr);
         }
         IROperand operator()(const NodeFuncCallExpr* expr_func_call) const
         {
@@ -46,42 +48,37 @@ IROperand IRBuilder::build_expr(const NodeExpr* expr) {
 }
 
 IROperand IRBuilder::build_binexpr(const NodeBinExpr* bin_expr) {
-struct BinExprVisitor {
+    struct BinExprVisitor {
         IRBuilder& irb;
-        void operator()(const NodeBinExprAdd* add) const {
-            // gen.generate_expression(add->rhs);
-            // gen.generate_expression(add->lhs);
-            // gen.pop("rax");
-            // gen.pop("rbx");
-            // gen.m_emitter.emit("add", "rax", "rbx");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprAdd* add) const {
+            const auto reg1 = irb.build_expr(add->lhs);
+            const auto reg2 = irb.build_expr(add->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::ADD, reg, reg1, reg2 });
+            return reg;
         }
-        void operator()(const NodeBinExprSub* sub) const {
-            // gen.generate_expression(sub->rhs);
-            // gen.generate_expression(sub->lhs);
-            // gen.pop("rax");
-            // gen.pop("rbx");
-            // gen.m_emitter.emit("sub", "rax", "rbx");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprSub* sub) const {
+            const auto reg1 = irb.build_expr(sub->lhs);
+            const auto reg2 = irb.build_expr(sub->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::SUB, reg, reg1, reg2 });
+            return reg;
         }
-        void operator()(const NodeBinExprMult* mult) const {
-            // gen.generate_expression(mult->rhs);
-            // gen.generate_expression(mult->lhs);
-            // gen.pop("rax");
-            // gen.pop("rbx");
-            // gen.m_emitter.emit("mul", "rbx");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprMult* mult) const {
+            const auto reg1 = irb.build_expr(mult->lhs);
+            const auto reg2 = irb.build_expr(mult->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::MUL, reg, reg1, reg2 });
+            return reg;
         }
-        void operator()(const NodeBinExprDiv* div) const {
-            // gen.generate_expression(div->rhs);
-            // gen.generate_expression(div->lhs);
-            // gen.pop("rax");
-            // gen.pop("rbx");
-            // gen.m_emitter.emit("xor", "rdx", "rdx");
-            // gen.m_emitter.emit("div", "rbx");
-            // gen.push("rax");
+        IROperand operator()(const NodeBinExprDiv* div) const {
+            const auto reg1 = irb.build_expr(div->lhs);
+            const auto reg2 = irb.build_expr(div->rhs);
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ IROpcode::DIV, reg, reg1, reg2 });
+            return reg;
         }
-        void operator()(const NodeBinExprEq* eq) const {
+        IROperand operator()(const NodeBinExprEq* eq) const {
             // gen.generate_expression(eq->lhs);
             // gen.generate_expression(eq->rhs);
             // gen.pop("rbx");
@@ -91,7 +88,7 @@ struct BinExprVisitor {
             // gen.m_emitter.emit("movzx", "rax", "al"); //zero-extend to full register
             // gen.push("rax");
         }
-        void operator()(const NodeBinExprNotEq* neq) const {
+        IROperand operator()(const NodeBinExprNotEq* neq) const {
             // gen.generate_expression(neq->lhs);
             // gen.generate_expression(neq->rhs);
             // gen.pop("rbx");
@@ -101,7 +98,7 @@ struct BinExprVisitor {
             // gen.m_emitter.emit("movzx", "rax", "al");
             // gen.push("rax");
         }
-        void operator()(const NodeBinExprGreater* gt) const {
+        IROperand operator()(const NodeBinExprGreater* gt) const {
             // gen.generate_expression(gt->lhs);
             // gen.generate_expression(gt->rhs);
             // gen.pop("rbx");
@@ -111,7 +108,7 @@ struct BinExprVisitor {
             // gen.m_emitter.emit("movzx", "rax", "al");
             // gen.push("rax");
         }
-        void operator()(const NodeBinExprLess* lt) const {
+        IROperand operator()(const NodeBinExprLess* lt) const {
             // gen.generate_expression(lt->lhs);
             // gen.generate_expression(lt->rhs);
             // gen.pop("rbx");
@@ -121,7 +118,7 @@ struct BinExprVisitor {
             // gen.m_emitter.emit("movzx", "rax", "al");
             // gen.push("rax");
         }
-        void operator()(const NodeBinExprGreaterEq* gte) const {
+        IROperand operator()(const NodeBinExprGreaterEq* gte) const {
             // gen.generate_expression(gte->lhs);
             // gen.generate_expression(gte->rhs);
             // gen.pop("rbx");
@@ -131,7 +128,7 @@ struct BinExprVisitor {
             // gen.m_emitter.emit("movzx", "rax", "al");
             // gen.push("rax");
         }
-        void operator()(const NodeBinExprLessEq* lte) const {
+        IROperand operator()(const NodeBinExprLessEq* lte) const {
             // gen.generate_expression(lte->lhs);
             // gen.generate_expression(lte->rhs);
             // gen.pop("rbx");
@@ -143,32 +140,19 @@ struct BinExprVisitor {
         }
     };
     BinExprVisitor visitor { .irb = *this };
-    std::visit(visitor, bin_expr->bin_expr);
+    return std::visit(visitor, bin_expr->bin_expr);
 }
 
 IROperand IRBuilder::build_atom(const NodeAtom* atom) {
     struct AtomVisitor {
         IRBuilder& irb;
         IROperand operator()(const NodeAtomIdent* atom_ident) const{
-            // const auto it = std::ranges::find_if(std::as_const(gen.m_vars), [&](const Variable& var){
-            //     return var.name == atom_ident->ident.value.value(); });
-            //
-            // assert(it != gen.m_vars.cend() && "Undeclared identifier");
-            //
-            // if (it->is_param)
-            // {
-            //     //parameters: positive offset from rbp
-            //     std::stringstream offset;
-            //     offset << "QWORD [rbp + " << it->stack_loc << "]";
-            //     gen.push(offset.str());
-            // }
-            // else
-            // {
-            //     //local variables: calculated from rsp
-            //     std::stringstream offset;
-            //     offset << "QWORD [rsp + " << (gen.m_stack_size - it->stack_loc - 1) * 8 << "]";
-            //     gen.push(offset.str());
-            // }
+            const auto it = std::ranges::find_if(std::as_const(irb.m_vars), [&](const VarInfo& var){
+                return var.name == atom_ident->ident.value.value();
+            });
+            assert(it != irb.m_vars.cend() && "Undeclared identifier");
+
+            return it->reg;
         }
         IROperand operator()(const NodeAtomIntLit* atom_int_lit) const {
             //now we are only handling it separately not inside an expr so this works fine for now
@@ -180,18 +164,14 @@ IROperand IRBuilder::build_atom(const NodeAtom* atom) {
         IROperand operator()(const NodeAtomBoolLit* atom_bool_lit) const
         {
             //true = 1, false = 0
-            // if (atom_bool_lit->bool_lit.type == TokenType::true_)
-            // {
-            //     gen.m_emitter.emit("mov", "rax", "1");
-            // }
-            // if (atom_bool_lit->bool_lit.type == TokenType::false_)
-            // {
-            //     gen.m_emitter.emit("mov", "rax", "0");
-            // }
-            // gen.push("rax");
+            const auto reg = irb.create_vreg();
+            irb.m_current_block->instructions.push_back({ .opcode = IROpcode::COPY, .dest = reg,
+                .src1 = IROperand::make_lit(atom_bool_lit->bool_lit.type == TokenType::true_ ? 1 :
+                    atom_bool_lit->bool_lit.type == TokenType::false_ ? 0 : -1) });
+            return reg;
         }
         IROperand operator()(const NodeAtomParen* atom_paren) const {
-            // gen.generate_expression(atom_paren->expr);
+            return irb.build_expr(atom_paren->expr);
         }
         IROperand operator()(const NodeAtomArrayAccess* atom_array_access) const
         {

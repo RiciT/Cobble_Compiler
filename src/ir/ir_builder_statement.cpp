@@ -10,7 +10,7 @@ void IRBuilder::build_scope(const NodeScope* scope) {
 }
 
 void IRBuilder::build_statement(const NodeStmt* stmt) {
-struct StmtVisitor {
+    struct StmtVisitor {
         IRBuilder& irb;
         void operator()(const NodeStmtExit* stmt_exit) const
         {

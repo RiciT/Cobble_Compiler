@@ -1,2 +1,2 @@
 print(54);
-print(5);
+print((1 + 3) * 5);
