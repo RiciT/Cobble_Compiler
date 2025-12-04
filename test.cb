@@ -1,3 +1,6 @@
-func int fib() {
-    print(5);
+
+func int fib(def int x) {
+    return x;
 }
+
+print(fib(5));

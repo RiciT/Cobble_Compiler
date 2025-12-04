@@ -47,13 +47,22 @@ IROperand IRBuilder::create_label(const bool isEnter) const
 }
 void IRBuilder::begin_scope()
 {
-
+    m_scopes.push_back(m_vars.size());
 }
 void IRBuilder::end_scope()
 {
+    size_t slots_to_pop = 0;
+    const size_t pop_count = m_vars.size() - m_scopes.back();
+    //move back stackpointer (add since the stack is upside down)
+    for (size_t i = 0; i < pop_count; i++)
+    {
+        if (const auto& var = m_vars[m_vars.size() - 1 - i]; var.type.is_array) { slots_to_pop += var.type.array_size; }
+        else { slots_to_pop += 1; }
+    }
 
-}
-void IRBuilder::flush_current_block()
-{
-
+    for (size_t i = 0; i < pop_count; i++)
+    {
+        m_vars.pop_back();
+    }
+    m_scopes.pop_back();
 }

@@ -165,6 +165,12 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             irb.m_current_func = &irb.m_current_program->functions.back();
             irb.m_current_block = &irb.m_current_func->blocks.back();
 
+            //save state for func scope
+            const std::vector<VarInfo> saved_vars = irb.m_vars;
+            const std::vector<size_t> saved_scopes = irb.m_scopes;
+            irb.m_vars.clear();
+            irb.m_scopes.clear();
+
             std::vector<VarInfo> params;
             //handle params!!
             if (stmt_func->params.has_value())
@@ -172,15 +178,19 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
                 const auto& args = stmt_func->params.value();
                 for (int i = 0; i < args.size(); i++)
                 {
-                    params.push_back({ irb.create_vreg(), args[i].type, std::string(args[i].ident.value.value()) });
+                    const auto param = VarInfo { irb.create_vreg(), args[i].type, std::string(args[i].ident.value.value()) };
+                    params.push_back(param);
+                    irb.m_vars.push_back(param);
                 }
             }
-
             //get IRInstructions
             irb.build_scope(stmt_func->scope);
             //def exit
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(false, func_name) });
 
+            //restore state
+            irb.m_vars = saved_vars;
+            irb.m_scopes = saved_scopes;
             //store function
             irb.m_funcs.push_back({ params, func_name, stmt_func->return_type});
 
@@ -194,47 +204,28 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeStmtFuncCall* stmt_func_call) const
         {
+            const auto it = std::ranges::find_if(std::as_const(irb.m_funcs), [&](const FuncInfo& func){
+                            return func.name == stmt_func_call->ident.value.value();
+                        });
+            assert(it != irb.m_funcs.cend() && "Undeclared function identifier");
+
             //handle params
-            std::vector<IROperand> param_regs;
             if (stmt_func_call->exprs.has_value())
             {
                 const auto& args = stmt_func_call->exprs.value();
-                for (int i = args.size() - 1; i >= 0; i--)
+                for (int i = 0; i < args.size(); i++)
                 {
-                    param_regs.push_back(irb.build_expr(args[i]));
+                    //because we need the registers so that we know where to put the generated expressions
+                    //we need to declare a function before using it however i want to solve this in the future
+                    //such that we would process functions definitions first somehow
+                    irb.m_current_block->instructions.push_back({
+                        IROpcode::COPY, it->params[i].reg, irb.build_expr(args[i])
+                    });
                 }
             }
 
-
-            //push arguments right-to-left
-            // if (stmt_func_call->exprs.has_value())
-            // {
-            //     const auto& args = stmt_func_call->exprs.value();
-            //     for (int i = args.size() - 1; i >= 0; i--)
-            //     {
-            //         gen.generate_expression(args[i]);
-            //         //expression result is already pushed
-            //     }
-            // }
-            //
-            // //push parameters onto stack so it can be popped in order
-            // const std::string func_label = "func_" + std::string(stmt_func_call->ident.value.value());
-            // gen.m_emitter.emit("call", func_label);
-            //
-            // //clean up arguments from stack
-            // if (stmt_func_call->exprs.has_value())
-            // {
-            //     if (const size_t args_size = stmt_func_call->exprs.value().size(); args_size > 0)
-            //     {
-            //         gen.m_emitter.emit("add", "rsp", args_size * 8);
-            //         gen.m_stack_size -= args_size;
-            //     }
-            // }
-            //
-            // // TAKE OUT THIS PART SINCE THIS MESSES WITH STACK POINTER LOCATION
-            // // WILL NEED TO HANDLE EXPRESSION FUNC CALLS DIFFERENTLY
-            // //return value is in rax so push it onto the stack
-            // //gen.push("rax");
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(true, it->name) });
+            irb.m_current_block->instructions.push_back({ IROpcode::LABEL, irb.create_label(false, it->name) });
         }
         void operator()(const NodeStmtReturn* stmt_return) const
         {

@@ -43,7 +43,6 @@ private:
 
     void begin_scope();
     void end_scope();
-    void flush_current_block();
 
     //state
     NodeProgram m_prog;
@@ -56,8 +55,8 @@ private:
     IRFunction* m_current_func = nullptr;
     //pointer to the block being built
     IRBasicBlock* m_current_block = nullptr;
-    //stack of symbol tables (name -> vreg)
-    std::vector<std::unordered_map<std::string, VarInfo>> m_scopes {};
+    //store scopes
+    std::vector<size_t> m_scopes {};
     std::vector<VarInfo> m_vars {};
     std::vector<FuncInfo> m_funcs {};
 };

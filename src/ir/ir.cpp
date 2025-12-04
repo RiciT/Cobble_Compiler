@@ -61,7 +61,7 @@ std::string IRInstruction::to_string() const
 
 void IRProgram::debug_print() const
 {
-    for (const auto [func_name, blocks, _, __]: functions) {
+    for (const auto [func_name, blocks, _]: functions) {
         for (const auto [block_name, instructions]: blocks) {
             for (const auto instr: instructions) {
                 std::cout << instr.to_string() << "\n";
