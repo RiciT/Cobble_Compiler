@@ -183,16 +183,17 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
                     irb.m_vars.push_back(param);
                 }
             }
+            //store function
+            irb.m_funcs.push_back({ params, func_name, {irb.create_vreg(), stmt_func->return_type } });
             //get IRInstructions
             irb.build_scope(stmt_func->scope);
-            //def exit
-            irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(false, func_name) });
 
             //restore state
             irb.m_vars = saved_vars;
             irb.m_scopes = saved_scopes;
-            //store function
-            irb.m_funcs.push_back({ params, func_name, stmt_func->return_type});
+
+            //def exit
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(false, func_name) });
 
             //switch back to previous state
             irb.m_current_func = &*std::ranges::find_if(irb.m_current_program->functions, [&](const IRFunction& func) {
@@ -229,20 +230,21 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeStmtReturn* stmt_return) const
         {
-            // if (stmt_return->expr.has_value())
-            // {
-            //     gen.generate_expression(stmt_return->expr.value());
-            //     gen.pop("rax");
-            // }
-            // else
-            // {
-            //     // no return value so default to 0
-            //     gen.m_emitter.emit("mov", "rax", "0");
-            // }
-            //
-            // gen.m_emitter.emit("mov", "rsp", "rbp");
-            // gen.m_emitter.emit("pop", "rbp");
-            // gen.m_emitter.emit("ret");
+            const auto it = std::ranges::find_if(std::as_const(irb.m_funcs), [&](const FuncInfo& func){
+                            return func.name == irb.m_current_func->name;
+                        });
+            assert(it != irb.m_funcs.cend() && "Undeclared function identifier");
+
+            if (stmt_return->expr.has_value())
+            {
+                const auto expr_reg = irb.build_expr(stmt_return->expr.value());
+                irb.m_current_block->instructions.push_back({IROpcode::COPY, it->return_var.reg, expr_reg });
+            }
+            else
+            {
+                irb.m_current_block->instructions.push_back({IROpcode::COPY, it->return_var.reg, IROperand::make_lit(0) });
+            }
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(false, it->name) });
         }
         void operator()(const NodeStmtArrayAssign* stmt_array_assign) const
         {
@@ -286,7 +288,6 @@ void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end
     struct PredVisitor {
         IRBuilder& irb;
         const size_t end_label_id;
-
         void operator()(const NodeIfPredElseIf* elseif_) const
         {
             //save register of expr

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <unordered_map>
 #include <vector>
 
 #include "ast/nodes.hpp"
@@ -31,14 +30,12 @@ private:
         IROperand reg; //the vreg holding this variable
         VarType type;
         std::string name;
-        bool is_array;
-        size_t array_size;
     };
 
     struct FuncInfo {
         std::vector<VarInfo> params;
         std::string name;
-        VarType return_type;
+        VarInfo return_var;
     };
 
     void begin_scope();

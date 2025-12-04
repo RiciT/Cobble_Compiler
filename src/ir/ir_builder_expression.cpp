@@ -15,34 +15,32 @@ IROperand IRBuilder::build_expr(const NodeExpr* expr) {
         }
         IROperand operator()(const NodeFuncCallExpr* expr_func_call) const
         {
-            //push arguments right-to-left
-            // if (expr_func_call->exprs.has_value())
-            // {
-            //     const auto& args = expr_func_call->exprs.value();
-            //     for (int i = args.size() - 1; i >= 0; i--)
-            //     {
-            //         gen.generate_expression(args[i]);
-            //         //expression result is already pushed
-            //     }
-            // }
-            //
-            // //push parameters onto stack so it can be popped in order
-            // const std::string func_label = "func_" + std::string(expr_func_call->ident.value.value());
-            // gen.m_emitter.emit("call", func_label);
-            //
-            // //clean up arguments from stack
-            // if (expr_func_call->exprs.has_value())
-            // {
-            //     if (const size_t args_size = expr_func_call->exprs.value().size(); args_size > 0)
-            //     {
-            //         gen.m_emitter.emit("add", "rsp", args_size * 8);
-            //         gen.m_stack_size -= args_size;
-            //     }
-            // }
-            // gen.push("rax");
+            const auto it = std::ranges::find_if(std::as_const(irb.m_funcs), [&](const FuncInfo& func){
+                            return func.name == expr_func_call->ident.value.value();
+                        });
+            assert(it != irb.m_funcs.cend() && "Undeclared function identifier");
+
+            //handle params
+            if (expr_func_call->exprs.has_value())
+            {
+                const auto& args = expr_func_call->exprs.value();
+                for (int i = 0; i < args.size(); i++)
+                {
+                    //because we need the registers so that we know where to put the generated expressions
+                    //we need to declare a function before using it however i want to solve this in the future
+                    //such that we would process functions definitions first somehow
+                    irb.m_current_block->instructions.push_back({
+                        IROpcode::COPY, it->params[i].reg, irb.build_expr(args[i])
+                    });
+                }
+            }
+
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(true, it->name) });
+            irb.m_current_block->instructions.push_back({ IROpcode::LABEL, irb.create_label(false, it->name) });
+
+            return it->return_var.reg;
         }
     };
-
     ExprVisitor visitor{ .irb = *this };
     return std::visit(visitor, expr->expr);
 }
