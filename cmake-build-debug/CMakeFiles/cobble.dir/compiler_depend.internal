@@ -15,6 +15,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp
+ /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.hpp
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h

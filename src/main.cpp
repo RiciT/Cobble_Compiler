@@ -7,8 +7,9 @@
 #include "lexing/tokenization.hpp"
 #include "parsing/parser.hpp"
 #include "analysis/type_checker.hpp"
-#include "codegen/generation.hpp"
 #include "ir/ir_builder.hpp"
+#include "optimization/optimizer.hpp"
+#include "codegen/generation.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -57,14 +58,19 @@ int main(int argc, char* argv[])
 		error_handler.dump_and_exit();
 	}
 
-	// RIGHT NOW THIS ISNT INTEGRATED INTO THE LOGIC JUST TESTING
 	// --- Stage 4: IR Generation (Lowering AST) ---
 	//converts ast tree into a linear list of instructions
 	IRBuilder builder(prog.value());
 	IRProgram ir_prog = builder.build_ir();
+
+	// --- Stage 5: IR Optimization ---
+	IROptimizer optimizer(ir_prog);
+	//in place optimization
+	optimizer.optimize();
 	ir_prog.debug_print();
 
-	// --- Stage 5: Generation ---
+	//later replace with the generation from the IR
+	// --- Stage 6: Generation ---
 	//we can safely generate now since the types are checker here
 	{
 		Generator generator(prog.value());

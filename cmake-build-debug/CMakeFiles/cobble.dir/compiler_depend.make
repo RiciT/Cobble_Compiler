@@ -14,6 +14,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/token.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp \
+  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.hpp \
   /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
@@ -349,9 +350,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
 
-/usr/include/c++/13/ext/concurrence.h:
-
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp:
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
 
 /usr/include/c++/13/cctype:
 
@@ -477,6 +476,12 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/memoryfwd.h:
 
+/usr/include/x86_64-linux-gnu/bits/stdint-least.h:
+
+/usr/include/c++/13/bits/unique_ptr.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
+
 /usr/include/c++/13/bits/atomic_lockfree_defines.h:
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
@@ -494,12 +499,6 @@ libcobble_core.a:
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/c++/13/bits/node_handle.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-least.h:
-
-/usr/include/c++/13/bits/unique_ptr.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
 
 /usr/include/c++/13/bits/predefined_ops.h:
 
@@ -523,8 +522,6 @@ libcobble_core.a:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
-
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp:
 
 /usr/include/c++/13/bits/cxxabi_forced.h:
@@ -534,6 +531,8 @@ libcobble_core.a:
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/diagnostics/error_handler.hpp:
 
 /usr/include/stdc-predef.h:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.hpp:
 
 /usr/include/c++/13/bits/allocated_ptr.h:
 
@@ -550,6 +549,10 @@ libcobble_core.a:
 /usr/include/c++/13/bits/utility.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/usr/include/c++/13/bits/basic_ios.tcc:
+
+/usr/include/c++/13/pstl/execution_defs.h:
 
 /usr/include/c++/13/bits/ostream_insert.h:
 
@@ -574,10 +577,6 @@ libcobble_core.a:
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
 
 /usr/include/c++/13/bits/hashtable.h:
-
-/usr/include/c++/13/bits/basic_ios.tcc:
-
-/usr/include/c++/13/pstl/execution_defs.h:
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
 
@@ -676,6 +675,10 @@ libcobble_core.a:
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp:
+
+/usr/include/c++/13/ext/concurrence.h:
 
 /usr/include/c++/13/bits/exception_ptr.h:
 

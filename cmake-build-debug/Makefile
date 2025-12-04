@@ -502,6 +502,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble.dir/build.make CMakeFiles/cobble.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/optimization/optimizer.o: src/optimization/optimizer.cpp.o
+.PHONY : src/optimization/optimizer.o
+
+# target to build an object file
+src/optimization/optimizer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o
+.PHONY : src/optimization/optimizer.cpp.o
+
+src/optimization/optimizer.i: src/optimization/optimizer.cpp.i
+.PHONY : src/optimization/optimizer.i
+
+# target to preprocess a source file
+src/optimization/optimizer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.i
+.PHONY : src/optimization/optimizer.cpp.i
+
+src/optimization/optimizer.s: src/optimization/optimizer.cpp.s
+.PHONY : src/optimization/optimizer.s
+
+# target to generate assembly for a file
+src/optimization/optimizer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.s
+.PHONY : src/optimization/optimizer.cpp.s
+
 src/parsing/parser.o: src/parsing/parser.cpp.o
 .PHONY : src/parsing/parser.o
 
@@ -648,6 +672,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/optimization/optimizer.o"
+	@echo "... src/optimization/optimizer.i"
+	@echo "... src/optimization/optimizer.s"
 	@echo "... src/parsing/parser.o"
 	@echo "... src/parsing/parser.i"
 	@echo "... src/parsing/parser.s"
