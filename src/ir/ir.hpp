@@ -71,7 +71,6 @@ struct IRFunction {
     std::vector <IRBasicBlock> blocks;
 
     //metadata for allocator
-    size_t vreg_count = 0;
     std::vector<IROperand> params; //list of vregs for params
 };
 

@@ -39,7 +39,7 @@ private:
 
     const NodeProgram m_prog;
 
-   AsmEmitter m_emitter;
+    AsmEmitter m_emitter;
 
     size_t m_stack_size = 0;
     std::vector<Variable> m_vars {};

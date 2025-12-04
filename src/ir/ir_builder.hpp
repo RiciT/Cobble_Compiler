@@ -25,7 +25,7 @@ private:
 
     static IROperand create_label(bool isEnter, const std::string &name);
     static IROperand create_label(bool isEnter, size_t id);
-    IROperand create_label(bool isEnter);
+    IROperand create_label(bool isEnter) const;
 
     struct VarInfo {
         IROperand reg; //the vreg holding this variable
@@ -35,12 +35,20 @@ private:
         size_t array_size;
     };
 
+    struct FuncInfo {
+        std::vector<VarInfo> params;
+        std::string name;
+        VarType return_type;
+    };
+
     void begin_scope();
     void end_scope();
     void flush_current_block();
 
     //state
     NodeProgram m_prog;
+    mutable size_t m_vreg_count = 0;
+    mutable size_t m_label_id = 0;
 
     //pointer to current program might not be needed but added in case i do
     IRProgram* m_current_program = nullptr;
@@ -51,6 +59,5 @@ private:
     //stack of symbol tables (name -> vreg)
     std::vector<std::unordered_map<std::string, VarInfo>> m_scopes {};
     std::vector<VarInfo> m_vars {};
-
-    size_t m_label_id = 0;
+    std::vector<FuncInfo> m_funcs {};
 };

@@ -31,7 +31,7 @@ IRProgram IRBuilder::build_ir()
 //helpers
 IROperand IRBuilder::create_vreg() const
 {
-    return IROperand::make_reg(m_current_func->vreg_count++);
+    return IROperand::make_reg(m_vreg_count++);
 }
 IROperand IRBuilder::create_label(const bool isEnter, const std::string &name)
 {
@@ -41,7 +41,7 @@ IROperand IRBuilder::create_label(const bool isEnter, const size_t id)
 {
     return IROperand::make_label(isEnter, id, "");
 }
-IROperand IRBuilder::create_label(const bool isEnter)
+IROperand IRBuilder::create_label(const bool isEnter) const
 {
     return IROperand::make_label(isEnter, m_label_id++, "");
 }

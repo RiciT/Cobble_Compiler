@@ -150,57 +150,62 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
         void operator()(const NodeStmtFunc* stmt_func) const
         {
-            // gen.m_emitter.set_section(AsmEmitter::Section::Functions);
-            //
-            // const std::string func_label = "func_" + std::string(stmt_func->ident.value.value());
-            //
-            // gen.m_emitter.emit_label(func_label);
-            // gen.m_emitter.emit("push", "rbp");
-            // gen.m_emitter.emit("mov", "rbp", "rsp");
-            //
-            // //save the current state so function has its own scope
-            // const size_t saved_stack_size = gen.m_stack_size;
-            // const std::vector<Variable> saved_vars = gen.m_vars;
-            // const std::vector<size_t> saved_scopes = gen.m_scopes;
-            //
-            // //reset for function scope
-            // gen.m_stack_size = 0;
-            // gen.m_vars.clear();
-            // gen.m_scopes.clear();
-            //
-            // if (stmt_func->params.has_value())
-            // {
-            //     int param_index = 0;
-            //     for (const auto&[type, ident] : stmt_func->params.value())
-            //     {
-            //         // poarameters are at [rbp + 16], [rbp + 24], etc.
-            //         // +16 because: +8 for return address, +8 for saved rbp
-            //         gen.m_vars.push_back({
-            //             .type = type,
-            //             .name = std::string(ident.value.value()),
-            //             .stack_loc = static_cast<size_t>(16 + param_index * 8),
-            //             .is_param = true
-            //         });
-            //         param_index++;
-            //     }
-            // }
-            //
-            // gen.generate_scope(stmt_func->scope);
-            //
-            // gen.m_emitter.emit("mov", "rax", "0");
-            // gen.m_emitter.emit("mov", "rsp", "rbp");
-            // gen.m_emitter.emit("pop", "rbp");
-            // gen.m_emitter.emit("ret");
-            //
-            // //restore state
-            // gen.m_stack_size = saved_stack_size;
-            // gen.m_vars = saved_vars;
-            // gen.m_scopes = saved_scopes;
-            //
-            // gen.m_emitter.set_section(AsmEmitter::Section::Main);
+            //prev state
+            const auto current_func = irb.m_current_func->name;
+            const auto current_block = irb.m_current_block->name;
+
+            const auto func_name = std::string(stmt_func->ident.value.value());
+
+            //setup
+            irb.m_current_program->functions.push_back({ func_name, {
+                { .name = func_name + "0" , .instructions = {
+                    { IROpcode::LABEL, irb.create_label(true, func_name) }
+                }}}});
+            //changing to function writing
+            irb.m_current_func = &irb.m_current_program->functions.back();
+            irb.m_current_block = &irb.m_current_func->blocks.back();
+
+            std::vector<VarInfo> params;
+            //handle params!!
+            if (stmt_func->params.has_value())
+            {
+                const auto& args = stmt_func->params.value();
+                for (int i = 0; i < args.size(); i++)
+                {
+                    params.push_back({ irb.create_vreg(), args[i].type, std::string(args[i].ident.value.value()) });
+                }
+            }
+
+            //get IRInstructions
+            irb.build_scope(stmt_func->scope);
+            //def exit
+            irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(false, func_name) });
+
+            //store function
+            irb.m_funcs.push_back({ params, func_name, stmt_func->return_type});
+
+            //switch back to previous state
+            irb.m_current_func = &*std::ranges::find_if(irb.m_current_program->functions, [&](const IRFunction& func) {
+                return func.name == current_func;
+            });
+            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
+                return block.name == current_block;
+            });
         }
         void operator()(const NodeStmtFuncCall* stmt_func_call) const
         {
+            //handle params
+            std::vector<IROperand> param_regs;
+            if (stmt_func_call->exprs.has_value())
+            {
+                const auto& args = stmt_func_call->exprs.value();
+                for (int i = args.size() - 1; i >= 0; i--)
+                {
+                    param_regs.push_back(irb.build_expr(args[i]));
+                }
+            }
+
+
             //push arguments right-to-left
             // if (stmt_func_call->exprs.has_value())
             // {
