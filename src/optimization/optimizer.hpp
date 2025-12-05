@@ -26,6 +26,7 @@ private:
 
     //dataflow optimization - global opt
     bool copy_propagation();
+    bool unused_label_removal();
 
     IRProgram& m_prog;
 };

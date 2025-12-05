@@ -303,8 +303,7 @@ bool IROptimizer::dead_code_elimination()
                     continue;
                 }
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                    if ((instr.opcode == IROpcode::GOTRUE || instr.opcode == IROpcode::LABEL)
-                        && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
+                    if (instr.opcode == IROpcode::GOTRUE && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
                     {
                         curr_instrs.erase(curr_instrs.begin() + index_i);
                         break; //TODO change this to something sensible
