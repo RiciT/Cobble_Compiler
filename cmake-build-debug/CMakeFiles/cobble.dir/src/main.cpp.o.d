@@ -226,6 +226,13 @@ CMakeFiles/cobble.dir/src/main.cpp.o: \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.hpp \
+ /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
+ /usr/include/c++/13/array /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/bits/algorithmfwd.h \
+ /usr/include/c++/13/bits/stl_heap.h \
+ /usr/include/c++/13/bits/uniform_int_dist.h \
+ /usr/include/c++/13/bits/move_only_function.h \
+ /usr/include/c++/13/bits/mofunc_impl.h \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp

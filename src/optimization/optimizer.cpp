@@ -16,12 +16,15 @@ void IROptimizer::optimize()
     {
         changed = false;
         changed |= dead_assignment_elimination();
+        changed |= constant_propagation_block();
+        changed |= constant_folding();
         //and all other optimizations
     }
 }
 
-// ReSharper disable once CppMemberFunctionMayBeConst
+#define curr_instrs m_prog.functions.at(index_f).blocks.at(index_b).instructions
 //it is logiaclly not const since it modifies the referenced member m_prog
+// ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::dead_assignment_elimination()
 {
     //this only removes trivial dead assignments so for example:
@@ -67,28 +70,77 @@ bool IROptimizer::dead_assignment_elimination()
         //we can also assume that everything in vregs_as_src is also contained in dests vector
         changed = true;
         for (const auto& src : vregs_as_src)
-        {
             vregs_as_dest.erase(std::ranges::find(vregs_as_dest, src));
-        }
 
         //now vregs_as_dest only contains those vregs that are only ever used as dests
         for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
-        {
             for (auto [index_b, block] : std::views::enumerate(func.blocks))
-            {
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                {
                     if (std::ranges::find(vregs_as_dest, instr.dest) != vregs_as_dest.cend())
-                    {
-                        m_prog.functions.at(index_f).blocks.at(index_b).instructions.erase(
-                            m_prog.functions.at(index_f).blocks.at(index_b).instructions.begin() + index_i);
-                    }
-                }
-            }
-        }
+                        curr_instrs.erase(curr_instrs.begin() + index_i);
     }
 
     return changed;
 }
 
+//it is logiaclly not const since it modifies the referenced member m_prog
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::constant_propagation_block()
+{
+    bool changed = false;
 
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                //only do smth if its of a form tX = Int_Lit
+                if (instr.opcode != IROpcode::COPY || instr.src1.type != IROperand::IntLiteral)
+                    continue;
+                for (int i = index_i + 1; i < block.instructions.size(); i++)
+                {
+                    //break if the reg is reassigned
+                    if (block.instructions.at(i).dest == instr.dest) break;
+                    //change from reg to the const
+                    if (block.instructions.at(i).src1 == instr.dest)
+                    {
+                        changed = true;
+                        curr_instrs.at(i).src1 = instr.src1;
+                    }
+                    if (block.instructions.at(i).src2 == instr.dest)
+                    {
+                        changed = true;
+                        curr_instrs.at(i).src2 = instr.src1;
+                    }
+                }
+            }
+
+    return changed;
+}
+
+//it is logiaclly not const since it modifies the referenced member m_prog
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::constant_folding()
+{
+    bool changed = false;
+
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (!arithmetic_ops.contains(instr.opcode) ||
+                    instr.src1.type != IROperand::IntLiteral ||
+                    instr.src2.type != IROperand::IntLiteral) continue;
+                changed = true;
+                curr_instrs.at(index_i) = { IROpcode::COPY, instr.dest,
+                    IROperand::make_lit(arithmetic_ops.at(instr.opcode)(instr.src1.val_id, instr.src2.val_id)) };
+            }
+
+    return changed;
+}
+
+bool IROptimizer::unreachable_code_elimination()
+{
+
+}
+
+#undef curr_instrs

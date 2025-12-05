@@ -1,5 +1,7 @@
 func int x(def int a) {
-    print(a);
+    return a;
 }
 
-x(5);
+def int i = 5;
+i = i+i;
+x(i);

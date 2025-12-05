@@ -1,8 +1,10 @@
 #pragma once
 
+#include <functional>
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 
 //operands
 struct IROperand {
@@ -46,6 +48,15 @@ enum class IROpcode {
     EXIT,
     COPY,
     MOV,
+};
+
+//this is also a new find which thourougly enjoy - that you can store lambas in maps
+using binary_op = std::function<long long(long long, long long)>;
+static const std::unordered_map<IROpcode, binary_op> arithmetic_ops = {
+    {IROpcode::ADD, [](const long long a, const long long b){ return a + b; }},
+    {IROpcode::SUB, [](const long long a, const long long b){ return a - b; }},
+    {IROpcode::MUL, [](const long long a, const long long b){ return a * b; }},
+    {IROpcode::DIV, [](const long long a, const long long b){ return b == 0 ? 0 : a / b; }},
 };
 
 //instructions

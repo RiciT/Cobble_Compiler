@@ -61,12 +61,17 @@ std::string IRInstruction::to_string() const
 
 void IRProgram::debug_print() const
 {
+    std::vector<IROperand> vregs;
     for (const auto [func_name, blocks, _]: functions) {
         for (const auto [block_name, instructions]: blocks) {
             for (const auto instr: instructions) {
                 std::cout << instr.to_string() << "\n";
+                //we can be sure that if we check for unique dest vregs we will find all unique vregs
+                if (auto it = std::ranges::find(vregs, instr.dest);
+                    instr.dest.type == IROperand::VirtualReg && it == vregs.cend()) vregs.push_back(instr.dest);
             }
         }
         std::cout << "\n";
     }
+    std::cout << "Number of unique vregs used: " << vregs.size();
 }
