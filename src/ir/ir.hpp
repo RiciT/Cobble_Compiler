@@ -87,6 +87,9 @@ struct IRFunction {
 
     //metadata for allocator
     std::vector<IROperand> params; //list of vregs for params
+
+    //to keep track of what block number the main control flow is at right now
+    int main_control_flow_index = 0;
 };
 
 struct IRProgram {

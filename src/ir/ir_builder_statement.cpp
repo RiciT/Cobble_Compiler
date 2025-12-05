@@ -66,10 +66,13 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             {
                 irb.build_if_predicate(stmt_if->ifpred.value(), if_in_label_id);
             }
-            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
-                return block.name == current_block_name;
-            });
-            irb.m_current_block->instructions.push_back({ IROpcode::LABEL, irb.create_label(false, if_in_label_id)});
+
+            //create new block at the after the current "main" block with the ifexit label
+            //and immediatly change to it as the current block
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+                { .name = "if_exit" + std::to_string(if_in_label_id), .instructions = {
+                    { IROpcode::LABEL, irb.create_label(false, if_in_label_id)}
+                } });
         }
         void operator()(const NodeStmtAssign* stmt_assign) const
         {
@@ -84,7 +87,6 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         void operator()(const NodeStmtWhile* stmt_while) const
         {
             auto const while_label_id = irb.m_label_id;
-            const auto current_block_name = irb.m_current_block->name;
 
             irb.m_current_block->instructions.push_back({ IROpcode::LABEL,
                 irb.create_label(false)});
@@ -101,9 +103,8 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
                 irb.create_label(false, while_label_id) });
 
-            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
-                return block.name == current_block_name;
-            });
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+                            { .name = "while_exit" + std::to_string(while_label_id), .instructions = {} });
         }
         void operator()(const NodeStmtPrint* stmt_print) const
         {
@@ -196,6 +197,10 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             }
 
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(true, it->name) });
+
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+                            { .name = "func_exit" + it->name, .instructions = {} });
+
             irb.m_current_block->instructions.push_back({ IROpcode::LABEL, irb.create_label(false, it->name) });
         }
         void operator()(const NodeStmtReturn* stmt_return) const
