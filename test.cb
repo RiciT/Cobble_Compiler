@@ -1,19 +1,5 @@
-
-func int fib(def int x, def int y) {
-    if (x == y) {
-
-    return x; }
-    elseif (x + 2 == y) {
-    return y + x; }
-
-    print(x+y+5);
+func int x(def int a) {
+    print(a);
 }
 
-def int x = 0;
-while (x != 5) {
-if (x == 1) {
-print(555);
-}
-x = x+1;
-print(fib(x, 4));
-}
+x(5);

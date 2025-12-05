@@ -51,7 +51,9 @@ CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.o: /home/tamas/PERSONAL
   /usr/include/c++/13/bits/max_size_type.h \
   /usr/include/c++/13/bits/memory_resource.h \
   /usr/include/c++/13/bits/memoryfwd.h \
+  /usr/include/c++/13/bits/mofunc_impl.h \
   /usr/include/c++/13/bits/move.h \
+  /usr/include/c++/13/bits/move_only_function.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
   /usr/include/c++/13/bits/node_handle.h \
@@ -2042,6 +2044,7 @@ CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o: /home/tamas/PERSONA
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
   /usr/include/c++/13/algorithm \
+  /usr/include/c++/13/array \
   /usr/include/c++/13/backward/binders.h \
   /usr/include/c++/13/bit \
   /usr/include/c++/13/bits/algorithmfwd.h \
@@ -2057,6 +2060,7 @@ CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o: /home/tamas/PERSONA
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/enable_special_members.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -2080,6 +2084,7 @@ CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o: /home/tamas/PERSONA
   /usr/include/c++/13/bits/new_allocator.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
+  /usr/include/c++/13/bits/parse_numbers.h \
   /usr/include/c++/13/bits/postypes.h \
   /usr/include/c++/13/bits/predefined_ops.h \
   /usr/include/c++/13/bits/ptr_traits.h \
@@ -2105,6 +2110,7 @@ CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o: /home/tamas/PERSONA
   /usr/include/c++/13/bits/stl_tempbuf.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
+  /usr/include/c++/13/bits/stream_iterator.h \
   /usr/include/c++/13/bits/streambuf.tcc \
   /usr/include/c++/13/bits/streambuf_iterator.h \
   /usr/include/c++/13/bits/string_view.tcc \
@@ -2137,12 +2143,16 @@ CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o: /home/tamas/PERSONA
   /usr/include/c++/13/iosfwd \
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
+  /usr/include/c++/13/iterator \
   /usr/include/c++/13/new \
   /usr/include/c++/13/numbers \
+  /usr/include/c++/13/optional \
   /usr/include/c++/13/ostream \
   /usr/include/c++/13/pstl/execution_defs.h \
   /usr/include/c++/13/pstl/glue_algorithm_defs.h \
   /usr/include/c++/13/pstl/pstl_config.h \
+  /usr/include/c++/13/ranges \
+  /usr/include/c++/13/span \
   /usr/include/c++/13/stdexcept \
   /usr/include/c++/13/streambuf \
   /usr/include/c++/13/string \
@@ -2151,6 +2161,7 @@ CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o: /home/tamas/PERSONA
   /usr/include/c++/13/tuple \
   /usr/include/c++/13/type_traits \
   /usr/include/c++/13/typeinfo \
+  /usr/include/c++/13/variant \
   /usr/include/c++/13/vector \
   /usr/include/ctype.h \
   /usr/include/endian.h \
@@ -3116,23 +3127,13 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.cpp:
 
-/usr/include/c++/13/pstl/glue_algorithm_defs.h:
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp:
 
-/usr/include/c++/13/pstl/execution_defs.h:
-
-/usr/include/c++/13/bits/basic_ios.tcc:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.cpp:
 
 /usr/include/c++/13/ostream:
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
-
-/usr/include/limits.h:
-
-/usr/include/c++/13/initializer_list:
-
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.cpp:
 
 /usr/include/c++/13/functional:
 
@@ -3260,6 +3261,12 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
 
+/usr/include/c++/13/bits/predefined_ops.h:
+
+/usr/include/c++/13/bits/ranges_cmp.h:
+
+/usr/include/c++/13/iosfwd:
+
 /usr/include/c++/13/bits/cxxabi_forced.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp:
@@ -3267,12 +3274,6 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 /usr/include/c++/13/bits/stl_iterator_base_funcs.h:
 
 /usr/include/asm-generic/errno-base.h:
-
-/usr/include/c++/13/bits/ranges_cmp.h:
-
-/usr/include/c++/13/iosfwd:
-
-/usr/include/c++/13/bits/predefined_ops.h:
 
 /usr/include/c++/13/bits/erase_if.h:
 
@@ -3354,9 +3355,17 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 
 /usr/include/c++/13/bits/localefwd.h:
 
+/usr/include/c++/13/bits/move_only_function.h:
+
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.cpp:
+
+/usr/include/c++/13/bits/basic_ios.tcc:
+
+/usr/include/c++/13/pstl/execution_defs.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
 
 /usr/include/c++/13/cwctype:
 
@@ -3392,8 +3401,6 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 
 /usr/include/errno.h:
 
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.hpp:
-
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
 
 /usr/include/c++/13/bits/stringfwd.h:
@@ -3426,7 +3433,21 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 
 /usr/include/c++/13/bits/parse_numbers.h:
 
+/usr/include/limits.h:
+
+/usr/include/c++/13/initializer_list:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.cpp:
+
+/usr/include/c++/13/bits/mofunc_impl.h:
+
+/usr/include/c++/13/bits/stl_iterator_base_types.h:
+
+/usr/include/stdio.h:
+
 /usr/include/c++/13/ios:
+
+/usr/include/c++/13/pstl/glue_algorithm_defs.h:
 
 /usr/include/c++/13/pstl/pstl_config.h:
 
@@ -3491,10 +3512,6 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 /usr/include/wctype.h:
 
 /usr/include/sched.h:
-
-/usr/include/c++/13/bits/stl_iterator_base_types.h:
-
-/usr/include/stdio.h:
 
 /usr/include/stdlib.h:
 
@@ -3663,5 +3680,3 @@ CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o: /home/tamas/PERSO
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.cpp:
 
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp:
-
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.cpp:

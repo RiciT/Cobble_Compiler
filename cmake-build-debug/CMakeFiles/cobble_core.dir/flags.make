@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src
 
-CXX_FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+CXX_FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
 

@@ -57,7 +57,11 @@ struct IRInstruction {
 
     std::string to_string() const;
 
-    //helpers for cleaner code will go here
+    //helpers for cleaner code
+    bool operator==(const IRInstruction& other) const
+    {
+        return opcode == other.opcode && dest == other.dest && src1 == other.src1 && src2 == other.src2;
+    }
 };
 
 //structure

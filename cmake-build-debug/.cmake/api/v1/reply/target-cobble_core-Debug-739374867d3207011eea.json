@@ -43,7 +43,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++20 -fdiagnostics-color=always"
+					"fragment" : "-g -std=gnu++23 -fdiagnostics-color=always"
 				}
 			],
 			"includes" : 
@@ -60,7 +60,7 @@
 				[
 					1
 				],
-				"standard" : "20"
+				"standard" : "23"
 			},
 			"sourceIndexes" : 
 			[

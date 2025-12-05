@@ -139,13 +139,13 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         {
             if (irb.m_current_block == nullptr)
             {
-                IRBasicBlock print_block = { .name = "print", .instructions = {} };
+                const IRBasicBlock print_block = { .name = "print", .instructions = {} };
                 irb.m_current_func->blocks.push_back(print_block);
                 irb.m_current_block = &irb.m_current_func->blocks.back();
             }
             const IROperand reg = irb.build_expr(stmt_print->expr);
 
-            const IRInstruction print = { IROpcode::PRINT, reg };
+            const IRInstruction print = { .opcode = IROpcode::PRINT, .src1 = reg };
             irb.m_current_block->instructions.push_back(print);
         }
         void operator()(const NodeStmtFunc* stmt_func) const
