@@ -22,46 +22,16 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             }
             else
             {
-                IROperand reg;
+                const IROperand reg = irb.create_vreg();
+                IROperand expr;
                 if (stmt_def->expr)
-                {
-                    reg = irb.build_expr(stmt_def->expr.value());
-                }
+                    expr = irb.build_expr(stmt_def->expr.value());
                 else
-                {
-                    //def init to 0
-                    reg = irb.create_vreg();
-                    irb.m_current_block->instructions.push_back({ IROpcode::COPY, reg, IROperand::make_lit(0) });
-                }
+                    expr = IROperand::make_lit(0); //def init to 0
+
+                irb.m_current_block->instructions.push_back({ IROpcode::COPY, reg, expr });
                 irb.m_vars.push_back({ .reg = reg, .type = stmt_def->type, .name = std::string(stmt_def->ident.value.value()) });
             }
-            // if (stmt_def->type.is_array)
-            // {
-            //     //evaluate array size at compile time
-            //     const auto size_opt = gen.evaluate_const_expr(stmt_def->array_size_expr.value());
-            //
-            //     assert(size_opt.has_value() && "Array size expression evaluation failed");
-            //     assert(size_opt.value() > 0 && "Array size must be positive");
-            //
-            //     const size_t array_size = static_cast<size_t>(size_opt.value());
-            //
-            //     //allocate space for array
-            //     const size_t total_bytes = array_size * 8;
-            //     gen.m_emitter.emit("sub", "rsp", total_bytes);
-            //
-            //     //create type with resolved size
-            //     VarType resolved_type = stmt_def->type;
-            //     resolved_type.array_size = array_size;
-            //
-            //     gen.m_vars.push_back({
-            //         .type = resolved_type,
-            //         .name = std::string(stmt_def->ident.value.value()),
-            //         .stack_loc = gen.m_stack_size,
-            //         .is_param = false
-            //     });
-            //
-            //     gen.m_stack_size += array_size;
-            // }
         } //do arrays
         void operator()(const NodeScope* scope) const
         {

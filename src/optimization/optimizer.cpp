@@ -19,12 +19,14 @@ void IROptimizer::optimize()
         changed |= constant_propagation_block();
         changed |= constant_folding();
         changed |= unreachable_code_elimination();
+        changed |= empty_block_removal();
         //and all other optimizations
     }
 }
 
 #define curr_instrs m_prog.functions.at(index_f).blocks.at(index_b).instructions
-//it is logiaclly not const since it modifies the referenced member m_prog
+
+//these are logiaclly not const since it modifies the referenced member m_prog
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::dead_assignment_elimination()
 {
@@ -45,12 +47,12 @@ bool IROptimizer::dead_assignment_elimination()
     std::vector<IROperand> vregs_as_src;
 
     //list all vregs used as dest and as src
-    for (const auto& func : m_prog.functions)
-    {
-        for (const auto&[name, instructions] : func.blocks)
-        {
-            for (const auto& instr : instructions)
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
             {
+                //reassignment while not using it
+
                 if (auto it = std::ranges::find(vregs_as_dest, instr.dest);
                     instr.dest.type == IROperand::VirtualReg && it == vregs_as_dest.cend())
                     vregs_as_dest.push_back(instr.dest);
@@ -61,8 +63,6 @@ bool IROptimizer::dead_assignment_elimination()
                     instr.src2.type == IROperand::VirtualReg && it == vregs_as_src.cend())
                     vregs_as_src.push_back(instr.src2);
             }
-        }
-    }
 
     //needs a change
     if (vregs_as_src.size() != vregs_as_dest.size())
@@ -83,8 +83,6 @@ bool IROptimizer::dead_assignment_elimination()
 
     return changed;
 }
-
-//it is logiaclly not const since it modifies the referenced member m_prog
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::constant_propagation_block()
 {
@@ -117,8 +115,6 @@ bool IROptimizer::constant_propagation_block()
 
     return changed;
 }
-
-//it is logiaclly not const since it modifies the referenced member m_prog
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::constant_folding()
 {
@@ -138,8 +134,6 @@ bool IROptimizer::constant_folding()
 
     return changed;
 }
-
-//it is logiaclly not const since it modifies the referenced member m_prog
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::unreachable_code_elimination()
 {
@@ -156,7 +150,7 @@ bool IROptimizer::unreachable_code_elimination()
                     { label_index = i; break; }
                 if (index_i + 1 != label_index)
                 {
-                    curr_instrs.erase(block.instructions.begin() + index_i + 1, block.instructions.begin() + label_index);
+                    curr_instrs.erase(curr_instrs.begin() + index_i + 1, curr_instrs.begin() + label_index);
                     changed = true;
                     break;
                 }
@@ -164,5 +158,32 @@ bool IROptimizer::unreachable_code_elimination()
 
     return changed;
 }
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::empty_block_removal()
+{
+    bool changed = false;
+
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+        {
+            if (block.instructions.empty())
+            {
+                m_prog.functions.at(index_f).blocks.erase(m_prog.functions.at(index_f).blocks.begin() + index_b);
+                changed = true;
+            }
+        }
+
+    return changed;
+}
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::algebraic_reduction()
+{
+    bool changed = false;
+
+
+
+    return changed;
+}
+
 
 #undef curr_instrs

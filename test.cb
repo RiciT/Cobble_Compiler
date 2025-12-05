@@ -1,16 +1,11 @@
-func int x(def int a) {
+def int a = 5;
+def int i = a;
+i = i * 1;
+print(i);
+
+if (i == 5)
+{
+    i = i * 2;
     print(a);
-    return 5;
 }
-
-func int y() {
-    print(5);
-    return 4;
-    return 2;
-    return 5;
-}
-
-def int i = 5;
-i = i+i;
-x(i);
-print(y());
+print(i);

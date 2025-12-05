@@ -147,7 +147,6 @@ IROperand IRBuilder::build_atom(const NodeAtom* atom) {
         }
         IROperand operator()(const NodeAtomIntLit* atom_int_lit) const
         {
-            //now we are only handling it separately not inside an expr so this works fine for now
             const auto reg = irb.create_vreg();
             irb.m_current_block->instructions.push_back({ .opcode = IROpcode::COPY, .dest = reg,
                 .src1 = IROperand::make_lit(atom_int_lit->int_lit.value.value()) });

@@ -12,7 +12,7 @@ private:
     //optimization passes
     //basic block optimizers
     bool constant_folding();
-    bool algebraic_strength_reduction();
+    bool algebraic_reduction();
     bool common_subexpression_elimination();
     bool dead_assignment_elimination();
     bool constant_propagation_block();
