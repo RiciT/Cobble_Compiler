@@ -53,13 +53,13 @@ label1:
     pop rbx
     pop rax
     cmp rax, rbx
-    sete al
+    setne al
     movzx rax, al
     push rax
     pop rax
     test rax, rax
     jz label2
-    mov rax, 2
+    mov rax, 0
     push rax
     push QWORD [rsp + 8]
     pop rax

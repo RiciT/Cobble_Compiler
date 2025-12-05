@@ -56,7 +56,15 @@ static const std::unordered_map<IROpcode, binary_op> arithmetic_ops = {
     {IROpcode::ADD, [](const long long a, const long long b){ return a + b; }},
     {IROpcode::SUB, [](const long long a, const long long b){ return a - b; }},
     {IROpcode::MUL, [](const long long a, const long long b){ return a * b; }},
-    {IROpcode::DIV, [](const long long a, const long long b){ return b == 0 ? 0 : a / b; }},
+    {IROpcode::DIV, [](const long long a, const long long b) {
+        if (b == 0) { std::cerr << "Division by zero\n"; exit(EXIT_FAILURE); } return a / b;
+    }},
+    {IROpcode::EQ, [](const long long a, const long long b) { return a == b; }},
+    {IROpcode::NEQ, [](const long long a, const long long b) { return a != b; }},
+    {IROpcode::GT, [](const long long a, const long long b) { return a > b; }},
+    {IROpcode::LT, [](const long long a, const long long b) { return a < b; }},
+    {IROpcode::GTE, [](const long long a, const long long b) { return a >= b; }},
+    {IROpcode::LTE, [](const long long a, const long long b) { return a <= b; }},
 };
 
 //instructions

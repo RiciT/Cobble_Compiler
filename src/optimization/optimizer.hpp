@@ -13,6 +13,7 @@ private:
     //basic block optimizers
     bool constant_folding();
     bool algebraic_reduction();
+    bool reassignment_elimination();
     bool common_subexpression_elimination();
     bool dead_assignment_elimination();
     bool constant_propagation_block();
@@ -25,7 +26,6 @@ private:
 
     //dataflow optimization - global opt
     bool copy_propagation();
-    bool constant_propagation_global();
 
     IRProgram& m_prog;
 };

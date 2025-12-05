@@ -15,16 +15,20 @@ void IROptimizer::optimize()
     while (changed)
     {
         changed = false;
-        changed |= dead_assignment_elimination();
+        changed |= reassignment_elimination();
         changed |= constant_propagation_block();
         changed |= constant_folding();
         changed |= unreachable_code_elimination();
         changed |= empty_block_removal();
+        changed |= algebraic_reduction();
+        changed |= dead_code_elimination();
+        changed |= dead_assignment_elimination();
         //and all other optimizations
     }
 }
 
 #define curr_instrs m_prog.functions.at(index_f).blocks.at(index_b).instructions
+#define curr_blocks m_prog.functions.at(index_f).blocks
 
 //these are logiaclly not const since it modifies the referenced member m_prog
 // ReSharper disable once CppMemberFunctionMayBeConst
@@ -51,10 +55,9 @@ bool IROptimizer::dead_assignment_elimination()
         for (auto [index_b, block] : std::views::enumerate(func.blocks))
             for (auto [index_i, instr] : std::views::enumerate(block.instructions))
             {
-                //reassignment while not using it
-
                 if (auto it = std::ranges::find(vregs_as_dest, instr.dest);
-                    instr.dest.type == IROperand::VirtualReg && it == vregs_as_dest.cend())
+                    instr.dest.type == IROperand::VirtualReg && it == vregs_as_dest.cend() &&
+                    (arithmetic_ops.contains(instr.opcode) || instr.opcode == IROpcode::COPY))
                     vregs_as_dest.push_back(instr.dest);
                 if (auto it = std::ranges::find(vregs_as_src, instr.src1);
                     instr.src1.type == IROperand::VirtualReg && it == vregs_as_src.cend())
@@ -146,8 +149,10 @@ bool IROptimizer::unreachable_code_elimination()
                 if (instr.opcode != IROpcode::GOTO) continue;
                 int label_index = curr_instrs.size(); //init to the end to ensure if we end before a label we still remove anything unneccessary
                 for (int i = index_i + 1; i < block.instructions.size(); i++)
+                {
                     if (curr_instrs.at(i).opcode == IROpcode::LABEL)
                     { label_index = i; break; }
+                }
                 if (index_i + 1 != label_index)
                 {
                     curr_instrs.erase(curr_instrs.begin() + index_i + 1, curr_instrs.begin() + label_index);
@@ -180,10 +185,121 @@ bool IROptimizer::algebraic_reduction()
 {
     bool changed = false;
 
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                //getting rid of identity operations
+                if (instr.opcode == IROpcode::ADD || instr.opcode == IROpcode::SUB)
+                {
+                    if (instr.src1 != IROperand::make_lit(0) && instr.src2 != IROperand::make_lit(0)) continue;
+                    changed = true;
+                    curr_instrs.at(index_i) = {IROpcode::COPY, instr.dest, instr.src1 == IROperand::make_lit(0) ? instr.src2 : instr.src1};
+                }
+                if (instr.opcode == IROpcode::MUL || instr.opcode == IROpcode::DIV)
+                {
+                    if (instr.src1 == IROperand::make_lit(1) || instr.src2 == IROperand::make_lit(1))
+                    {
+                        changed = true;
+                        curr_instrs.at(index_i) = {IROpcode::COPY, instr.dest, instr.src1 == IROperand::make_lit(1) ? instr.src2 : instr.src1};
+                    }
+                }
+                //getting rid of multip by zero or two
+                if (instr.opcode == IROpcode::MUL && !changed)
+                {
+                    if (instr.src1 == IROperand::make_lit(0) || instr.src2 == IROperand::make_lit(0))
+                    {
+                        changed = true;
+                        curr_instrs.at(index_i) = {IROpcode::COPY, instr.dest, IROperand::make_lit(0)};
+                    }
 
+                    if (instr.src1 == IROperand::make_lit(2) || instr.src2 == IROperand::make_lit(2))
+                    {
+                        changed = true;
+                        const auto vreg = instr.src1 == IROperand::make_lit(2) ? instr.src2 : instr.src1;
+                        curr_instrs.at(index_i) = {IROpcode::ADD, instr.dest, vreg, vreg};
+                    }
+                }
+            }
+
+    return changed;
+}
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::reassignment_elimination()
+{
+    bool changed = false;
+
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (instr.dest.type != IROperand::VirtualReg) continue;
+                //these are the opcodes that assign vars
+                if (!arithmetic_ops.contains(instr.opcode) && instr.opcode != IROpcode::COPY) continue;
+
+                //these are for continued searching so that we have to iterate less times
+                IROperand vreg = instr.dest;
+                int pivot = index_i;
+
+                for (int i = index_i + 1; i < curr_instrs.size(); i++)
+                {
+                    if (curr_instrs.at(i).src1 == vreg || curr_instrs.at(i).src2 == vreg) break;
+                    if (curr_instrs.at(i).dest == vreg)
+                    {
+                        changed = true;
+                        curr_instrs.erase(curr_instrs.begin() + pivot);
+
+                        pivot = i; //for continued searching
+                    }
+                }
+            }
+
+    return changed;
+}
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::dead_code_elimination()
+{
+    bool changed = false;
+
+    std::vector<std::string> labels_to_remove;
+
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (instr.opcode == IROpcode::GOTRUE)
+                {
+                    if (const auto it = std::ranges::find(labels_to_remove, instr.dest.label);
+                        it == labels_to_remove.cend() && instr.src1 == IROperand::make_lit(0))
+                        labels_to_remove.push_back(instr.dest.label);
+                    else if (it != labels_to_remove.cend() && instr.src1 != IROperand::make_lit(0))
+                        labels_to_remove.erase(it);
+                }
+            }
+
+    if (!labels_to_remove.empty())
+    {
+        changed = true;
+        //somehow need to loop through labels_to_remove
+        //remove basic blocks starting with the label
+        //remove all GOTRUE instances with that label
+        for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+            for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            {
+                if (block.instructions.front().opcode == IROpcode::LABEL &&
+                    std::ranges::find(labels_to_remove, block.instructions.front().dest.label) != labels_to_remove.cend())
+                {
+                    curr_blocks.erase(curr_blocks.begin() + index_b);
+                    continue;
+                }
+                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                    if (instr.opcode == IROpcode::GOTRUE && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
+                        curr_instrs.erase(curr_instrs.begin() + index_i);
+            }
+    }
 
     return changed;
 }
 
-
 #undef curr_instrs
+#undef curr_blocks
