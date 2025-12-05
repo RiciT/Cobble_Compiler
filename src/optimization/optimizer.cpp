@@ -18,6 +18,7 @@ void IROptimizer::optimize()
         changed |= dead_assignment_elimination();
         changed |= constant_propagation_block();
         changed |= constant_folding();
+        changed |= unreachable_code_elimination();
         //and all other optimizations
     }
 }
@@ -138,9 +139,30 @@ bool IROptimizer::constant_folding()
     return changed;
 }
 
+//it is logiaclly not const since it modifies the referenced member m_prog
+// ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::unreachable_code_elimination()
 {
+    bool changed = false;
 
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (instr.opcode != IROpcode::GOTO) continue;
+                int label_index = curr_instrs.size(); //init to the end to ensure if we end before a label we still remove anything unneccessary
+                for (int i = index_i + 1; i < block.instructions.size(); i++)
+                    if (curr_instrs.at(i).opcode == IROpcode::LABEL)
+                    { label_index = i; break; }
+                if (index_i + 1 != label_index)
+                {
+                    curr_instrs.erase(block.instructions.begin() + index_i + 1, block.instructions.begin() + label_index);
+                    changed = true;
+                    break;
+                }
+            }
+
+    return changed;
 }
 
 #undef curr_instrs

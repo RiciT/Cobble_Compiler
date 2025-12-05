@@ -1,7 +1,16 @@
 func int x(def int a) {
-    return a;
+    print(a);
+    return 5;
+}
+
+func int y() {
+    print(5);
+    return 4;
+    return 2;
+    return 5;
 }
 
 def int i = 5;
 i = i+i;
 x(i);
+print(y());
