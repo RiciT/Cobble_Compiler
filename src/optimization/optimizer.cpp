@@ -15,6 +15,7 @@ void IROptimizer::optimize()
     while (changed)
     {
         changed = false;
+        changed |= dead_assignment_elimination();
         changed |= reassignment_elimination();
         changed |= constant_propagation_block();
         changed |= constant_folding();
@@ -22,7 +23,6 @@ void IROptimizer::optimize()
         changed |= empty_block_removal();
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
-        changed |= dead_assignment_elimination();
         //and all other optimizations
     }
 }
@@ -81,7 +81,12 @@ bool IROptimizer::dead_assignment_elimination()
             for (auto [index_b, block] : std::views::enumerate(func.blocks))
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
                     if (std::ranges::find(vregs_as_dest, instr.dest) != vregs_as_dest.cend())
+                    {
+                        //this is a really ugly solution but for now it will do
+                        //later ill implement a reversing scheme
                         curr_instrs.erase(curr_instrs.begin() + index_i);
+                        break; //TODO change this to something sensible
+                    }
     }
 
     return changed;
@@ -175,6 +180,7 @@ bool IROptimizer::empty_block_removal()
             {
                 m_prog.functions.at(index_f).blocks.erase(m_prog.functions.at(index_f).blocks.begin() + index_b);
                 changed = true;
+                break; //TODO change this to something sensible
             }
         }
 
@@ -250,8 +256,11 @@ bool IROptimizer::reassignment_elimination()
                         curr_instrs.erase(curr_instrs.begin() + pivot);
 
                         pivot = i; //for continued searching
+
+                        break; //TODO change this to something sensible
                     }
                 }
+                if (pivot != index_i) break; //TODO change this to something sensible
             }
 
     return changed;
@@ -290,11 +299,16 @@ bool IROptimizer::dead_code_elimination()
                     std::ranges::find(labels_to_remove, block.instructions.front().dest.label) != labels_to_remove.cend())
                 {
                     curr_blocks.erase(curr_blocks.begin() + index_b);
+                    break; //TODO change this to something sensible
                     continue;
                 }
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                    if (instr.opcode == IROpcode::GOTRUE && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
+                    if ((instr.opcode == IROpcode::GOTRUE || instr.opcode == IROpcode::LABEL)
+                        && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
+                    {
                         curr_instrs.erase(curr_instrs.begin() + index_i);
+                        break; //TODO change this to something sensible
+                    }
             }
     }
 
