@@ -23,10 +23,12 @@ void IROptimizer::optimize()
         changed |= empty_block_removal();
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
+        changed |= coalescing();
         //and all other optimizations
     }
 }
 
+//change breaks to reverse iterations
 #define curr_instrs m_prog.functions.at(index_f).blocks.at(index_b).instructions
 #define curr_blocks m_prog.functions.at(index_f).blocks
 
@@ -271,6 +273,8 @@ bool IROptimizer::dead_code_elimination()
     bool changed = false;
 
     std::vector<std::string> labels_to_remove;
+    std::vector<std::string> labels_used = {"_start"};
+    std::vector<std::string> all_labels;
 
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
         for (auto [index_b, block] : std::views::enumerate(func.blocks))
@@ -284,9 +288,23 @@ bool IROptimizer::dead_code_elimination()
                     else if (it != labels_to_remove.cend() && instr.src1 != IROperand::make_lit(0))
                         labels_to_remove.erase(it);
                 }
+                if (instr.opcode == IROpcode::GOTRUE || instr.opcode == IROpcode::GOTO)
+                {
+                    if (const auto it = std::ranges::find(labels_used, instr.dest.label); it == labels_used.cend())
+                        labels_used.push_back(instr.dest.label);
+                    else
+                        labels_used.erase(it);
+                }
+                if (instr.opcode == IROpcode::LABEL)
+                {
+                    if (const auto it = std::ranges::find(all_labels, instr.dest.label); it == all_labels.cend())
+                        all_labels.push_back(instr.dest.label);
+                    else
+                        all_labels.erase(it);
+                }
             }
 
-    if (!labels_to_remove.empty())
+    if (!labels_to_remove.empty() || all_labels.size() != labels_used.size())
     {
         changed = true;
         //somehow need to loop through labels_to_remove
@@ -303,14 +321,56 @@ bool IROptimizer::dead_code_elimination()
                     continue;
                 }
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                {
                     if (instr.opcode == IROpcode::GOTRUE && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
                     {
                         curr_instrs.erase(curr_instrs.begin() + index_i);
                         break; //TODO change this to something sensible
                     }
+                    if (instr.opcode == IROpcode::LABEL && std::ranges::find(labels_used, instr.dest.label) == labels_used.cend())
+                    {
+                        curr_instrs.erase(curr_instrs.begin() + index_i);
+                        break; //TODO change this to something sensible
+                    }
+                }
+
             }
     }
 
+    return changed;
+}
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::coalescing()
+{
+    //for now this only deals with fall_throughs
+    bool changed = false;
+
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+    {
+        //iterate to size - 1 since we are checking adjacent blocks
+        for (size_t index_b = 0; index_b < func.blocks.size() - 1; index_b++)
+        {
+            auto&[_, pred_instructions] = func.blocks[index_b];
+            auto&[__, succ_instructions] = func.blocks[index_b+1];
+
+            bool can_change = true;
+            //if predecessor does not have any goto or gotrues and successor any labels we can safely fall through
+            for (const auto instr : pred_instructions)
+                can_change &= instr.opcode != IROpcode::GOTO && instr.opcode != IROpcode::GOTRUE;
+            for (const auto instr : succ_instructions)
+                can_change &= instr.opcode != IROpcode::LABEL;
+
+            if (can_change)
+            {
+                curr_blocks.at(index_b).instructions.insert(curr_blocks.at(index_b).instructions.end(),
+                    std::make_move_iterator(curr_blocks.at(index_b+1).instructions.begin()),
+                    std::make_move_iterator(curr_blocks.at(index_b+1).instructions.end()));
+                curr_blocks.erase(curr_blocks.begin() + index_b + 1);
+                changed = true;
+                break; //TODO same as others
+            }
+        }
+    }
     return changed;
 }
 
