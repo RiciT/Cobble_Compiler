@@ -421,8 +421,6 @@ bool IROptimizer::coalescing()
 {
     bool changed = false;
 
-    m_prog.debug_print();std::cout << "\n";
-
     //this handles single instanced unconditionally jumped to labels and fallthroughs
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
     {

@@ -104,9 +104,59 @@ label4:
     mov rdx, rcx
     syscall
     add rsp, 32
+    push QWORD [rsp + 8]
+    mov rax, 4
+    push rax
+    pop rbx
+    pop rax
+    cmp rax, rbx
+    sete al
+    movzx rax, al
+    push rax
+    pop rax
+    test rax, rax
+    jz label5
+    mov rax, 5
+    push rax
+    pop rax
+    ;; Convert integer in rax to ASCII
+    mov rbx, 10
+    mov rcx, 0
+    sub rsp, 32
+    mov rdi, rsp
+    add rdi, 31
+    mov BYTE [rdi], 10
+    dec rdi
+    inc rcx
+    test rax, rax
+    jnz label6
+    mov BYTE [rdi], '0'
+    dec rdi
+    inc rcx
+    jmp label7
+label6:
+    test rax, rax
+    jz label7
+    xor rdx, rdx
+    div rbx
+    add dl, '0'
+    mov [rdi], dl
+    dec rdi
+    inc rcx
+    jmp label6
+label7:
+    inc rdi
+    mov rax, 1
+    mov rsi, rdi
+    mov rdi, 1
+    mov rdx, rcx
+    syscall
+    add rsp, 32
+    add rsp, 0
+label5:
     add rsp, 0
 label2:
-label5:
+label8:
     push QWORD [rsp + 8]
     mov rax, 0
     push rax
@@ -118,7 +168,7 @@ label5:
     push rax
     pop rax
     test rax, rax
-    jz label6
+    jz label9
     mov rax, 1
     push rax
     push QWORD [rsp + 16]
@@ -128,6 +178,18 @@ label5:
     push rax
     pop rax
     mov [rsp + 8], rax
+    push QWORD [rsp + 8]
+    mov rax, 3
+    push rax
+    pop rbx
+    pop rax
+    cmp rax, rbx
+    sete al
+    movzx rax, al
+    push rax
+    pop rax
+    test rax, rax
+    jz label10
     push QWORD [rsp + 8]
     pop rax
     ;; Convert integer in rax to ASCII
@@ -140,22 +202,22 @@ label5:
     dec rdi
     inc rcx
     test rax, rax
-    jnz label7
+    jnz label11
     mov BYTE [rdi], '0'
     dec rdi
     inc rcx
-    jmp label8
-label7:
+    jmp label12
+label11:
     test rax, rax
-    jz label8
+    jz label12
     xor rdx, rdx
     div rbx
     add dl, '0'
     mov [rdi], dl
     dec rdi
     inc rcx
-    jmp label7
-label8:
+    jmp label11
+label12:
     inc rdi
     mov rax, 1
     mov rsi, rdi
@@ -164,8 +226,10 @@ label8:
     syscall
     add rsp, 32
     add rsp, 0
-    jmp label5
-label6:
+label10:
+    add rsp, 0
+    jmp label8
+label9:
     mov rax, 60
     mov rdi, 0
     syscall
