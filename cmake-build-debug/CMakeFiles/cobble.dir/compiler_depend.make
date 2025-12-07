@@ -107,6 +107,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/bits/stl_tempbuf.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
+  /usr/include/c++/13/bits/stream_iterator.h \
   /usr/include/c++/13/bits/streambuf.tcc \
   /usr/include/c++/13/bits/streambuf_iterator.h \
   /usr/include/c++/13/bits/string_view.tcc \
@@ -147,6 +148,7 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/iosfwd \
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
+  /usr/include/c++/13/iterator \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
   /usr/include/c++/13/numbers \
@@ -155,6 +157,8 @@ CMakeFiles/cobble.dir/src/main.cpp.o: /home/tamas/PERSONAL/Developing/Cobble_lan
   /usr/include/c++/13/pstl/execution_defs.h \
   /usr/include/c++/13/pstl/glue_memory_defs.h \
   /usr/include/c++/13/pstl/pstl_config.h \
+  /usr/include/c++/13/ranges \
+  /usr/include/c++/13/span \
   /usr/include/c++/13/sstream \
   /usr/include/c++/13/stdexcept \
   /usr/include/c++/13/streambuf \
@@ -381,6 +385,12 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
+/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
+
 /usr/include/c++/13/cstdio:
 
 /usr/include/c++/13/fstream:
@@ -418,6 +428,10 @@ CMakeFiles/cobble.dir/src/main.cpp.o:
 /usr/include/c++/13/bits/stl_uninitialized.h:
 
 /usr/include/c++/13/bits/stl_relops.h:
+
+/usr/include/x86_64-linux-gnu/bits/uio_lim.h:
+
+/usr/include/c++/13/bits/stream_iterator.h:
 
 /usr/include/c++/13/bits/stl_raw_storage_iter.h:
 
@@ -589,8 +603,6 @@ libcobble_core.a:
 
 /usr/include/c++/13/bits/ostream_insert.h:
 
-/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp:
-
 /usr/include/c++/13/backward/binders.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h:
@@ -693,8 +705,6 @@ libcobble_core.a:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
-/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
-
 /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.hpp:
 
 /usr/include/c++/13/ext/concurrence.h:
@@ -710,8 +720,6 @@ libcobble_core.a:
 /usr/include/c++/13/array:
 
 /usr/include/c++/13/bits/hash_bytes.h:
-
-/usr/include/c++/13/bits/ios_base.h:
 
 /usr/include/c++/13/bits/uniform_int_dist.h:
 
@@ -761,7 +769,21 @@ libcobble_core.a:
 
 /usr/include/c++/13/istream:
 
+/usr/include/c++/13/bits/ios_base.h:
+
+/usr/include/c++/13/iterator:
+
+/usr/include/c++/13/climits:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
+
 /usr/include/c++/13/pstl/pstl_config.h:
+
+/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp:
+
+/usr/include/c++/13/ranges:
+
+/usr/include/c++/13/span:
 
 /usr/include/c++/13/stdexcept:
 
@@ -857,8 +879,6 @@ libcobble_core.a:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
-
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
 
 /usr/include/x86_64-linux-gnu/bits/local_lim.h:
@@ -868,10 +888,6 @@ libcobble_core.a:
 /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
-
-/usr/include/c++/13/climits:
-
-/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
@@ -920,7 +936,3 @@ libcobble_core.a:
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/usr/include/x86_64-linux-gnu/bits/uio_lim.h:

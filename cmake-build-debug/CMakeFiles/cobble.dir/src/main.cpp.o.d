@@ -232,7 +232,9 @@ CMakeFiles/cobble.dir/src/main.cpp.o: \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h \
  /usr/include/c++/13/bits/move_only_function.h \
- /usr/include/c++/13/bits/mofunc_impl.h \
+ /usr/include/c++/13/bits/mofunc_impl.h /usr/include/c++/13/ranges \
+ /usr/include/c++/13/iterator /usr/include/c++/13/bits/stream_iterator.h \
+ /usr/include/c++/13/span \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.hpp \
  /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/asm_emitter.hpp

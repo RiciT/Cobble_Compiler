@@ -68,7 +68,8 @@ label1:
     push rax
     pop rax
     mov [rsp + 0], rax
-    push QWORD [rsp + 8]
+    mov rax, 0
+    push rax
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -105,7 +106,29 @@ label4:
     add rsp, 32
     add rsp, 0
 label2:
-    push QWORD [rsp + 0]
+label5:
+    push QWORD [rsp + 8]
+    mov rax, 0
+    push rax
+    pop rbx
+    pop rax
+    cmp rax, rbx
+    setg al
+    movzx rax, al
+    push rax
+    pop rax
+    test rax, rax
+    jz label6
+    mov rax, 1
+    push rax
+    push QWORD [rsp + 16]
+    pop rax
+    pop rbx
+    add rax, rbx
+    push rax
+    pop rax
+    mov [rsp + 8], rax
+    push QWORD [rsp + 8]
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -117,22 +140,22 @@ label2:
     dec rdi
     inc rcx
     test rax, rax
-    jnz label5
+    jnz label7
     mov BYTE [rdi], '0'
     dec rdi
     inc rcx
-    jmp label6
-label5:
+    jmp label8
+label7:
     test rax, rax
-    jz label6
+    jz label8
     xor rdx, rdx
     div rbx
     add dl, '0'
     mov [rdi], dl
     dec rdi
     inc rcx
-    jmp label5
-label6:
+    jmp label7
+label8:
     inc rdi
     mov rax, 1
     mov rsi, rdi
@@ -140,6 +163,9 @@ label6:
     mov rdx, rcx
     syscall
     add rsp, 32
+    add rsp, 0
+    jmp label5
+label6:
     mov rax, 60
     mov rdi, 0
     syscall

@@ -23,7 +23,8 @@ void IROptimizer::optimize()
         changed |= empty_block_removal();
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
-        changed |= coalescing();
+        //only start coalescing if the basic block opts are already done
+        if (!changed) changed |= coalescing();
         //and all other optimizations
     }
 }
@@ -342,11 +343,69 @@ bool IROptimizer::dead_code_elimination()
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::coalescing()
 {
-    //for now this only deals with fall_throughs
     bool changed = false;
 
+    //this handles single instanced unconditionally jumped to labels and fallthroughs
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
     {
+        #pragma region single jump labels
+        std::unordered_map<std::string, std::tuple<int, bool, std::vector<std::pair<int, int>>>> label_instance_count;
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+        {
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                if (instr.opcode == IROpcode::GOTO || instr.opcode == IROpcode::GOTRUE)
+                {
+                    auto& [jump_count, jump_is_uncond, jump_pos] = label_instance_count[instr.dest.label];
+                    jump_count++;
+                    jump_is_uncond = instr.opcode == IROpcode::GOTO ? true : instr.src1 == IROperand::make_lit(1);
+                    jump_pos.push_back(std::pair {index_b, index_i});
+                }
+            if (func.blocks[index_b] == func.blocks.at(func.blocks.size() - 1)) continue;
+
+            //also add to label_count if the previous block falls_through to it
+            bool falls_through = true;
+            if (!func.blocks[index_b].instructions.empty())
+                if (curr_instrs.back().opcode == IROpcode::GOTO ||
+                    curr_instrs.back().opcode == IROpcode::GOTRUE ||
+                    curr_instrs.back().opcode == IROpcode::EXIT)
+                    falls_through = false;
+            if (falls_through && !func.blocks[index_b + 1].instructions.empty() && func.blocks[index_b + 1].instructions.front().opcode == IROpcode::LABEL)
+                std::get<0>(label_instance_count[func.blocks[index_b + 1].instructions.front().dest.label])++;
+        }
+        if (!label_instance_count.empty())
+        {
+            for (auto [label, count] : label_instance_count)
+            {
+                //only do something if the jump is unconditional and single instanced
+                if (!(std::get<0>(count) <= 1 && std::get<1>(count))) continue;
+                std::pair label_index = {-1, -1};
+                for (auto [index_b, block] : std::views::enumerate(func.blocks))
+                {
+                    bool isFound = false;
+                    for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                        if (instr.opcode == IROpcode::LABEL && instr.dest.label == label)
+                        { label_index = {index_b, index_i}; isFound = true; break; }
+                    if (isFound) break;
+                }
+
+                //label not in current function so for now we ignore
+                if (label_index == std::pair {-1, -1}) continue;
+
+                changed = true;
+                #define f_inst curr_blocks.at(std::get<2>(count).at(0).first).instructions
+                #define l_inst curr_blocks.at(label_index.first).instructions
+                f_inst.insert(f_inst.end() - 1, std::make_move_iterator(l_inst.begin() + 1), std::make_move_iterator(l_inst.end()));
+                f_inst.erase(f_inst.end() - 1);
+                #undef f_inst
+                #undef l_inst
+                curr_blocks.erase(curr_blocks.begin() + label_index.first);
+
+                break; //TODO same
+            }
+        }
+#pragma endregion
+        #pragma region fallthrough blocks
+        //this handles fallthrough blocks
         //iterate to size - 1 since we are checking adjacent blocks
         for (size_t index_b = 0; index_b < func.blocks.size() - 1; index_b++)
         {
@@ -370,6 +429,7 @@ bool IROptimizer::coalescing()
                 break; //TODO same as others
             }
         }
+        #pragma endregion
     }
     return changed;
 }

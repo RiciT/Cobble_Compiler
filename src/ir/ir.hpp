@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <ranges>
 #include <unordered_map>
 
 //operands
@@ -87,6 +88,17 @@ struct IRInstruction {
 struct IRBasicBlock {
     std::string name;
     std::vector<IRInstruction> instructions;
+
+    //helper
+    bool operator==(const IRBasicBlock& other) const
+    {
+        if (name != other.name) return false;
+        if (instructions.size() != other.instructions.size()) return false;
+        for (auto [i, instr] : std::views::enumerate(instructions))
+            if (instr != other.instructions[i])
+                return false;
+        return true;
+    }
 };
 
 struct IRFunction {

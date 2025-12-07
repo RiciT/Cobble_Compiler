@@ -63,7 +63,9 @@ void IRProgram::debug_print() const
 {
     std::vector<IROperand> vregs;
     for (const auto [func_name, blocks, _, __]: functions) {
+        std::cout << "          function: " << func_name << "\n";
         for (const auto [block_name, instructions]: blocks) {
+            std::cout << "          block: " << block_name << "\n";
             for (const auto instr: instructions) {
                 std::cout << instr.to_string() << "\n";
                 //we can be sure that if we check for unique dest vregs we will find all unique vregs

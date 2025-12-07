@@ -6,6 +6,10 @@ print(i);
 if (i != 5)
 {
     i = i * 0;
+    print(0);
+}
+
+while (a > 0) {
+    a = a + 1;
     print(a);
 }
-print(i);
