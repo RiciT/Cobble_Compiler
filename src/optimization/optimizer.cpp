@@ -181,7 +181,8 @@ bool IROptimizer::empty_block_removal()
         {
             if (block.instructions.empty())
             {
-                m_prog.functions.at(index_f).blocks.erase(m_prog.functions.at(index_f).blocks.begin() + index_b);
+                curr_blocks.erase(curr_blocks.begin() + index_b);
+                if (index_b <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
                 changed = true;
                 break; //TODO change this to something sensible
             }
@@ -318,6 +319,7 @@ bool IROptimizer::dead_code_elimination()
                     std::ranges::find(labels_to_remove, block.instructions.front().dest.label) != labels_to_remove.cend())
                 {
                     curr_blocks.erase(curr_blocks.begin() + index_b);
+                    if (index_b <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
                     break; //TODO change this to something sensible
                     continue;
                 }
@@ -341,69 +343,89 @@ bool IROptimizer::dead_code_elimination()
     return changed;
 }
 // ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& func)
+{
+    bool changed = false;
+    std::unordered_map<std::string, std::tuple<int, bool, std::vector<std::pair<int, int>>>> label_instance_count;
+    for (auto [index_b, block] : std::views::enumerate(func.blocks))
+    {
+        for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+        {
+            if (instr.opcode == IROpcode::GOTO || instr.opcode == IROpcode::GOTRUE)
+            {
+                auto& [jump_count, jump_is_uncond, jump_pos] = label_instance_count[instr.dest.label];
+                jump_count++;
+                jump_is_uncond = instr.opcode == IROpcode::GOTO ? true : instr.src1 == IROperand::make_lit(1);
+                jump_pos.push_back(std::pair {index_b, index_i});
+            }
+            //since this is also basically a fallthrough case
+            if (instr.opcode == IROpcode::LABEL && curr_instrs.front() != instr)
+            { auto& [c, u, p] = label_instance_count[instr.dest.label]; c++; }
+        }
+
+        //only do this if we are not on the last block
+        if (func.blocks[index_b] == func.blocks.at(func.blocks.size() - 1)) break;
+        //also add to label_count if the previous block falls_through to it
+        //we can fall through if there is an exit
+        if (curr_instrs.back().opcode == IROpcode::EXIT) continue;
+        //if either index_b or index_b + 1 is greater than func.main_control_flow_index
+        //falling through has no meaning since we have to return to the main control flow at the end of every block outside it
+        if (index_b > func.main_control_flow_index) continue;
+        //if the next block's first instr is a label and this blocks last instruction is not a GO op or
+        //a GO op with the same label we know we will fall through
+        auto b_plus_one_first_instr = func.blocks[index_b + 1].instructions.front();
+        if (b_plus_one_first_instr.opcode == IROpcode::LABEL)
+        { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c++; continue; }
+        if (curr_instrs.back().opcode == IROpcode::GOTO && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label)
+        { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c--; }
+
+    }
+    if (!label_instance_count.empty())
+    {
+        for (auto [label, count] : label_instance_count)
+        {
+            //only do something if the jump is unconditional and single instanced
+            if (!(std::get<0>(count) <= 1 && std::get<1>(count))) continue;
+            std::pair label_index = {-1, -1};
+            for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            {
+                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                    if (instr.opcode == IROpcode::LABEL && instr.dest.label == label)
+                    { label_index = {index_b, index_i}; break; }
+                if (label_index != std::pair {-1, -1}) break;
+            }
+            //label not in current function so for now we ignore
+            if (label_index == std::pair {-1, -1}) continue;
+
+            changed = true;
+            #define f_inst curr_blocks.at(std::get<2>(count).at(0).first).instructions
+            #define l_inst curr_blocks.at(label_index.first).instructions
+            f_inst.insert(f_inst.end() - 1, std::make_move_iterator(l_inst.begin() + 1), std::make_move_iterator(l_inst.end()));
+            f_inst.erase(f_inst.end() - 1);
+            #undef f_inst
+            #undef l_inst
+            curr_blocks.erase(curr_blocks.begin() + label_index.first);
+            if (label_index.first <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
+
+            break; //TODO same
+        }
+    }
+
+    return changed;
+}
+// ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::coalescing()
 {
     bool changed = false;
+
+    m_prog.debug_print();std::cout << "\n";
 
     //this handles single instanced unconditionally jumped to labels and fallthroughs
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
     {
         #pragma region single jump labels
-        std::unordered_map<std::string, std::tuple<int, bool, std::vector<std::pair<int, int>>>> label_instance_count;
-        for (auto [index_b, block] : std::views::enumerate(func.blocks))
-        {
-            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                if (instr.opcode == IROpcode::GOTO || instr.opcode == IROpcode::GOTRUE)
-                {
-                    auto& [jump_count, jump_is_uncond, jump_pos] = label_instance_count[instr.dest.label];
-                    jump_count++;
-                    jump_is_uncond = instr.opcode == IROpcode::GOTO ? true : instr.src1 == IROperand::make_lit(1);
-                    jump_pos.push_back(std::pair {index_b, index_i});
-                }
-            if (func.blocks[index_b] == func.blocks.at(func.blocks.size() - 1)) continue;
-
-            //also add to label_count if the previous block falls_through to it
-            bool falls_through = true;
-            if (!func.blocks[index_b].instructions.empty())
-                if (curr_instrs.back().opcode == IROpcode::GOTO ||
-                    curr_instrs.back().opcode == IROpcode::GOTRUE ||
-                    curr_instrs.back().opcode == IROpcode::EXIT)
-                    falls_through = false;
-            if (falls_through && !func.blocks[index_b + 1].instructions.empty() && func.blocks[index_b + 1].instructions.front().opcode == IROpcode::LABEL)
-                std::get<0>(label_instance_count[func.blocks[index_b + 1].instructions.front().dest.label])++;
-        }
-        if (!label_instance_count.empty())
-        {
-            for (auto [label, count] : label_instance_count)
-            {
-                //only do something if the jump is unconditional and single instanced
-                if (!(std::get<0>(count) <= 1 && std::get<1>(count))) continue;
-                std::pair label_index = {-1, -1};
-                for (auto [index_b, block] : std::views::enumerate(func.blocks))
-                {
-                    bool isFound = false;
-                    for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                        if (instr.opcode == IROpcode::LABEL && instr.dest.label == label)
-                        { label_index = {index_b, index_i}; isFound = true; break; }
-                    if (isFound) break;
-                }
-
-                //label not in current function so for now we ignore
-                if (label_index == std::pair {-1, -1}) continue;
-
-                changed = true;
-                #define f_inst curr_blocks.at(std::get<2>(count).at(0).first).instructions
-                #define l_inst curr_blocks.at(label_index.first).instructions
-                f_inst.insert(f_inst.end() - 1, std::make_move_iterator(l_inst.begin() + 1), std::make_move_iterator(l_inst.end()));
-                f_inst.erase(f_inst.end() - 1);
-                #undef f_inst
-                #undef l_inst
-                curr_blocks.erase(curr_blocks.begin() + label_index.first);
-
-                break; //TODO same
-            }
-        }
-#pragma endregion
+        changed |= coalescing_single_jump_labels(index_f, func);
+        #pragma endregion
         #pragma region fallthrough blocks
         //this handles fallthrough blocks
         //iterate to size - 1 since we are checking adjacent blocks
@@ -425,12 +447,14 @@ bool IROptimizer::coalescing()
                     std::make_move_iterator(curr_blocks.at(index_b+1).instructions.begin()),
                     std::make_move_iterator(curr_blocks.at(index_b+1).instructions.end()));
                 curr_blocks.erase(curr_blocks.begin() + index_b + 1);
+                if (index_b + 1 <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
                 changed = true;
                 break; //TODO same as others
             }
         }
         #pragma endregion
     }
+
     return changed;
 }
 

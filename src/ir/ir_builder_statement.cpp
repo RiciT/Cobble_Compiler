@@ -87,7 +87,8 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         void operator()(const NodeStmtWhile* stmt_while) const
         {
             auto const while_label_id = irb.m_label_id;
-
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+                                        { .name = "while_enter" + std::to_string(while_label_id), .instructions = {} });
             irb.m_current_block->instructions.push_back({ IROpcode::LABEL,
                 irb.create_label(false)});
             auto const expr_reg = irb.build_expr(stmt_while->expr);

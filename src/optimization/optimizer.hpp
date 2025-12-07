@@ -22,6 +22,7 @@ private:
     bool unreachable_code_elimination();
     bool dead_code_elimination();
     bool coalescing(); //block merging - redunant jump elimination
+    bool coalescing_single_jump_labels(long index_f, IRFunction& func);
     bool empty_block_removal();
 
     //dataflow optimization - global opt
