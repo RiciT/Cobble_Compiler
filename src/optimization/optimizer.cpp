@@ -375,10 +375,13 @@ bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& 
         //a GO op with the same label we know we will fall through
         auto b_plus_one_first_instr = func.blocks[index_b + 1].instructions.front();
         if (b_plus_one_first_instr.opcode == IROpcode::LABEL)
-        { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c++; continue; }
-        if (curr_instrs.back().opcode == IROpcode::GOTO && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label)
+        { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c++; }
+        else continue;
+        //dont add if there is an uncond GO op to the label
+        if ((curr_instrs.back().opcode == IROpcode::GOTO && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label) ||
+            (curr_instrs.back().opcode == IROpcode::GOTRUE && curr_instrs.back().src1 == IROperand::make_lit(1)
+                && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label))
         { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c--; }
-
     }
     if (!label_instance_count.empty())
     {
