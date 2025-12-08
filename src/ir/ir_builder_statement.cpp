@@ -2,9 +2,10 @@
 
 #include "ir_builder.hpp"
 
-void IRBuilder::build_statement(const NodeStmt* stmt) {
+void IRBuilder::build_statement(const NodeStmt* stmt, const int parent_block_index) {
     struct StmtVisitor {
         IRBuilder& irb;
+        int parent_block_index;
         void operator()(const NodeStmtExit* stmt_exit) const
         {
             const auto expr_reg = irb.build_expr(stmt_exit->expr);
@@ -35,7 +36,7 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         } //do arrays
         void operator()(const NodeScope* scope) const
         {
-            irb.build_scope(scope);
+            irb.build_scope(scope, parent_block_index);
         }
         void operator()(const NodeStmtIf* stmt_if) const
         {
@@ -50,11 +51,12 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
                 irb.create_label(true), expr_reg});
 
             //basic block of if statement
-            irb.m_current_func->blocks.push_back({ .name = "if"+std::to_string(if_in_label_id), .instructions = {
-                IRInstruction{ IROpcode::LABEL, irb.create_label(true, if_in_label_id) }
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(
+                irb.m_current_func->blocks.begin() + parent_block_index + 1,
+                { .name = "if"+std::to_string(if_in_label_id), .instructions = {
+                    IRInstruction{ IROpcode::LABEL, irb.create_label(true, if_in_label_id) }
             } });
-            irb.m_current_block = &irb.m_current_func->blocks.back();
-            irb.build_scope(stmt_if->scope);
+            irb.build_scope(stmt_if->scope, parent_block_index + 1);
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
                 irb.create_label(false, if_in_label_id) });
 
@@ -64,19 +66,16 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             });
             if (stmt_if->ifpred.has_value())
             {
-                irb.build_if_predicate(stmt_if->ifpred.value(), if_in_label_id);
+                irb.build_if_predicate(stmt_if->ifpred.value(), if_in_label_id, parent_block_index);
             }
 
-            //rwoupvrwbwrbwrohgh8
-            irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
-                            return block.name == current_block_name;
-            });
             //create new block at the after the current "main" block with the ifexit label
             //and immediatly change to it as the current block
-            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + parent_block_index + 1,
                 { .name = "if_exit" + std::to_string(if_in_label_id), .instructions = {
                     { IROpcode::LABEL, irb.create_label(false, if_in_label_id)}
                 } });
+            if (parent_block_index <= irb.m_current_func->main_control_flow_index) irb.m_current_func->main_control_flow_index++;
         }
         void operator()(const NodeStmtAssign* stmt_assign) const
         {
@@ -91,7 +90,8 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         void operator()(const NodeStmtWhile* stmt_while) const
         {
             auto const while_label_id = irb.m_label_id;
-            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+            if (parent_block_index <= irb.m_current_func->main_control_flow_index) irb.m_current_func->main_control_flow_index++;
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + parent_block_index + 1,
                                         { .name = "while_enter" + std::to_string(while_label_id), .instructions = {} });
             irb.m_current_block->instructions.push_back({ IROpcode::LABEL,
                 irb.create_label(false)});
@@ -100,18 +100,16 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
                 irb.create_label(true, while_label_id), expr_reg});
 
             //basic block
-            irb.m_current_func->blocks.push_back({ .name = "while"+std::to_string(while_label_id), .instructions = {
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + parent_block_index + 2,
+                { .name = "while"+std::to_string(while_label_id), .instructions = {
                 IRInstruction{ IROpcode::LABEL, irb.create_label(true, while_label_id) }
             } });
-            irb.m_current_block = &irb.m_current_func->blocks.back();
-            irb.build_scope(stmt_while->scope);
+            irb.build_scope(stmt_while->scope, parent_block_index + 2);
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
                 irb.create_label(false, while_label_id) });
 
-
-            //igwroinawrigarihogargh
-
-            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+            if (parent_block_index <= irb.m_current_func->main_control_flow_index) irb.m_current_func->main_control_flow_index++;
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + parent_block_index + 2,
                             { .name = "while_exit" + std::to_string(while_label_id), .instructions = {} });
         }
         void operator()(const NodeStmtPrint* stmt_print) const
@@ -165,7 +163,7 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
             //store function
             irb.m_funcs.push_back({ params, func_name, {irb.create_vreg(), stmt_func->return_type } });
             //get IRInstructions
-            irb.build_scope(stmt_func->scope);
+            irb.build_scope(stmt_func->scope, 0);
 
             //restore state
             irb.m_vars = saved_vars;
@@ -206,7 +204,8 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
 
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO, irb.create_label(true, it->name) });
 
-            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + ++irb.m_current_func->main_control_flow_index,
+            if (parent_block_index <= irb.m_current_func->main_control_flow_index) irb.m_current_func->main_control_flow_index++;
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + parent_block_index + 1,
                             { .name = "func_exit" + it->name, .instructions = {} });
 
             irb.m_current_block->instructions.push_back({ IROpcode::LABEL, irb.create_label(false, it->name) });
@@ -263,14 +262,15 @@ void IRBuilder::build_statement(const NodeStmt* stmt) {
         }
     };
 
-    StmtVisitor visitor { .irb = *this };
+    StmtVisitor visitor { .irb = *this, .parent_block_index = parent_block_index };
     std::visit(visitor, stmt->stmt);
 }
 
-void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end_label_id) {
+void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end_label_id, const int parent_block_index) {
     struct PredVisitor {
         IRBuilder& irb;
         const size_t end_label_id;
+        int parent_block_index;
         void operator()(const NodeIfPredElseIf* elseif_) const
         {
             //save register of expr
@@ -284,11 +284,11 @@ void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end
                 irb.create_label(true), expr_reg});
 
             //basic block of elseif statement
-            irb.m_current_func->blocks.push_back({ .name = "elseif"+std::to_string(else_if_in_label_id), .instructions = {
+            irb.m_current_block = &*irb.m_current_func->blocks.insert(irb.m_current_func->blocks.begin() + parent_block_index + 1,
+                { .name = "elseif"+std::to_string(else_if_in_label_id), .instructions = {
                 IRInstruction{ IROpcode::LABEL, irb.create_label(true, else_if_in_label_id) }
             } });
-            irb.m_current_block = &irb.m_current_func->blocks.back();
-            irb.build_scope(elseif_->scope);
+            irb.build_scope(elseif_->scope, parent_block_index + 1);
             irb.m_current_block->instructions.push_back({ IROpcode::GOTO,
                 irb.create_label(false, end_label_id) });
 
@@ -298,7 +298,7 @@ void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end
             });
             if (elseif_->ifpred.has_value())
             {
-                irb.build_if_predicate(elseif_->ifpred.value(), else_if_in_label_id);
+                irb.build_if_predicate(elseif_->ifpred.value(), else_if_in_label_id, parent_block_index);
             }
             irb.m_current_block = &*std::ranges::find_if(irb.m_current_func->blocks, [&](const IRBasicBlock& block) {
                 return block.name == current_block_name;
@@ -306,19 +306,19 @@ void IRBuilder::build_if_predicate(const NodeIfPredicate* pred, const size_t end
         }
         void operator()(const NodeIfPredElse* else_) const
         {
-            irb.build_scope(else_->scope);
+            irb.build_scope(else_->scope, parent_block_index);
         }
     };
 
-    PredVisitor visitor{ .irb = *this, .end_label_id = end_label_id };
+    PredVisitor visitor{ .irb = *this, .end_label_id = end_label_id, .parent_block_index = parent_block_index };
     std::visit(visitor, pred->ifpred);
 }
 
-void IRBuilder::build_scope(const NodeScope* scope) {
+void IRBuilder::build_scope(const NodeScope* scope, const int parent_block_index) {
     begin_scope();
     for (const NodeStmt* stmt : scope->stmts)
     {
-        build_statement(stmt);
+        build_statement(stmt, parent_block_index);
     }
     end_scope();
 }

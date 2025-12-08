@@ -3,18 +3,14 @@ def int i = a;
 i = i * 1;
 print(i);
 
-if (i != 5)
+while(i != 0)
 {
-    i = i * 0;
-    print(0);
-    if (a == 4)
-    {
-        print(5);
+    if (i == a) {
+        print(a);
+        a = a + i;
     }
+    i = i - 1;
+    a = a - 2;
 }
 
-while (a > 0) {
-    a = a + 1;
-    if (a == 3) {
-    print(a);}
-}
+print(a);

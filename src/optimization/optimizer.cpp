@@ -368,9 +368,6 @@ bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& 
         //also add to label_count if the previous block falls_through to it
         //we can fall through if there is an exit
         if (curr_instrs.back().opcode == IROpcode::EXIT) continue;
-        //if either index_b or index_b + 1 is greater than func.main_control_flow_index
-        //falling through has no meaning since we have to return to the main control flow at the end of every block outside it
-        if (index_b > func.main_control_flow_index) continue;
         //if the next block's first instr is a label and this blocks last instruction is not a GO op or
         //a GO op with the same label we know we will fall through
         auto b_plus_one_first_instr = func.blocks[index_b + 1].instructions.front();

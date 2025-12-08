@@ -21,7 +21,7 @@ IRProgram IRBuilder::build_ir()
 
     for (const NodeStmt* stmt : m_prog.stmts)
     {
-        build_statement(stmt);
+        build_statement(stmt, 0);
     }
 
     m_current_block->instructions.push_back({ .opcode = IROpcode::EXIT, .src1 = IROperand::make_lit(0)});
