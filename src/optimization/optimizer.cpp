@@ -274,7 +274,7 @@ bool IROptimizer::dead_code_elimination()
 {
     bool changed = false;
 
-    std::vector<std::string> labels_to_remove;
+    std::unordered_map<std::string, bool> labels_to_remove;
     std::vector<std::string> labels_used = {"_start"};
     std::vector<std::string> all_labels;
 
@@ -284,26 +284,17 @@ bool IROptimizer::dead_code_elimination()
             {
                 if (instr.opcode == IROpcode::GOTRUE)
                 {
-                    if (const auto it = std::ranges::find(labels_to_remove, instr.dest.label);
-                        it == labels_to_remove.cend() && instr.src1 == IROperand::make_lit(0))
-                        labels_to_remove.push_back(instr.dest.label);
-                    else if (it != labels_to_remove.cend() && instr.src1 != IROperand::make_lit(0))
-                        labels_to_remove.erase(it);
+                    if (!labels_to_remove.contains(instr.dest.label) && instr.src1 == IROperand::make_lit(0))
+                        labels_to_remove[instr.dest.label] = true;
+                    else if (labels_to_remove.contains(instr.dest.label) && instr.src1 != IROperand::make_lit(0))
+                        labels_to_remove[instr.dest.label] = false;
                 }
                 if (instr.opcode == IROpcode::GOTRUE || instr.opcode == IROpcode::GOTO)
-                {
                     if (const auto it = std::ranges::find(labels_used, instr.dest.label); it == labels_used.cend())
                         labels_used.push_back(instr.dest.label);
-                    else
-                        labels_used.erase(it);
-                }
                 if (instr.opcode == IROpcode::LABEL)
-                {
                     if (const auto it = std::ranges::find(all_labels, instr.dest.label); it == all_labels.cend())
                         all_labels.push_back(instr.dest.label);
-                    else
-                        all_labels.erase(it);
-                }
             }
 
     if (!labels_to_remove.empty() || all_labels.size() != labels_used.size())
@@ -316,7 +307,8 @@ bool IROptimizer::dead_code_elimination()
             for (auto [index_b, block] : std::views::enumerate(func.blocks))
             {
                 if (block.instructions.front().opcode == IROpcode::LABEL &&
-                    std::ranges::find(labels_to_remove, block.instructions.front().dest.label) != labels_to_remove.cend())
+                    labels_to_remove.contains(block.instructions.front().dest.label) &&
+                    labels_to_remove[block.instructions.front().dest.label])
                 {
                     curr_blocks.erase(curr_blocks.begin() + index_b);
                     if (index_b <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
@@ -325,7 +317,9 @@ bool IROptimizer::dead_code_elimination()
                 }
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
                 {
-                    if (instr.opcode == IROpcode::GOTRUE && std::ranges::find(labels_to_remove, instr.dest.label) != labels_to_remove.cend())
+                    if (instr.opcode == IROpcode::GOTRUE &&
+                        labels_to_remove.contains(instr.dest.label) &&
+                        labels_to_remove[instr.dest.label])
                     {
                         curr_instrs.erase(curr_instrs.begin() + index_i);
                         break; //TODO change this to something sensible

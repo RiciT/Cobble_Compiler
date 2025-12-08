@@ -24,6 +24,7 @@ private:
     bool coalescing(); //block merging - redunant jump elimination
     bool coalescing_single_jump_labels(long index_f, IRFunction& func);
     bool empty_block_removal();
+    bool jump_target_merging();
 
     //dataflow optimization - global opt
     bool copy_propagation();
