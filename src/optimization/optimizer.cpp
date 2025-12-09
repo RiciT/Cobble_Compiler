@@ -653,34 +653,28 @@ bool IROptimizer::copy_propagation()
     return changed;
 }
 
+#undef curr_instrs
+#undef curr_blocks
 #pragma endregion
 
-// ReSharper disable once CppMemberFunctionMayBeStatic
+// ReSharper disable once CppMemberFunctionMayBeConst
 void IROptimizer::cleanup()
 {
     //register normalization
-    std::set<int> used_regs;
-    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
-        for (auto [index_b, block] : std::views::enumerate(func.blocks))
-            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-            {
-                if (instr.dest.type == IROperand::VirtualReg) used_regs.insert(instr.dest.val_id);
-                if (instr.src1.type == IROperand::VirtualReg) used_regs.insert(instr.src1.val_id);
-                if (instr.src2.type == IROperand::VirtualReg) used_regs.insert(instr.src2.val_id);
-            }
     std::unordered_map<int, int> regs;
-    for (auto [i, r] : std::views::enumerate(used_regs))
-        regs[r] = i;
-    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
-        for (auto [index_b, block] : std::views::enumerate(func.blocks))
-            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-            {
-                if (instr.dest.type == IROperand::VirtualReg) curr_instrs[index_i].dest.val_id = regs[instr.dest.val_id];
-                if (instr.src1.type == IROperand::VirtualReg) curr_instrs[index_i].src1.val_id = regs[instr.src1.val_id];
-                if (instr.src2.type == IROperand::VirtualReg) curr_instrs[index_i].src2.val_id = regs[instr.src2.val_id];
-            }
+    int next_reg = 0;
+    auto normalize_op = [&](IROperand& op) {
+        if (op.type == IROperand::VirtualReg) {
+            auto [it, inserted] = regs.try_emplace(op.val_id, next_reg);
+            if (inserted)
+                next_reg++;
+            op.val_id = it->second;
+        }
+    };
+
+    for (auto& func : m_prog.functions)
+        for (auto&[_, instructions] : func.blocks)
+            for (auto& instr : instructions)
+            { normalize_op(instr.dest); normalize_op(instr.src1); normalize_op(instr.src2); }
     //register normalization end
 }
-
-#undef curr_instrs
-#undef curr_blocks
