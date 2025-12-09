@@ -12,9 +12,8 @@ IROptimizer::IROptimizer(IRProgram &prog)
 
 void IROptimizer::optimize()
 {
-    bool changed = true;
-    while (changed)
-    {
+    bool changed;
+    do {
         changed = false;
         changed |= dead_assignment_elimination();
         changed |= reassignment_elimination();
@@ -29,9 +28,11 @@ void IROptimizer::optimize()
         if (!changed) changed |= jump_target_merging();
         //global optimizations
         if (!changed) changed |= copy_propagation();
-    }
+    } while (changed);
+    cleanup();
 }
 
+#pragma region OPTIMIZATION
 //change breaks to reverse iterations
 #define curr_instrs m_prog.functions.at(index_f).blocks.at(index_b).instructions
 #define curr_blocks m_prog.functions.at(index_f).blocks
@@ -563,17 +564,17 @@ bool IROptimizer::jump_target_merging()
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::copy_propagation()
 {
+    //for now only propagate temps - once assigned
     bool changed = false;
 
     //register  - regdata of copy - number of arithm
-    std::unordered_map<int, std::pair<std::vector<IROperand>, int>> all_registers;
-    //for now only propagate temps - once assigned
+    std::unordered_map<int, std::pair<std::vector<IROperand>, std::vector<IRInstruction>>> all_registers;
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
         for (auto [index_b, block] : std::views::enumerate(func.blocks))
             for (auto [index_i, instr] : std::views::enumerate(block.instructions))
                 if (instr.opcode == IROpcode::COPY || arithmetic_ops.contains(instr.opcode))
                 { auto& [d, a] = all_registers[instr.dest.val_id];
-                    if (instr.opcode == IROpcode::COPY) { d.push_back(instr.src1); } else a++; }
+                    if (instr.opcode == IROpcode::COPY) d.push_back(instr.src1); else a.push_back(instr); }
 
     if (all_registers.empty()) return false;
 
@@ -581,21 +582,61 @@ bool IROptimizer::copy_propagation()
     std::vector<std::tuple<int, int, int>> erase_coords;
     for (auto [reg, occ] : all_registers)
     {
-        if (occ.first.size() != 1 || occ.second != 0) continue;
-        changed = true;
+        //here there is only one copy assignment so we can go through and change every instance of usage
+        if (occ.first.size() == 1 && occ.second.size() == 0)
+        {
+            changed = true;
 
-        for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
-            for (auto [index_b, block] : std::views::enumerate(func.blocks))
-                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                {
-                    if (instr.opcode == IROpcode::COPY && instr.dest == IROperand::make_reg(reg))
-                    { erase_coords.push_back({index_f, index_b, index_i}); continue; }
-                    if (instr.src1 == IROperand::make_reg(reg))
-                        curr_instrs[index_i].src1 = occ.first.front();
-                    if (instr.src2 == IROperand::make_reg(reg))
-                        curr_instrs[index_i].src2 = occ.first.front();
+            for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+                for (auto [index_b, block] : std::views::enumerate(func.blocks))
+                    for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                    {
+                        if (instr.opcode == IROpcode::COPY && instr.dest == IROperand::make_reg(reg))
+                        { erase_coords.push_back({index_f, index_b, index_i}); continue; }
+                        if (instr.src1 == IROperand::make_reg(reg))
+                            curr_instrs[index_i].src1 = occ.first.front();
+                        if (instr.src2 == IROperand::make_reg(reg))
+                            curr_instrs[index_i].src2 = occ.first.front();
+                    }
+        }
+        //here there is only one arith assignment so we need to check every instance of usage
+        //and only delete and replace if we only use it in a copy assignment
+        else if (occ.first.size() == 0 && occ.second.size() == 1)
+        {
+            bool can_change = true;
+            std::vector<std::tuple<int, int, int>> indeces_to_change;
+            std::tuple<int, int, int> erase_coord;
+            for (auto [index_f, func] : std::views::enumerate(m_prog.functions)) {
+                for (auto [index_b, block] : std::views::enumerate(func.blocks)) {
+                    for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                    {
+                        if (arithmetic_ops.contains(instr.opcode) && instr.dest == IROperand::make_reg(reg))
+                        { erase_coord = {index_f, index_b, index_i}; continue; }
+                        //if the reg is used in an arithmetic op we cannot change
+                        if (arithmetic_ops.contains(instr.opcode) &&
+                            (instr.src1 == IROperand::make_reg(reg) || instr.src2 == IROperand::make_reg(reg)))
+                            can_change = false;
+                        //if the reg is dest in a copy we can change
+                        else if (instr.opcode == IROpcode::COPY && instr.src1 == IROperand::make_reg(reg))
+                            indeces_to_change.push_back({index_f, index_b, index_i});
+                    }
+                    if (!can_change) break; }
+                if (!can_change) break; }
 
-                }
+            if (!can_change) continue;
+            if (indeces_to_change.empty()) continue;
+
+            changed = true;
+            erase_coords.push_back(erase_coord);
+            for (auto [index_f, index_b, index_i] : indeces_to_change)
+            {
+                curr_instrs[index_i] = IRInstruction {
+                    occ.second[0].opcode,
+                    curr_instrs[index_i].dest,
+                    occ.second[0].src1,
+                    occ.second[0].src2};
+            }
+        }
     }
 
     //it cannot be empty but check just to be sure
@@ -613,6 +654,12 @@ bool IROptimizer::copy_propagation()
     return changed;
 }
 
-
 #undef curr_instrs
 #undef curr_blocks
+#pragma endregion
+
+// ReSharper disable once CppMemberFunctionMayBeStatic
+void IROptimizer::cleanup()
+{
+
+}
