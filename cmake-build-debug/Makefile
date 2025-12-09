@@ -358,6 +358,30 @@ src/codegen/generation_statement.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.s
 .PHONY : src/codegen/generation_statement.cpp.s
 
+src/codegen/generator.o: src/codegen/generator.cpp.o
+.PHONY : src/codegen/generator.o
+
+# target to build an object file
+src/codegen/generator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.o
+.PHONY : src/codegen/generator.cpp.o
+
+src/codegen/generator.i: src/codegen/generator.cpp.i
+.PHONY : src/codegen/generator.i
+
+# target to preprocess a source file
+src/codegen/generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.i
+.PHONY : src/codegen/generator.cpp.i
+
+src/codegen/generator.s: src/codegen/generator.cpp.s
+.PHONY : src/codegen/generator.s
+
+# target to generate assembly for a file
+src/codegen/generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cobble_core.dir/build.make CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.s
+.PHONY : src/codegen/generator.cpp.s
+
 src/ir/ir.o: src/ir/ir.cpp.o
 .PHONY : src/ir/ir.o
 
@@ -654,6 +678,9 @@ help:
 	@echo "... src/codegen/generation_statement.o"
 	@echo "... src/codegen/generation_statement.i"
 	@echo "... src/codegen/generation_statement.s"
+	@echo "... src/codegen/generator.o"
+	@echo "... src/codegen/generator.i"
+	@echo "... src/codegen/generator.s"
 	@echo "... src/ir/ir.o"
 	@echo "... src/ir/ir.i"
 	@echo "... src/ir/ir.s"

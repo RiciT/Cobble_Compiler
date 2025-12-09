@@ -9,6 +9,7 @@
 #include "analysis/type_checker.hpp"
 #include "ir/ir_builder.hpp"
 #include "optimization/optimizer.hpp"
+#include "codegen/generator.hpp"
 #include "codegen/generation.hpp"
 
 int main(int argc, char* argv[])
@@ -69,9 +70,17 @@ int main(int argc, char* argv[])
 	optimizer.optimize();
 	ir_prog.debug_print();
 
+	// --- Stage 6: Generation ---
+	//generates asm from the optimized ir
+	{
+		AsmGenerator generator(ir_prog);
+		// std::fstream file(arg2+"out.asm", std::ios::out);
+		// file << generator.generate_program();
+	}
+
 	//later replace with the generation from the IR
 	// --- Stage 6: Generation ---
-	//we can safely generate now since the types are checker here
+	//we can safely generate now since the types are checked here
 	{
 		Generator generator(prog.value());
 		std::fstream file(arg2+"out.asm", std::ios::out);

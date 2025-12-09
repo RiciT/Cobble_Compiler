@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.o.d"
   "CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o"
   "CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o.d"
+  "CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.o"
+  "CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.o.d"
   "CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o"
   "CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o.d"
   "CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.o"
