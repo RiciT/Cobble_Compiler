@@ -1,6 +1,6 @@
 global _start
 _start:
-    mov rax, 4
+    mov rax, 7
     push rax
     push QWORD [rsp + 0]
     mov rax, 1
@@ -60,7 +60,7 @@ label2:
     pop rax
     test rax, rax
     jz label3
-    push QWORD [rsp + 0]
+    push QWORD [rsp + 8]
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -95,7 +95,12 @@ label5:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, 2
+    mov rax, 1
+    push rax
+    push QWORD [rsp + 8]
+    pop rax
+    pop rbx
+    sub rax, rbx
     push rax
     pop rax
     mov [rsp + 0], rax
@@ -112,7 +117,7 @@ label6:
     pop rax
     test rax, rax
     jz label7
-    push QWORD [rsp + 0]
+    push QWORD [rsp + 8]
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -147,7 +152,12 @@ label9:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, 2
+    mov rax, 1
+    push rax
+    push QWORD [rsp + 8]
+    pop rax
+    pop rbx
+    sub rax, rbx
     push rax
     pop rax
     mov [rsp + 0], rax

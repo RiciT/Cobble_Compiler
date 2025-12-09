@@ -14,7 +14,6 @@ private:
     bool constant_folding();
     bool algebraic_reduction();
     bool reassignment_elimination();
-    bool common_subexpression_elimination();
     bool dead_assignment_elimination();
     bool constant_propagation_block();
 
@@ -25,6 +24,7 @@ private:
     bool coalescing_single_jump_labels(long index_f, IRFunction& func);
     bool empty_block_removal();
     bool jump_target_merging();
+    bool temp_reg_elimination();
 
     //dataflow optimization - global opt
     bool copy_propagation();

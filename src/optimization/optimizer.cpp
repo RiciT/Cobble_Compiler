@@ -27,7 +27,8 @@ void IROptimizer::optimize()
         //only start func-wide optimizations if the basic block opts are already done
         if (!changed) changed |= coalescing();
         if (!changed) changed |= jump_target_merging();
-        //and all other optimizations
+        //global optimizations
+        if (!changed) changed |= copy_propagation();
     }
 }
 
@@ -559,6 +560,59 @@ bool IROptimizer::jump_target_merging()
 
     return changed;
 }
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::copy_propagation()
+{
+    bool changed = false;
+
+    //register  - regdata of copy - number of arithm
+    std::unordered_map<int, std::pair<std::vector<IROperand>, int>> all_registers;
+    //for now only propagate temps - once assigned
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                if (instr.opcode == IROpcode::COPY || arithmetic_ops.contains(instr.opcode))
+                { auto& [d, a] = all_registers[instr.dest.val_id];
+                    if (instr.opcode == IROpcode::COPY) { d.push_back(instr.src1); } else a++; }
+
+    if (all_registers.empty()) return false;
+
+    //indexf - indexb - indexi
+    std::vector<std::tuple<int, int, int>> erase_coords;
+    for (auto [reg, occ] : all_registers)
+    {
+        if (occ.first.size() != 1 || occ.second != 0) continue;
+        changed = true;
+
+        for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+            for (auto [index_b, block] : std::views::enumerate(func.blocks))
+                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                {
+                    if (instr.opcode == IROpcode::COPY && instr.dest == IROperand::make_reg(reg))
+                    { erase_coords.push_back({index_f, index_b, index_i}); continue; }
+                    if (instr.src1 == IROperand::make_reg(reg))
+                        curr_instrs[index_i].src1 = occ.first.front();
+                    if (instr.src2 == IROperand::make_reg(reg))
+                        curr_instrs[index_i].src2 = occ.first.front();
+
+                }
+    }
+
+    //it cannot be empty but check just to be sure
+    if (erase_coords.empty()) return changed;
+
+    //erase_coords already in ascending order since we assign it in a forwards loop
+    for (int i = erase_coords.size() - 1; i >= 0; i--)
+    {
+        const auto index_f = std::get<0>(erase_coords[i]);
+        const auto index_b = std::get<1>(erase_coords[i]);
+        const auto index_i = std::get<2>(erase_coords[i]);
+        curr_instrs.erase(curr_instrs.begin() + index_i);
+    }
+
+    return changed;
+}
+
 
 #undef curr_instrs
 #undef curr_blocks
