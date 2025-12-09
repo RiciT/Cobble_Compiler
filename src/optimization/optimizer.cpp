@@ -33,7 +33,6 @@ void IROptimizer::optimize()
 }
 
 #pragma region OPTIMIZATION
-//change breaks to reverse iterations
 #define curr_instrs m_prog.functions.at(index_f).blocks.at(index_b).instructions
 #define curr_blocks m_prog.functions.at(index_f).blocks
 
@@ -654,12 +653,34 @@ bool IROptimizer::copy_propagation()
     return changed;
 }
 
-#undef curr_instrs
-#undef curr_blocks
 #pragma endregion
 
 // ReSharper disable once CppMemberFunctionMayBeStatic
 void IROptimizer::cleanup()
 {
-
+    //register normalization
+    std::set<int> used_regs;
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (instr.dest.type == IROperand::VirtualReg) used_regs.insert(instr.dest.val_id);
+                if (instr.src1.type == IROperand::VirtualReg) used_regs.insert(instr.src1.val_id);
+                if (instr.src2.type == IROperand::VirtualReg) used_regs.insert(instr.src2.val_id);
+            }
+    std::unordered_map<int, int> regs;
+    for (auto [i, r] : std::views::enumerate(used_regs))
+        regs[r] = i;
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (instr.dest.type == IROperand::VirtualReg) curr_instrs[index_i].dest.val_id = regs[instr.dest.val_id];
+                if (instr.src1.type == IROperand::VirtualReg) curr_instrs[index_i].src1.val_id = regs[instr.src1.val_id];
+                if (instr.src2.type == IROperand::VirtualReg) curr_instrs[index_i].src2.val_id = regs[instr.src2.val_id];
+            }
+    //register normalization end
 }
+
+#undef curr_instrs
+#undef curr_blocks
