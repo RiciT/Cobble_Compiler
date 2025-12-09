@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <ranges>
+#include <set>
 
 IROptimizer::IROptimizer(IRProgram &prog)
     : m_prog(prog)
@@ -23,8 +24,9 @@ void IROptimizer::optimize()
         changed |= empty_block_removal();
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
-        //only start coalescing if the basic block opts are already done
+        //only start func-wide optimizations if the basic block opts are already done
         if (!changed) changed |= coalescing();
+        if (!changed) changed |= jump_target_merging();
         //and all other optimizations
     }
 }
@@ -297,42 +299,41 @@ bool IROptimizer::dead_code_elimination()
                         all_labels.push_back(instr.dest.label);
             }
 
-    if (!labels_to_remove.empty() || all_labels.size() != labels_used.size())
-    {
-        changed = true;
-        //somehow need to loop through labels_to_remove
-        //remove basic blocks starting with the label
-        //remove all GOTRUE instances with that label
-        for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
-            for (auto [index_b, block] : std::views::enumerate(func.blocks))
-            {
-                if (block.instructions.front().opcode == IROpcode::LABEL &&
-                    labels_to_remove.contains(block.instructions.front().dest.label) &&
-                    labels_to_remove[block.instructions.front().dest.label])
-                {
-                    curr_blocks.erase(curr_blocks.begin() + index_b);
-                    if (index_b <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
-                    break; //TODO change this to something sensible
-                    continue;
-                }
-                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                {
-                    if (instr.opcode == IROpcode::GOTRUE &&
-                        labels_to_remove.contains(instr.dest.label) &&
-                        labels_to_remove[instr.dest.label])
-                    {
-                        curr_instrs.erase(curr_instrs.begin() + index_i);
-                        break; //TODO change this to something sensible
-                    }
-                    if (instr.opcode == IROpcode::LABEL && std::ranges::find(labels_used, instr.dest.label) == labels_used.cend())
-                    {
-                        curr_instrs.erase(curr_instrs.begin() + index_i);
-                        break; //TODO change this to something sensible
-                    }
-                }
+    if (labels_to_remove.empty() && all_labels.size() == labels_used.size()) return changed;
 
+    changed = true;
+    //somehow need to loop through labels_to_remove
+    //remove basic blocks starting with the label
+    //remove all GOTRUE instances with that label
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
+        {
+            if (block.instructions.front().opcode == IROpcode::LABEL &&
+                labels_to_remove.contains(block.instructions.front().dest.label) &&
+                labels_to_remove[block.instructions.front().dest.label])
+            {
+                curr_blocks.erase(curr_blocks.begin() + index_b);
+                if (index_b <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
+                break; //TODO change this to something sensible
+                continue;
             }
-    }
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+            {
+                if (instr.opcode == IROpcode::GOTRUE &&
+                    labels_to_remove.contains(instr.dest.label) &&
+                    labels_to_remove[instr.dest.label])
+                {
+                    curr_instrs.erase(curr_instrs.begin() + index_i);
+                    break; //TODO change this to something sensible
+                }
+                if (instr.opcode == IROpcode::LABEL && std::ranges::find(labels_used, instr.dest.label) == labels_used.cend())
+                {
+                    curr_instrs.erase(curr_instrs.begin() + index_i);
+                    break; //TODO change this to something sensible
+                }
+            }
+
+        }
 
     return changed;
 }
@@ -340,6 +341,7 @@ bool IROptimizer::dead_code_elimination()
 bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& func)
 {
     bool changed = false;
+    // { name, { count, is_unconditional, positions { block_index, instr_index } } }
     std::unordered_map<std::string, std::tuple<int, bool, std::vector<std::pair<int, int>>>> label_instance_count;
     for (auto [index_b, block] : std::views::enumerate(func.blocks))
     {
@@ -374,35 +376,33 @@ bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& 
                 && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label))
         { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c--; }
     }
-    if (!label_instance_count.empty())
+    if (label_instance_count.empty()) return changed;
+    for (auto [label, count] : label_instance_count)
     {
-        for (auto [label, count] : label_instance_count)
+        //only do something if the jump is unconditional and single instanced
+        if (!(std::get<0>(count) <= 1 && std::get<1>(count))) continue;
+        std::pair label_index = {-1, -1};
+        for (auto [index_b, block] : std::views::enumerate(func.blocks))
         {
-            //only do something if the jump is unconditional and single instanced
-            if (!(std::get<0>(count) <= 1 && std::get<1>(count))) continue;
-            std::pair label_index = {-1, -1};
-            for (auto [index_b, block] : std::views::enumerate(func.blocks))
-            {
-                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
-                    if (instr.opcode == IROpcode::LABEL && instr.dest.label == label)
-                    { label_index = {index_b, index_i}; break; }
-                if (label_index != std::pair {-1, -1}) break;
-            }
-            //label not in current function so for now we ignore
-            if (label_index == std::pair {-1, -1}) continue;
-
-            changed = true;
-            #define f_inst curr_blocks.at(std::get<2>(count).at(0).first).instructions
-            #define l_inst curr_blocks.at(label_index.first).instructions
-            f_inst.insert(f_inst.end() - 1, std::make_move_iterator(l_inst.begin() + 1), std::make_move_iterator(l_inst.end()));
-            f_inst.erase(f_inst.end() - 1);
-            #undef f_inst
-            #undef l_inst
-            curr_blocks.erase(curr_blocks.begin() + label_index.first);
-            if (label_index.first <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
-
-            break; //TODO same
+            for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                if (instr.opcode == IROpcode::LABEL && instr.dest.label == label)
+                { label_index = {index_b, index_i}; break; }
+            if (label_index != std::pair {-1, -1}) break;
         }
+        //label not in current function so for now we ignore
+        if (label_index == std::pair {-1, -1}) continue;
+
+        changed = true;
+        #define f_inst curr_blocks.at(std::get<2>(count).at(0).first).instructions
+        #define l_inst curr_blocks.at(label_index.first).instructions
+        f_inst.insert(f_inst.end() - 1, std::make_move_iterator(l_inst.begin() + 1), std::make_move_iterator(l_inst.end()));
+        f_inst.erase(f_inst.end() - 1);
+        #undef f_inst
+        #undef l_inst
+        curr_blocks.erase(curr_blocks.begin() + label_index.first);
+        if (label_index.first <= func.main_control_flow_index) m_prog.functions.at(index_f).main_control_flow_index--;
+
+        break; //TODO same
     }
 
     return changed;
@@ -415,9 +415,7 @@ bool IROptimizer::coalescing()
     //this handles single instanced unconditionally jumped to labels and fallthroughs
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
     {
-        #pragma region single jump labels
         changed |= coalescing_single_jump_labels(index_f, func);
-        #pragma endregion
         #pragma region fallthrough blocks
         //this handles fallthrough blocks
         //iterate to size - 1 since we are checking adjacent blocks
@@ -445,6 +443,118 @@ bool IROptimizer::coalescing()
             }
         }
         #pragma endregion
+    }
+
+    return changed;
+}
+// ReSharper disable once CppMemberFunctionMayBeConst
+bool IROptimizer::jump_target_merging()
+{
+    bool changed = false;
+
+    //vector of a tuple of identical blocks' name and block index and the function index
+    std::vector<std::tuple<int, std::pair<std::string, int>, std::pair<std::string, int>>> ident_block_label_pairs;
+    for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
+        for (auto [index_b_1, block_1] : std::views::enumerate(func.blocks))
+        {
+            std::string flows_into_label = "";
+
+            //if the front is not a label
+            if (block_1.instructions.front().opcode != IROpcode::LABEL) continue;
+            //and the back is not an unconditional jump we continue
+            //or if it flows into a label save that label
+            if (block_1.instructions.back().opcode != IROpcode::GOTO &&
+                !(block_1.instructions.back().opcode == IROpcode::GOTRUE &&
+                    block_1.instructions.back().src1 == IROperand::make_lit(1)))
+            {
+                if (index_b_1 + 1 < func.blocks.size() && func.blocks[index_b_1 + 1].instructions.front().opcode == IROpcode::LABEL)
+                    flows_into_label = func.blocks[index_b_1 + 1].instructions.front().dest.label;
+                else
+                    continue;
+            }
+            auto label1 = block_1.instructions.front().dest.label;
+
+            for (size_t index_b_2 = index_b_1 + 1; index_b_2 < func.blocks.size(); index_b_2++)
+            {
+                auto block_2 = func.blocks.at(index_b_2);
+                //if the blocks are not the same size or block_1 can be one shorter incase it flows into a label
+                if (block_1.instructions.size() != block_2.instructions.size() &&
+                    block_1.instructions.size() + 1 != block_2.instructions.size()) continue;
+                //and the front is not a label
+                if (block_2.instructions.front().opcode != IROpcode::LABEL) continue;
+                //and the back is not an unconditional jump we continue
+                if (block_2.instructions.back().opcode != IROpcode::GOTO &&
+                    !(block_2.instructions.back().opcode == IROpcode::GOTRUE &&
+                        block_2.instructions.back().src1 == IROperand::make_lit(1))) continue;
+                auto label2 = block_2.instructions.front().dest.label;
+
+                bool isSame = true;
+                //start at one since label will not be the same
+                for (size_t index_i = 1; index_i < block_2.instructions.size(); index_i++)
+                {
+                    if (block_1.instructions.size() == index_i &&
+                        (block_2.instructions.at(index_i) == IRInstruction {IROpcode::GOTO, IROperand::make_label(flows_into_label)} ||
+                            block_2.instructions.at(index_i) == IRInstruction {IROpcode::GOTRUE, IROperand::make_label(flows_into_label), IROperand::make_lit(1)}))
+                        break;
+                    if (block_1.instructions.at(index_i) != block_2.instructions.at(index_i))
+                    { isSame = false; break; }
+                }
+                if (isSame) ident_block_label_pairs.push_back({ index_f, std::pair { label1, index_b_1 }, std::pair { label2, index_b_2 } });
+            }
+        }
+
+    //now we have the label pairs in ident_block_label_pairs
+    if (ident_block_label_pairs.empty()) return changed;
+
+    std::vector<std::pair<int, int>> deletion_indeces;
+    //we still need to check if any of the blocks are being fallen into - if at least one is safe to delete then we should do just that
+    for (auto [index_f, lab1, lab2] : ident_block_label_pairs)
+    {
+        bool fall_through_block_1 = true;
+        bool fall_through_block_2 = true;
+
+        if (curr_blocks.at(lab1.second) == curr_blocks.front()) fall_through_block_1 = false;
+        else if (curr_blocks.at(lab2.second) == curr_blocks.front()) fall_through_block_2 = false;
+        if (fall_through_block_1 &&
+            (curr_blocks.at(lab1.second - 1).instructions.back().opcode == IROpcode::GOTO ||
+            (curr_blocks.at(lab1.second - 1).instructions.back().opcode == IROpcode::GOTRUE &&
+                    curr_blocks.at(lab1.second - 1).instructions.back().src1 == IROperand::make_lit(1)))) fall_through_block_1 = false;
+        if (fall_through_block_2 &&
+            (curr_blocks.at(lab2.second - 1).instructions.back().opcode == IROpcode::GOTO ||
+            (curr_blocks.at(lab2.second - 1).instructions.back().opcode == IROpcode::GOTRUE &&
+                    curr_blocks.at(lab2.second - 1).instructions.back().src1 == IROperand::make_lit(1)))) fall_through_block_2 = false;
+
+        //list deletable block indeces and change labels
+        if (const int index_to_del = !fall_through_block_2 ? 1 : !fall_through_block_1 ? 0 : -1; index_to_del != -1)
+        {
+            changed = true;
+            //delete the block we dont need
+            deletion_indeces.push_back({index_f, std::vector { lab1, lab2 }[index_to_del].second});
+            //replace every instance of goto/gotrue labels of the deleted block's label with the other's label
+            for (auto [index_b, block] : std::views::enumerate(m_prog.functions.at(index_f).blocks))
+                for (auto [index_i, instr] : std::views::enumerate(block.instructions))
+                    if ((instr.opcode == IROpcode::GOTO || instr.opcode == IROpcode::GOTRUE) &&
+                        instr.dest == IROperand::make_label(std::vector { lab1, lab2 }[index_to_del].first))
+                        curr_instrs.at(index_i).dest.label = std::vector { lab2, lab1 }[index_to_del].first;
+        }
+    }
+
+    //if we need to delete any blocks - isnt even needed per se since unreachable
+    //code deletion would get them eventually but its nicer this way
+    if (!deletion_indeces.empty())
+    {
+        //sort in descending order by the block index and get rid of duplicates
+        std::ranges::sort(deletion_indeces, [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+            return a.second > b.second;
+        });
+        const std::vector<std::pair<int, int>>::const_iterator last = std::ranges::unique(deletion_indeces).begin();
+        deletion_indeces.erase(last, deletion_indeces.end());
+
+        for (int i = 0; i < deletion_indeces.size(); i++)
+        {
+            const int index_f = deletion_indeces[i].first;
+            curr_blocks.erase(curr_blocks.begin() + deletion_indeces[i].second);
+        }
     }
 
     return changed;

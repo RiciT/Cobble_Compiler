@@ -5,22 +5,12 @@ print(i);
 
 while(i != 0)
 {
-    if (i == a) {
-        print(a);
-        a = a + i;
-        while (i == 0) {
-            i = i - 1;
-            if (i != 1) {
-                print(i);
-            }
-            elseif (i != 2) {
-                print(i);
-            }
-            else { print(1); }
-        }
+    print(i);
+    i = 2;
+    while (i != 0) {
+        print(i);
+        i = 2;
     }
-    i = i - 1;
-    a = a - 2;
 }
 
 print(a);

@@ -61,17 +61,6 @@ label2:
     test rax, rax
     jz label3
     push QWORD [rsp + 0]
-    push QWORD [rsp + 16]
-    pop rbx
-    pop rax
-    cmp rax, rbx
-    sete al
-    movzx rax, al
-    push rax
-    pop rax
-    test rax, rax
-    jz label4
-    push QWORD [rsp + 8]
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -83,22 +72,22 @@ label2:
     dec rdi
     inc rcx
     test rax, rax
-    jnz label5
+    jnz label4
     mov BYTE [rdi], '0'
     dec rdi
     inc rcx
-    jmp label6
-label5:
+    jmp label5
+label4:
     test rax, rax
-    jz label6
+    jz label5
     xor rdx, rdx
     div rbx
     add dl, '0'
     mov [rdi], dl
     dec rdi
     inc rcx
-    jmp label5
-label6:
+    jmp label4
+label5:
     inc rdi
     mov rax, 1
     mov rsi, rdi
@@ -106,38 +95,13 @@ label6:
     mov rdx, rcx
     syscall
     add rsp, 32
-    push QWORD [rsp + 0]
-    push QWORD [rsp + 16]
-    pop rax
-    pop rbx
-    add rax, rbx
-    push rax
-    pop rax
-    mov [rsp + 8], rax
-label7:
-    push QWORD [rsp + 0]
-    mov rax, 0
-    push rax
-    pop rbx
-    pop rax
-    cmp rax, rbx
-    sete al
-    movzx rax, al
-    push rax
-    pop rax
-    test rax, rax
-    jz label8
-    mov rax, 1
-    push rax
-    push QWORD [rsp + 8]
-    pop rax
-    pop rbx
-    sub rax, rbx
+    mov rax, 2
     push rax
     pop rax
     mov [rsp + 0], rax
+label6:
     push QWORD [rsp + 0]
-    mov rax, 1
+    mov rax, 0
     push rax
     pop rbx
     pop rax
@@ -147,8 +111,53 @@ label7:
     push rax
     pop rax
     test rax, rax
-    jz label9
+    jz label7
     push QWORD [rsp + 0]
+    pop rax
+    ;; Convert integer in rax to ASCII
+    mov rbx, 10
+    mov rcx, 0
+    sub rsp, 32
+    mov rdi, rsp
+    add rdi, 31
+    mov BYTE [rdi], 10
+    dec rdi
+    inc rcx
+    test rax, rax
+    jnz label8
+    mov BYTE [rdi], '0'
+    dec rdi
+    inc rcx
+    jmp label9
+label8:
+    test rax, rax
+    jz label9
+    xor rdx, rdx
+    div rbx
+    add dl, '0'
+    mov [rdi], dl
+    dec rdi
+    inc rcx
+    jmp label8
+label9:
+    inc rdi
+    mov rax, 1
+    mov rsi, rdi
+    mov rdi, 1
+    mov rdx, rcx
+    syscall
+    add rsp, 32
+    mov rax, 2
+    push rax
+    pop rax
+    mov [rsp + 0], rax
+    add rsp, 0
+    jmp label6
+label7:
+    add rsp, 0
+    jmp label2
+label3:
+    push QWORD [rsp + 8]
     pop rax
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -176,160 +185,6 @@ label10:
     inc rcx
     jmp label10
 label11:
-    inc rdi
-    mov rax, 1
-    mov rsi, rdi
-    mov rdi, 1
-    mov rdx, rcx
-    syscall
-    add rsp, 32
-    add rsp, 0
-    jmp label12
-label9:
-    ;; else if
-    push QWORD [rsp + 0]
-    mov rax, 2
-    push rax
-    pop rbx
-    pop rax
-    cmp rax, rbx
-    setne al
-    movzx rax, al
-    push rax
-    pop rax
-    test rax, rax
-    jz label13
-    push QWORD [rsp + 0]
-    pop rax
-    ;; Convert integer in rax to ASCII
-    mov rbx, 10
-    mov rcx, 0
-    sub rsp, 32
-    mov rdi, rsp
-    add rdi, 31
-    mov BYTE [rdi], 10
-    dec rdi
-    inc rcx
-    test rax, rax
-    jnz label14
-    mov BYTE [rdi], '0'
-    dec rdi
-    inc rcx
-    jmp label15
-label14:
-    test rax, rax
-    jz label15
-    xor rdx, rdx
-    div rbx
-    add dl, '0'
-    mov [rdi], dl
-    dec rdi
-    inc rcx
-    jmp label14
-label15:
-    inc rdi
-    mov rax, 1
-    mov rsi, rdi
-    mov rdi, 1
-    mov rdx, rcx
-    syscall
-    add rsp, 32
-    add rsp, 0
-    jmp label12
-label13:
-    ;; else
-    mov rax, 1
-    push rax
-    pop rax
-    ;; Convert integer in rax to ASCII
-    mov rbx, 10
-    mov rcx, 0
-    sub rsp, 32
-    mov rdi, rsp
-    add rdi, 31
-    mov BYTE [rdi], 10
-    dec rdi
-    inc rcx
-    test rax, rax
-    jnz label16
-    mov BYTE [rdi], '0'
-    dec rdi
-    inc rcx
-    jmp label17
-label16:
-    test rax, rax
-    jz label17
-    xor rdx, rdx
-    div rbx
-    add dl, '0'
-    mov [rdi], dl
-    dec rdi
-    inc rcx
-    jmp label16
-label17:
-    inc rdi
-    mov rax, 1
-    mov rsi, rdi
-    mov rdi, 1
-    mov rdx, rcx
-    syscall
-    add rsp, 32
-    add rsp, 0
-label12:
-    add rsp, 0
-    jmp label7
-label8:
-    add rsp, 0
-label4:
-    mov rax, 1
-    push rax
-    push QWORD [rsp + 8]
-    pop rax
-    pop rbx
-    sub rax, rbx
-    push rax
-    pop rax
-    mov [rsp + 0], rax
-    mov rax, 2
-    push rax
-    push QWORD [rsp + 16]
-    pop rax
-    pop rbx
-    sub rax, rbx
-    push rax
-    pop rax
-    mov [rsp + 8], rax
-    add rsp, 0
-    jmp label2
-label3:
-    push QWORD [rsp + 8]
-    pop rax
-    ;; Convert integer in rax to ASCII
-    mov rbx, 10
-    mov rcx, 0
-    sub rsp, 32
-    mov rdi, rsp
-    add rdi, 31
-    mov BYTE [rdi], 10
-    dec rdi
-    inc rcx
-    test rax, rax
-    jnz label18
-    mov BYTE [rdi], '0'
-    dec rdi
-    inc rcx
-    jmp label19
-label18:
-    test rax, rax
-    jz label19
-    xor rdx, rdx
-    div rbx
-    add dl, '0'
-    mov [rdi], dl
-    dec rdi
-    inc rcx
-    jmp label18
-label19:
     inc rdi
     mov rax, 1
     mov rsi, rdi
