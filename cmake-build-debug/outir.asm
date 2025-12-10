@@ -1,7 +1,7 @@
 global _start
 _start:
     mov rax, 155
-    mov QWORD [rbp - 8], rax
+    mov QWORD [rsp - 8], rax
     mov rax, 155
     ;; Convert integer in rax to ASCII
     mov rbx, 10
@@ -37,13 +37,13 @@ print1:
     syscall
     add rsp, 32
 L0_exit:
-    mov rax, QWORD [rbp - 8]
+    mov rax, QWORD [rsp - 8]
     mov rbx, 150
     cmp rax, rbx
     setne al
     movzx rax, al
-    mov QWORD [rbp - 16], rax
-    mov rax, QWORD [rbp - 16]
+    mov QWORD [rsp - 16], rax
+    mov rax, QWORD [rsp - 16]
     test rax, rax
     jnz L0_enter
     mov rax, 155
@@ -118,16 +118,16 @@ print5:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, QWORD [rbp - 8]
+    mov rax, QWORD [rsp - 8]
     sub rax, 1
-    mov QWORD [rbp - 8], rax
-    mov rax, QWORD [rbp - 8]
+    mov QWORD [rsp - 8], rax
+    mov rax, QWORD [rsp - 8]
     mov rbx, 150
     cmp rax, rbx
     setne al
     movzx rax, al
-    mov QWORD [rbp - 24], rax
-    mov rax, QWORD [rbp - 24]
+    mov QWORD [rsp - 24], rax
+    mov rax, QWORD [rsp - 24]
     test rax, rax
     jnz L0_enter
     jmp L0_exit

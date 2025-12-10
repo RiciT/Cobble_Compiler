@@ -10,6 +10,7 @@ while(i != 150)
     while (i != 150) {
         print(a);
         i = i - 1;
+
     }
 }
 
