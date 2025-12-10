@@ -74,9 +74,8 @@ int main(int argc, char* argv[])
 	//generates asm from the optimized ir
 	{
 		AsmGenerator generator(ir_prog);
-		std::cout << "\n\n" << generator.generate_program();
-		// std::fstream file(arg2+"out.asm", std::ios::out);
-		// file << generator.generate_program();
+		std::fstream file(arg2+"outir.asm", std::ios::out);
+		file << generator.generate_program();
 	}
 
 	//later replace with the generation from the IR
@@ -88,10 +87,15 @@ int main(int argc, char* argv[])
 		file << generator.generate_program();
 	}
 
+	//GENERATION FROM AST
 	//creating Object file from ASM
 	system(("nasm -felf64 " + arg2 + "out.asm").c_str());
 	//creating executable from Object file
 	system(("ld -o " + arg2 + "out " + arg2 + "out.o").c_str());
+
+	//GENERATION FROM IR!!!!!!!!!!!!!!!!!!!!!!!!
+	system(("nasm -felf64 " + arg2 + "outir.asm").c_str());
+	system(("ld -o " + arg2 + "outir " + arg2 + "outir.o").c_str());
 
 	return EXIT_SUCCESS;
 }

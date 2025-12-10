@@ -1,6 +1,6 @@
 global _start
 _start:
-    mov rax, 7
+    mov rax, 155
     push rax
     push QWORD [rsp + 0]
     mov rax, 1
@@ -49,7 +49,7 @@ label1:
     add rsp, 32
 label2:
     push QWORD [rsp + 0]
-    mov rax, 0
+    mov rax, 150
     push rax
     pop rbx
     pop rax
@@ -106,7 +106,7 @@ label5:
     mov [rsp + 0], rax
 label6:
     push QWORD [rsp + 0]
-    mov rax, 0
+    mov rax, 150
     push rax
     pop rbx
     pop rax

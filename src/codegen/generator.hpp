@@ -15,6 +15,7 @@ private:
     //helpers
     std::string to_x86_operand(const IROperand& opnd);
     std::string vreg_stack_loc(size_t vreg_id);
+    static std::string create_label();
 
     const IRProgram m_prog;
     AsmEmitter m_emitter;
@@ -31,6 +32,7 @@ enum Reg {
     al = 5,
     rdi = 6,
     rsp = 7,
+    rbp = 8,
 };
 
 enum asm_opcodes {
@@ -53,6 +55,7 @@ inline std::unordered_map<Reg, std::string> regs = {
     {al, "al"},
     {rdi, "rdi"},
     {rsp, "rsp"},
+    {rbp, "rbp"},
 };
 
 inline std::unordered_map<IROpcode, std::string> op = {
@@ -61,7 +64,7 @@ inline std::unordered_map<IROpcode, std::string> op = {
     {IROpcode::MUL, "imul"},
     {IROpcode::DIV, "idiv"},
     {IROpcode::GOTO, "jmp"},
-    {IROpcode::GOTRUE, "jz"},
+    {IROpcode::GOTRUE, "jnz"},
     {IROpcode::EQ, "sete"},
     {IROpcode::NEQ, "setne"},
     {IROpcode::GT, "setg"},

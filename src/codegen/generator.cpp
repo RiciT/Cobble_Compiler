@@ -16,13 +16,17 @@ std::string AsmGenerator::vreg_stack_loc(size_t vreg_id)
 {
     return aop[QWORD] + " [" + regs[rsp] + " - " + std::to_string((vreg_id + 1) * 8) + "]";
 }
-
 std::string AsmGenerator::to_x86_operand(const IROperand& opnd)
 {
     if (opnd.type == IROperand::IntLiteral) return std::to_string(opnd.val_id);
     if (opnd.type == IROperand::VirtualReg) return vreg_stack_loc(opnd.val_id);
     if (opnd.type == IROperand::Label) return opnd.label;
     return "0";
+}
+std::string AsmGenerator::create_label()
+{
+    static int counter = 0;
+    return "print" + std::to_string(counter++);
 }
 
 void AsmGenerator::generate_function(const IRFunction& func)
@@ -120,7 +124,50 @@ void AsmGenerator::generate_function(const IRFunction& func)
                 }
                 case IROpcode::PRINT: {
                     load_src_to_reg(instr.src1, rax);
-                    m_emitter.emit_comment("PRINT value in RAX (TODO: Implement Int-to-String)");
+
+                    //convert integer to ASCII string
+                    m_emitter.emit_comment("Convert integer in rax to ASCII");
+                    m_emitter.emit("mov", "rbx", "10");
+                    m_emitter.emit("mov", "rcx", "0");
+                    m_emitter.emit("sub", "rsp", "32");
+                    m_emitter.emit("mov", "rdi", "rsp");
+                    m_emitter.emit("add", "rdi", "31"); //point to end of buffer
+                    m_emitter.emit("mov", "BYTE [rdi]", "10"); //add newline
+                    m_emitter.emit("dec", "rdi");
+                    m_emitter.emit("inc", "rcx");
+
+                    const std::string convert_loop_label = create_label();
+                    const std::string done_convert_label = create_label();
+                    //handle the case where the number is 0
+                    m_emitter.emit("test", "rax", "rax");
+                    m_emitter.emit("jnz", convert_loop_label);
+                    m_emitter.emit("mov", "BYTE [rdi]", "'0'");
+                    m_emitter.emit("dec", "rdi");
+                    m_emitter.emit("inc", "rcx");
+                    m_emitter.emit("jmp", done_convert_label);
+
+                    m_emitter.emit_label(convert_loop_label);
+                    m_emitter.emit("test", "rax", "rax");
+                    m_emitter.emit("jz", done_convert_label);
+                    m_emitter.emit("xor", "rdx", "rdx");      //clear rdx for division
+                    m_emitter.emit("div", "rbx");             //rax = rax/10, rdx = rax%10
+                    m_emitter.emit("add", "dl", "'0'");       //convert digit to ASCII
+                    m_emitter.emit("mov", "[rdi]", "dl");     //store character
+                    m_emitter.emit("dec", "rdi");             //move buffer pointer back
+                    m_emitter.emit("inc", "rcx");             //increment digit count
+                    m_emitter.emit("jmp", convert_loop_label);
+
+                    m_emitter.emit_label(done_convert_label);
+                    m_emitter.emit("inc", "rdi");             //adjust to first digit
+
+                    //now print the buffer
+                    m_emitter.emit("mov", "rax", "1");        //sys_write
+                    m_emitter.emit("mov", "rsi", "rdi");      //buffer address
+                    m_emitter.emit("mov", "rdi", "1");        //stdout
+                    m_emitter.emit("mov", "rdx", "rcx");      //length = digit count
+                    m_emitter.emit("syscall");
+
+                    m_emitter.emit("add", "rsp", "32");       //clean up buffer
                     break;
                 }
                 default: {
