@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
 	//generates asm from the optimized ir
 	{
 		AsmGenerator generator(ir_prog);
+		std::cout << "\n\n" << generator.generate_program();
 		// std::fstream file(arg2+"out.asm", std::ios::out);
 		// file << generator.generate_program();
 	}

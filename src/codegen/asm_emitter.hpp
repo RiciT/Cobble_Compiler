@@ -53,7 +53,6 @@ public:
 
     //final output
     [[nodiscard]] std::string build_output() const {
-        // Replicating your original logic: Main first, then Functions
         return "global _start\n_start:\n" + m_main.str() +
                "\n\n; Functions\n" + m_functions.str();
     }
