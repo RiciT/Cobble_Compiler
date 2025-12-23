@@ -40,13 +40,13 @@ print1:
     syscall
     add rsp, 32
 L0_exit:
-    mov rax, [rsp - 8]
+    mov rax, [rbp - 8]
     mov rbx, 150
     cmp rax, rbx
     setne al
     movzx rax, al
     mov QWORD [rbp - 16], rax
-    mov rax, [rsp - 16]
+    mov rax, [rbp - 16]
     test rax, rax
     jnz L0_enter
     mov rax, 155
@@ -87,7 +87,7 @@ print3:
     mov rdi, 0
     syscall
 L0_enter:
-    mov rax, [rsp - 8]
+    mov rax, [rbp - 8]
     ;; Convert integer in rax to ASCII
     mov rbx, 10
     mov rcx, 0
@@ -121,16 +121,16 @@ print5:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, [rsp - 8]
+    mov rax, [rbp - 8]
     sub rax, 1
-    mov [rsp - 8], rax
-    mov rax, [rsp - 8]
+    mov [rbp - 8], rax
+    mov rax, [rbp - 8]
     mov rbx, 150
     cmp rax, rbx
     setne al
     movzx rax, al
     mov QWORD [rbp - 24], rax
-    mov rax, [rsp - 24]
+    mov rax, [rbp - 24]
     test rax, rax
     jnz L0_enter
     jmp L0_exit

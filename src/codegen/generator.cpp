@@ -21,7 +21,7 @@ std::string AsmGenerator::vreg_stack_loc(size_t vreg_id)
 {
     if (std::ranges::find(m_alloc_vregs, vreg_id) == m_alloc_vregs.end())
     { m_alloc_vregs.push_back(vreg_id); return aop[QWORD] + " [" + regs[rbp] + " - " + std::to_string((vreg_id + 1) * 8) + "]"; }
-    return "[" + regs[rsp] + " - " + std::to_string((vreg_id + 1) * 8) + "]";
+    return "[" + regs[rbp] + " - " + std::to_string((vreg_id + 1) * 8) + "]";
 }
 std::string AsmGenerator::to_x86_operand(const IROperand& opnd)
 {
