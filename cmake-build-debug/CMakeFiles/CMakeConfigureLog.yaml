@@ -4,7 +4,7 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_UNAME"
@@ -20,7 +20,6 @@ events:
     names:
       - "uname"
     candidate_directories:
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -32,8 +31,8 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
-      - "/snap/clion/405/bin/ninja/linux/x64/uname"
       - "/home/tamas/.juliaup/bin/uname"
       - "/home/tamas/.local/bin/uname"
       - "/usr/local/sbin/uname"
@@ -42,7 +41,6 @@ events:
     found: "/usr/bin/uname"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -55,17 +53,18 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineSystem.cmake:212 (message)"
       - "CMakeLists.txt:2 (project)"
     message: |
-      The system is: Linux - 6.14.0-36-generic - x86_64
+      The system is: Linux - 6.14.0-37-generic - x86_64
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_MAKE_PROGRAM"
@@ -83,7 +82,6 @@ events:
       - "make"
       - "smake"
     candidate_directories:
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -95,8 +93,8 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
-      - "/snap/clion/405/bin/ninja/linux/x64/gmake"
       - "/home/tamas/.juliaup/bin/gmake"
       - "/home/tamas/.local/bin/gmake"
       - "/usr/local/sbin/gmake"
@@ -105,7 +103,6 @@ events:
     found: "/usr/bin/gmake"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -118,11 +115,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_CXX_COMPILER"
@@ -147,7 +145,6 @@ events:
       - "icx"
       - "clang++"
     candidate_directories:
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -159,8 +156,8 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
-      - "/snap/clion/405/bin/ninja/linux/x64/c++"
       - "/home/tamas/.juliaup/bin/c++"
       - "/home/tamas/.local/bin/c++"
       - "/usr/local/sbin/c++"
@@ -169,7 +166,6 @@ events:
     found: "/usr/bin/c++"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -182,14 +178,15 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
       - "CMakeLists.txt:2 (project)"
     mode: "file"
     variable: "src_in"
@@ -205,11 +202,10 @@ events:
     names:
       - "CMakeCXXCompilerId.cpp.in"
     candidate_directories:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/"
-    found: "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerId.cpp.in"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/"
+    found: "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerId.cpp.in"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -222,12 +218,13 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
       - "CMakeLists.txt:2 (project)"
     message: |
       Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
@@ -247,8 +244,8 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_AR"
@@ -265,7 +262,6 @@ events:
       - "ar"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -276,10 +272,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/ar"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -292,11 +288,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_RANLIB"
@@ -313,7 +310,6 @@ events:
       - "ranlib"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -324,10 +320,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/ranlib"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -340,11 +336,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_STRIP"
@@ -361,7 +358,6 @@ events:
       - "strip"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -372,10 +368,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/strip"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -388,11 +384,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_LINKER"
@@ -409,7 +406,6 @@ events:
       - "ld"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -420,10 +416,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/ld"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -436,11 +432,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_NM"
@@ -457,7 +454,6 @@ events:
       - "nm"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -468,10 +464,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/nm"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -484,11 +480,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_OBJDUMP"
@@ -505,7 +502,6 @@ events:
       - "objdump"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -516,10 +512,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/objdump"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -532,11 +528,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_OBJCOPY"
@@ -553,7 +550,6 @@ events:
       - "objcopy"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -564,10 +560,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/objcopy"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -580,11 +576,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_READELF"
@@ -601,7 +598,6 @@ events:
       - "readelf"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -612,10 +608,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/readelf"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -628,11 +624,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_DLLTOOL"
@@ -649,7 +646,6 @@ events:
       - "dlltool"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -660,9 +656,9 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
       - "/usr/bin/dlltool"
-      - "/snap/clion/405/bin/ninja/linux/x64/dlltool"
       - "/home/tamas/.juliaup/bin/dlltool"
       - "/home/tamas/.local/bin/dlltool"
       - "/usr/local/sbin/dlltool"
@@ -673,10 +669,10 @@ events:
       - "/usr/games/dlltool"
       - "/usr/local/games/dlltool"
       - "/snap/bin/dlltool"
+      - "/snap/clion/409/bin/ninja/linux/x64/dlltool"
     found: false
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -689,11 +685,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_ADDR2LINE"
@@ -710,7 +707,6 @@ events:
       - "addr2line"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -721,10 +717,10 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     found: "/usr/bin/addr2line"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -737,11 +733,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_TAPI"
@@ -758,7 +755,6 @@ events:
       - "tapi"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -769,9 +765,9 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
       - "/usr/bin/tapi"
-      - "/snap/clion/405/bin/ninja/linux/x64/tapi"
       - "/home/tamas/.juliaup/bin/tapi"
       - "/home/tamas/.local/bin/tapi"
       - "/usr/local/sbin/tapi"
@@ -782,10 +778,10 @@ events:
       - "/usr/games/tapi"
       - "/usr/local/games/tapi"
       - "/snap/bin/tapi"
+      - "/snap/clion/409/bin/ninja/linux/x64/tapi"
     found: false
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -798,11 +794,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_CXX_COMPILER_AR"
@@ -822,7 +819,6 @@ events:
       - "gcc-ar"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -833,9 +829,9 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
       - "/usr/bin/gcc-ar-13.3"
-      - "/snap/clion/405/bin/ninja/linux/x64/gcc-ar-13.3"
       - "/home/tamas/.juliaup/bin/gcc-ar-13.3"
       - "/home/tamas/.local/bin/gcc-ar-13.3"
       - "/usr/local/sbin/gcc-ar-13.3"
@@ -846,10 +842,10 @@ events:
       - "/usr/games/gcc-ar-13.3"
       - "/usr/local/games/gcc-ar-13.3"
       - "/snap/bin/gcc-ar-13.3"
+      - "/snap/clion/409/bin/ninja/linux/x64/gcc-ar-13.3"
     found: "/usr/bin/gcc-ar-13"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -862,11 +858,12 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
       - "CMakeLists.txt:2 (project)"
     mode: "program"
     variable: "CMAKE_CXX_COMPILER_RANLIB"
@@ -886,7 +883,6 @@ events:
       - "gcc-ranlib"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -897,9 +893,9 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
     searched_directories:
       - "/usr/bin/gcc-ranlib-13.3"
-      - "/snap/clion/405/bin/ninja/linux/x64/gcc-ranlib-13.3"
       - "/home/tamas/.juliaup/bin/gcc-ranlib-13.3"
       - "/home/tamas/.local/bin/gcc-ranlib-13.3"
       - "/usr/local/sbin/gcc-ranlib-13.3"
@@ -910,10 +906,10 @@ events:
       - "/usr/games/gcc-ranlib-13.3"
       - "/usr/local/games/gcc-ranlib-13.3"
       - "/snap/bin/gcc-ranlib-13.3"
+      - "/snap/clion/409/bin/ninja/linux/x64/gcc-ranlib-13.3"
     found: "/usr/bin/gcc-ranlib-13"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -926,17 +922,18 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:2 (project)"
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j"
-      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j"
+      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw"
+      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -946,13 +943,13 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j'
+        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw'
         
-        Run Build Command(s): /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_7527a/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_7527a.dir/build.make CMakeFiles/cmTC_7527a.dir/build
-        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j'
-        Building CXX object CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o
-        /usr/bin/c++   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -c /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp
+        Run Build Command(s): /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_6fe49/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_6fe49.dir/build.make CMakeFiles/cmTC_6fe49.dir/build
+        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw'
+        Building CXX object CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -c /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp
         Using built-in specs.
         COLLECT_GCC=/usr/bin/c++
         OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
@@ -962,8 +959,8 @@ events:
         Thread model: posix
         Supported LTO compression algorithms: zlib zstd
         gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_7527a.dir/'
-         /usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_7527a.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccg9tMc2.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6fe49.dir/'
+         /usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_6fe49.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccToJRDo.s
         GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (x86_64-linux-gnu)
         	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
         
@@ -984,14 +981,14 @@ events:
          /usr/include
         End of search list.
         Compiler executable checksum: c81c05345ce537099dafd5580045814a
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_7527a.dir/'
-         as -v --64 -o CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccg9tMc2.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6fe49.dir/'
+         as -v --64 -o CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccToJRDo.s
         GNU assembler version 2.42 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
         COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/
         LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.'
-        Linking CXX executable cmTC_7527a
-        /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7527a.dir/link.txt --verbose=1
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_6fe49
+        /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6fe49.dir/link.txt --verbose=1
         Using built-in specs.
         COLLECT_GCC=/usr/bin/c++
         COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper
@@ -1004,21 +1001,21 @@ events:
         gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
         COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/
         LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7527a' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_7527a.'
-         /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccagBU5Y.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_7527a /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6fe49' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_6fe49.'
+         /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAQpgvs.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_6fe49 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
         collect2 version 13.3.0
-        /usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccagBU5Y.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_7527a /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+        /usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAQpgvs.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_6fe49 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
         GNU ld (GNU Binutils for Ubuntu) 2.42
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7527a' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_7527a.'
-        /usr/bin/c++  -v -Wl,-v CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_7527a
-        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j'
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6fe49' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_6fe49.'
+        /usr/bin/c++  -v -Wl,-v CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_6fe49
+        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw'
         
       exitCode: 0
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:2 (project)"
     message: |
       Parsed CXX implicit include dir info: rv=done
@@ -1045,20 +1042,20 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:2 (project)"
     message: |
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j']
+        ignore line: [Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw']
         ignore line: []
-        ignore line: [Run Build Command(s): /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_7527a/fast]
-        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_7527a.dir/build.make CMakeFiles/cmTC_7527a.dir/build]
-        ignore line: [gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-TVSN4j']
-        ignore line: [Building CXX object CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o]
-        ignore line: [/usr/bin/c++   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -c /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Run Build Command(s): /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_6fe49/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_6fe49.dir/build.make CMakeFiles/cmTC_6fe49.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-vac5cw']
+        ignore line: [Building CXX object CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -c /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=/usr/bin/c++]
         ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
@@ -1068,8 +1065,8 @@ events:
         ignore line: [Thread model: posix]
         ignore line: [Supported LTO compression algorithms: zlib zstd]
         ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_7527a.dir/']
-        ignore line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_7527a.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccg9tMc2.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6fe49.dir/']
+        ignore line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_6fe49.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccToJRDo.s]
         ignore line: [GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (x86_64-linux-gnu)]
         ignore line: [	compiled by GNU C version 13.3.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
         ignore line: []
@@ -1090,14 +1087,14 @@ events:
         ignore line: [ /usr/include]
         ignore line: [End of search list.]
         ignore line: [Compiler executable checksum: c81c05345ce537099dafd5580045814a]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_7527a.dir/']
-        ignore line: [ as -v --64 -o CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccg9tMc2.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6fe49.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccToJRDo.s]
         ignore line: [GNU assembler version 2.42 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42]
         ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/]
         ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.']
-        ignore line: [Linking CXX executable cmTC_7527a]
-        ignore line: [/snap/clion/405/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7527a.dir/link.txt --verbose=1]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_6fe49]
+        ignore line: [/snap/clion/409/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6fe49.dir/link.txt --verbose=1]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=/usr/bin/c++]
         ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper]
@@ -1110,13 +1107,13 @@ events:
         ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
         ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/]
         ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7527a' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_7527a.']
-        link line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccagBU5Y.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_7527a /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6fe49' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_6fe49.']
+        link line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAQpgvs.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_6fe49 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
           arg [/usr/libexec/gcc/x86_64-linux-gnu/13/collect2] ==> ignore
           arg [-plugin] ==> ignore
           arg [/usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so] ==> ignore
           arg [-plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper] ==> ignore
-          arg [-plugin-opt=-fresolution=/tmp/ccagBU5Y.res] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccAQpgvs.res] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
           arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -1134,7 +1131,7 @@ events:
           arg [-znow] ==> ignore
           arg [-zrelro] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_7527a] ==> ignore
+          arg [cmTC_6fe49] ==> ignore
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o]
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o]
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o]
@@ -1147,7 +1144,7 @@ events:
           arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
           arg [-L/usr/lib/gcc/x86_64-linux-gnu/13/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../..]
           arg [-v] ==> ignore
-          arg [CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
           arg [-lstdc++] ==> lib [stdc++]
           arg [-lm] ==> lib [m]
           arg [-lgcc_s] ==> lib [gcc_s]
@@ -1158,7 +1155,7 @@ events:
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o]
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
         ignore line: [collect2 version 13.3.0]
-        ignore line: [/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccagBU5Y.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_7527a /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_7527a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAQpgvs.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_6fe49 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_6fe49.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
         linker tool for 'CXX': /usr/bin/ld
         collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
         collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
@@ -1180,9 +1177,9 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "CMakeLists.txt:2 (project)"
     message: |
       Running the CXX compiler's linker: "/usr/bin/ld" "-v"
@@ -1190,8 +1187,8 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompiler.cmake:54 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:64 (_cmake_find_compiler)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompiler.cmake:54 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:64 (_cmake_find_compiler)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     mode: "program"
     variable: "CMAKE_C_COMPILER"
@@ -1217,7 +1214,6 @@ events:
     found: "/usr/bin/cc"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -1230,12 +1226,13 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
       CMAKE_INSTALL_PREFIX: "/usr/local"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "/usr/local"
         - "/usr"
         - "/"
-        - "/snap/clion/405/bin/cmake/linux/x64"
+        - "/snap/clion/409/bin/cmake/linux/x64"
         - "/usr/local"
         - "/usr/X11R6"
         - "/usr/pkg"
@@ -1243,11 +1240,11 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     mode: "file"
     variable: "src_in"
@@ -1263,11 +1260,10 @@ events:
     names:
       - "CMakeCCompilerId.c.in"
     candidate_directories:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/"
-    found: "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerId.c.in"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/"
+    found: "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerId.c.in"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -1280,12 +1276,13 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
       CMAKE_INSTALL_PREFIX: "/usr/local"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "/usr/local"
         - "/usr"
         - "/"
-        - "/snap/clion/405/bin/cmake/linux/x64"
+        - "/snap/clion/409/bin/cmake/linux/x64"
         - "/usr/local"
         - "/usr/X11R6"
         - "/usr/pkg"
@@ -1295,9 +1292,9 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     message: |
       Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
@@ -1317,8 +1314,8 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     mode: "program"
     variable: "CMAKE_C_COMPILER_AR"
@@ -1338,7 +1335,6 @@ events:
       - "gcc-ar"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -1349,6 +1345,7 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
       - "/usr/local/bin/"
       - "/usr/local/sbin/"
       - "/usr/local/"
@@ -1357,9 +1354,9 @@ events:
       - "/usr/"
       - "/bin/"
       - "/sbin/"
-      - "/snap/clion/405/bin/cmake/linux/x64/bin/"
-      - "/snap/clion/405/bin/cmake/linux/x64/sbin/"
-      - "/snap/clion/405/bin/cmake/linux/x64/"
+      - "/snap/clion/409/bin/cmake/linux/x64/bin/"
+      - "/snap/clion/409/bin/cmake/linux/x64/sbin/"
+      - "/snap/clion/409/bin/cmake/linux/x64/"
       - "/usr/X11R6/bin/"
       - "/usr/X11R6/sbin/"
       - "/usr/X11R6/"
@@ -1371,7 +1368,6 @@ events:
       - "/opt/"
     searched_directories:
       - "/usr/bin/gcc-ar-13.3"
-      - "/snap/clion/405/bin/ninja/linux/x64/gcc-ar-13.3"
       - "/home/tamas/.juliaup/bin/gcc-ar-13.3"
       - "/home/tamas/.local/bin/gcc-ar-13.3"
       - "/usr/local/sbin/gcc-ar-13.3"
@@ -1382,6 +1378,7 @@ events:
       - "/usr/games/gcc-ar-13.3"
       - "/usr/local/games/gcc-ar-13.3"
       - "/snap/bin/gcc-ar-13.3"
+      - "/snap/clion/409/bin/ninja/linux/x64/gcc-ar-13.3"
       - "/usr/local/bin/gcc-ar-13.3"
       - "/usr/local/sbin/gcc-ar-13.3"
       - "/usr/local/gcc-ar-13.3"
@@ -1390,9 +1387,9 @@ events:
       - "/usr/gcc-ar-13.3"
       - "/bin/gcc-ar-13.3"
       - "/sbin/gcc-ar-13.3"
-      - "/snap/clion/405/bin/cmake/linux/x64/bin/gcc-ar-13.3"
-      - "/snap/clion/405/bin/cmake/linux/x64/sbin/gcc-ar-13.3"
-      - "/snap/clion/405/bin/cmake/linux/x64/gcc-ar-13.3"
+      - "/snap/clion/409/bin/cmake/linux/x64/bin/gcc-ar-13.3"
+      - "/snap/clion/409/bin/cmake/linux/x64/sbin/gcc-ar-13.3"
+      - "/snap/clion/409/bin/cmake/linux/x64/gcc-ar-13.3"
       - "/usr/X11R6/bin/gcc-ar-13.3"
       - "/usr/X11R6/sbin/gcc-ar-13.3"
       - "/usr/X11R6/gcc-ar-13.3"
@@ -1405,7 +1402,6 @@ events:
     found: "/usr/bin/gcc-ar-13"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -1418,12 +1414,13 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
       CMAKE_INSTALL_PREFIX: "/usr/local"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "/usr/local"
         - "/usr"
         - "/"
-        - "/snap/clion/405/bin/cmake/linux/x64"
+        - "/snap/clion/409/bin/cmake/linux/x64"
         - "/usr/local"
         - "/usr/X11R6"
         - "/usr/pkg"
@@ -1431,8 +1428,8 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     mode: "program"
     variable: "CMAKE_C_COMPILER_RANLIB"
@@ -1452,7 +1449,6 @@ events:
       - "gcc-ranlib"
     candidate_directories:
       - "/usr/bin/"
-      - "/snap/clion/405/bin/ninja/linux/x64/"
       - "/home/tamas/.juliaup/bin/"
       - "/home/tamas/.local/bin/"
       - "/usr/local/sbin/"
@@ -1463,6 +1459,7 @@ events:
       - "/usr/games/"
       - "/usr/local/games/"
       - "/snap/bin/"
+      - "/snap/clion/409/bin/ninja/linux/x64/"
       - "/usr/local/bin/"
       - "/usr/local/sbin/"
       - "/usr/local/"
@@ -1471,9 +1468,9 @@ events:
       - "/usr/"
       - "/bin/"
       - "/sbin/"
-      - "/snap/clion/405/bin/cmake/linux/x64/bin/"
-      - "/snap/clion/405/bin/cmake/linux/x64/sbin/"
-      - "/snap/clion/405/bin/cmake/linux/x64/"
+      - "/snap/clion/409/bin/cmake/linux/x64/bin/"
+      - "/snap/clion/409/bin/cmake/linux/x64/sbin/"
+      - "/snap/clion/409/bin/cmake/linux/x64/"
       - "/usr/X11R6/bin/"
       - "/usr/X11R6/sbin/"
       - "/usr/X11R6/"
@@ -1485,7 +1482,6 @@ events:
       - "/opt/"
     searched_directories:
       - "/usr/bin/gcc-ranlib-13.3"
-      - "/snap/clion/405/bin/ninja/linux/x64/gcc-ranlib-13.3"
       - "/home/tamas/.juliaup/bin/gcc-ranlib-13.3"
       - "/home/tamas/.local/bin/gcc-ranlib-13.3"
       - "/usr/local/sbin/gcc-ranlib-13.3"
@@ -1496,6 +1492,7 @@ events:
       - "/usr/games/gcc-ranlib-13.3"
       - "/usr/local/games/gcc-ranlib-13.3"
       - "/snap/bin/gcc-ranlib-13.3"
+      - "/snap/clion/409/bin/ninja/linux/x64/gcc-ranlib-13.3"
       - "/usr/local/bin/gcc-ranlib-13.3"
       - "/usr/local/sbin/gcc-ranlib-13.3"
       - "/usr/local/gcc-ranlib-13.3"
@@ -1504,9 +1501,9 @@ events:
       - "/usr/gcc-ranlib-13.3"
       - "/bin/gcc-ranlib-13.3"
       - "/sbin/gcc-ranlib-13.3"
-      - "/snap/clion/405/bin/cmake/linux/x64/bin/gcc-ranlib-13.3"
-      - "/snap/clion/405/bin/cmake/linux/x64/sbin/gcc-ranlib-13.3"
-      - "/snap/clion/405/bin/cmake/linux/x64/gcc-ranlib-13.3"
+      - "/snap/clion/409/bin/cmake/linux/x64/bin/gcc-ranlib-13.3"
+      - "/snap/clion/409/bin/cmake/linux/x64/sbin/gcc-ranlib-13.3"
+      - "/snap/clion/409/bin/cmake/linux/x64/gcc-ranlib-13.3"
       - "/usr/X11R6/bin/gcc-ranlib-13.3"
       - "/usr/X11R6/sbin/gcc-ranlib-13.3"
       - "/usr/X11R6/gcc-ranlib-13.3"
@@ -1519,7 +1516,6 @@ events:
     found: "/usr/bin/gcc-ranlib-13"
     search_context:
       ENV{PATH}:
-        - "/snap/clion/405/bin/ninja/linux/x64"
         - "/home/tamas/.juliaup/bin"
         - "/home/tamas/.local/bin"
         - "/usr/local/sbin"
@@ -1532,12 +1528,13 @@ events:
         - "/usr/local/games"
         - "/snap/bin"
         - "/home/tamas/.local/bin"
+        - "/snap/clion/409/bin/ninja/linux/x64"
       CMAKE_INSTALL_PREFIX: "/usr/local"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "/usr/local"
         - "/usr"
         - "/"
-        - "/snap/clion/405/bin/cmake/linux/x64"
+        - "/snap/clion/409/bin/cmake/linux/x64"
         - "/usr/local"
         - "/usr/X11R6"
         - "/usr/pkg"
@@ -1545,14 +1542,14 @@ events:
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6"
-      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6"
+      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B"
+      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -1561,13 +1558,13 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6'
+        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B'
         
-        Run Build Command(s): /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_a3346/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_a3346.dir/build.make CMakeFiles/cmTC_a3346.dir/build
-        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6'
-        Building C object CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o
-        /usr/bin/cc   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -c /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c
+        Run Build Command(s): /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_b458d/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_b458d.dir/build.make CMakeFiles/cmTC_b458d.dir/build
+        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B'
+        Building C object CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -c /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c
         Using built-in specs.
         COLLECT_GCC=/usr/bin/cc
         OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
@@ -1577,8 +1574,8 @@ events:
         Thread model: posix
         Supported LTO compression algorithms: zlib zstd
         gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_a3346.dir/'
-         /usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_a3346.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccbwVxLc.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b458d.dir/'
+         /usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_b458d.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccEGdxkT.s
         GNU C17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (x86_64-linux-gnu)
         	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
         
@@ -1595,14 +1592,14 @@ events:
          /usr/include
         End of search list.
         Compiler executable checksum: 38987c28e967c64056a6454abdef726e
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_a3346.dir/'
-         as -v --64 -o CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o /tmp/ccbwVxLc.s
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b458d.dir/'
+         as -v --64 -o CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o /tmp/ccEGdxkT.s
         GNU assembler version 2.42 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
         COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/
         LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.'
-        Linking C executable cmTC_a3346
-        /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a3346.dir/link.txt --verbose=1
+        COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_b458d
+        /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b458d.dir/link.txt --verbose=1
         Using built-in specs.
         COLLECT_GCC=/usr/bin/cc
         COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper
@@ -1615,21 +1612,21 @@ events:
         gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) 
         COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/
         LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a3346' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_a3346.'
-         /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccziGvze.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_a3346 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b458d' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_b458d.'
+         /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxtk6Ah.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_b458d /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
         collect2 version 13.3.0
-        /usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccziGvze.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_a3346 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+        /usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxtk6Ah.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_b458d /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
         GNU ld (GNU Binutils for Ubuntu) 2.42
-        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a3346' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_a3346.'
-        /usr/bin/cc  -v -Wl,-v CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -o cmTC_a3346
-        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6'
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b458d' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_b458d.'
+        /usr/bin/cc  -v -Wl,-v CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -o cmTC_b458d
+        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B'
         
       exitCode: 0
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     message: |
       Parsed C implicit include dir info: rv=done
@@ -1650,20 +1647,20 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     message: |
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6']
+        ignore line: [Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B']
         ignore line: []
-        ignore line: [Run Build Command(s): /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_a3346/fast]
-        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_a3346.dir/build.make CMakeFiles/cmTC_a3346.dir/build]
-        ignore line: [gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-X1tSR6']
-        ignore line: [Building C object CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o]
-        ignore line: [/usr/bin/cc   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -c /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c]
+        ignore line: [Run Build Command(s): /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_b458d/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_b458d.dir/build.make CMakeFiles/cmTC_b458d.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Wg0z7B']
+        ignore line: [Building C object CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -fdiagnostics-color=always   -v -o CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -c /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=/usr/bin/cc]
         ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
@@ -1673,8 +1670,8 @@ events:
         ignore line: [Thread model: posix]
         ignore line: [Supported LTO compression algorithms: zlib zstd]
         ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_a3346.dir/']
-        ignore line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_a3346.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccbwVxLc.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b458d.dir/']
+        ignore line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_b458d.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -fdiagnostics-color=always -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccEGdxkT.s]
         ignore line: [GNU C17 (Ubuntu 13.3.0-6ubuntu2~24.04) version 13.3.0 (x86_64-linux-gnu)]
         ignore line: [	compiled by GNU C version 13.3.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
         ignore line: []
@@ -1691,14 +1688,14 @@ events:
         ignore line: [ /usr/include]
         ignore line: [End of search list.]
         ignore line: [Compiler executable checksum: 38987c28e967c64056a6454abdef726e]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_a3346.dir/']
-        ignore line: [ as -v --64 -o CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o /tmp/ccbwVxLc.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b458d.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o /tmp/ccEGdxkT.s]
         ignore line: [GNU assembler version 2.42 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42]
         ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/]
         ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.']
-        ignore line: [Linking C executable cmTC_a3346]
-        ignore line: [/snap/clion/405/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a3346.dir/link.txt --verbose=1]
+        ignore line: [COLLECT_GCC_OPTIONS='-fdiagnostics-color=always' '-v' '-o' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_b458d]
+        ignore line: [/snap/clion/409/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b458d.dir/link.txt --verbose=1]
         ignore line: [Using built-in specs.]
         ignore line: [COLLECT_GCC=/usr/bin/cc]
         ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper]
@@ -1711,13 +1708,13 @@ events:
         ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) ]
         ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/]
         ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a3346' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_a3346.']
-        link line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccziGvze.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_a3346 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b458d' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_b458d.']
+        link line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxtk6Ah.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_b458d /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
           arg [/usr/libexec/gcc/x86_64-linux-gnu/13/collect2] ==> ignore
           arg [-plugin] ==> ignore
           arg [/usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so] ==> ignore
           arg [-plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper] ==> ignore
-          arg [-plugin-opt=-fresolution=/tmp/ccziGvze.res] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccxtk6Ah.res] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
           arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
           arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -1735,7 +1732,7 @@ events:
           arg [-znow] ==> ignore
           arg [-zrelro] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_a3346] ==> ignore
+          arg [cmTC_b458d] ==> ignore
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o]
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o]
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o]
@@ -1748,7 +1745,7 @@ events:
           arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
           arg [-L/usr/lib/gcc/x86_64-linux-gnu/13/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../..]
           arg [-v] ==> ignore
-          arg [CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o] ==> ignore
           arg [-lgcc] ==> lib [gcc]
           arg [--push-state] ==> ignore
           arg [--as-needed] ==> ignore
@@ -1763,7 +1760,7 @@ events:
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o]
           arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
         ignore line: [collect2 version 13.3.0]
-        ignore line: [/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccziGvze.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_a3346 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_a3346.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccxtk6Ah.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_b458d /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_b458d.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
         linker tool for 'C': /usr/bin/ld
         collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
         collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
@@ -1785,9 +1782,9 @@ events:
   -
     kind: "message-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
       - "cmake-build-debug/_deps/googletest-src/CMakeLists.txt:6 (project)"
     message: |
       Running the C compiler's linker: "/usr/bin/ld" "-v"
@@ -1795,17 +1792,17 @@ events:
   -
     kind: "try_compile-v1"
     backtrace:
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/CheckCSourceCompiles.cmake:103 (cmake_check_source_compiles)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/FindThreads.cmake:97 (check_c_source_compiles)"
-      - "/snap/clion/405/bin/cmake/linux/x64/share/cmake-4.1/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/CheckCSourceCompiles.cmake:103 (cmake_check_source_compiles)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/FindThreads.cmake:97 (check_c_source_compiles)"
+      - "/snap/clion/409/bin/cmake/linux/x64/share/cmake-4.1/Modules/FindThreads.cmake:163 (_threads_check_libc)"
       - "cmake-build-debug/_deps/googletest-src/googletest/cmake/internal_utils.cmake:66 (find_package)"
       - "cmake-build-debug/_deps/googletest-src/googletest/CMakeLists.txt:83 (config_compiler_and_linker)"
     checks:
       - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
     directories:
-      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1HjtKV"
-      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1HjtKV"
+      source: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Qjiv9G"
+      binary: "/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Qjiv9G"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -1814,17 +1811,17 @@ events:
       variable: "CMAKE_HAVE_LIBC_PTHREAD"
       cached: true
       stdout: |
-        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1HjtKV'
+        Change Dir: '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Qjiv9G'
         
-        Run Build Command(s): /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_feab2/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_feab2.dir/build.make CMakeFiles/cmTC_feab2.dir/build
-        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1HjtKV'
-        Building C object CMakeFiles/cmTC_feab2.dir/src.c.o
-        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -fdiagnostics-color=always -o CMakeFiles/cmTC_feab2.dir/src.c.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1HjtKV/src.c
-        Linking C executable cmTC_feab2
-        /snap/clion/405/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_feab2.dir/link.txt --verbose=1
-        /usr/bin/cc CMakeFiles/cmTC_feab2.dir/src.c.o -o cmTC_feab2
-        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-1HjtKV'
+        Run Build Command(s): /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_198dc/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_198dc.dir/build.make CMakeFiles/cmTC_198dc.dir/build
+        gmake[1]: Entering directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Qjiv9G'
+        Building C object CMakeFiles/cmTC_198dc.dir/src.c.o
+        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -fdiagnostics-color=always -o CMakeFiles/cmTC_198dc.dir/src.c.o -c /home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Qjiv9G/src.c
+        Linking C executable cmTC_198dc
+        /snap/clion/409/bin/cmake/linux/x64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_198dc.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_198dc.dir/src.c.o -o cmTC_198dc
+        gmake[1]: Leaving directory '/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-Qjiv9G'
         
       exitCode: 0
 ...
