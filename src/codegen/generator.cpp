@@ -7,6 +7,11 @@ AsmGenerator::AsmGenerator(IRProgram prog)
 
 std::string AsmGenerator::generate_program()
 {
+    //only for now
+    m_emitter.emit("push", regs[rbp]);
+    m_emitter.emit(aop[MOV], regs[rbp], regs[rsp]);
+    m_emitter.emit(op[IROpcode::SUB], regs[rsp], "16");
+
     for (auto& func: m_prog.functions)
         generate_function(func);
     return m_emitter.build_output();
@@ -15,7 +20,7 @@ std::string AsmGenerator::generate_program()
 std::string AsmGenerator::vreg_stack_loc(size_t vreg_id)
 {
     if (std::ranges::find(m_alloc_vregs, vreg_id) == m_alloc_vregs.end())
-    { m_alloc_vregs.push_back(vreg_id); return aop[QWORD] + " [" + regs[rsp] + " - " + std::to_string((vreg_id + 1) * 8) + "]"; }
+    { m_alloc_vregs.push_back(vreg_id); return aop[QWORD] + " [" + regs[rbp] + " - " + std::to_string((vreg_id + 1) * 8) + "]"; }
     return "[" + regs[rsp] + " - " + std::to_string((vreg_id + 1) * 8) + "]";
 }
 std::string AsmGenerator::to_x86_operand(const IROperand& opnd)
