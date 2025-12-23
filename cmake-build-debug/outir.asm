@@ -40,13 +40,13 @@ print1:
     test rax, rax
     jnz L0_enter
 L1_exit:
-    mov rax, QWORD [rsp - 8]
+    mov rax, [rsp - 8]
     mov rbx, 150
     cmp rax, rbx
     setne al
     movzx rax, al
     mov QWORD [rsp - 16], rax
-    mov rax, QWORD [rsp - 16]
+    mov rax, [rsp - 16]
     test rax, rax
     jnz L1_enter
     mov rax, 155
@@ -121,16 +121,16 @@ print5:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, QWORD [rsp - 8]
+    mov rax, [rsp - 8]
     sub rax, 1
-    mov QWORD [rsp - 8], rax
-    mov rax, QWORD [rsp - 8]
+    mov [rsp - 8], rax
+    mov rax, [rsp - 8]
     mov rbx, 150
     cmp rax, rbx
     setne al
     movzx rax, al
     mov QWORD [rsp - 24], rax
-    mov rax, QWORD [rsp - 24]
+    mov rax, [rsp - 24]
     test rax, rax
     jnz L1_enter
     jmp L1_exit

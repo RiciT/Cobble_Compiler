@@ -20,6 +20,8 @@ private:
     const IRProgram m_prog;
     AsmEmitter m_emitter;
 
+    std::vector<int> m_alloc_vregs;
+
     size_t m_stack_size = 0;
 };
 

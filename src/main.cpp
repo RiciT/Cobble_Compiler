@@ -63,11 +63,9 @@ int main(int argc, char* argv[])
 	//converts ast tree into a linear list of instructions
 	IRBuilder builder(prog.value());
 	IRProgram ir_prog = builder.build_ir();
-	ir_prog.debug_print();
 
 	// --- Stage 5: IR Optimization ---
 	IROptimizer optimizer(ir_prog);
-	//in place optimization
 	optimizer.optimize();
 	ir_prog.debug_print();
 
