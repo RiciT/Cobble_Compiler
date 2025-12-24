@@ -40,6 +40,7 @@ void IRBuilder::build_statement(const NodeStmt* stmt, const int parent_block_ind
         }
         void operator()(const NodeStmtIf* stmt_if) const
         {
+            //F>IZX BB exit
             //save register of expr
             const auto expr_reg = irb.build_expr(stmt_if->expr);
             //save label id of if label

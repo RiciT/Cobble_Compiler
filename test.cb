@@ -3,7 +3,7 @@ def int i = a;
 i = i * 1;
 print(i);
 
-//if(i == 155) { print(a); }
+if(i == 155) { print(a); }
 
 while(i != 150)
 {
