@@ -42,6 +42,7 @@ print1:
     mov rax, 1
     test rax, rax
     jnz L0_enter
+L0_exit:
 L1_exit:
     mov rax, [rbp - 8]
     mov rbx, 150
@@ -52,7 +53,8 @@ L1_exit:
     mov rax, [rbp - 16]
     test rax, rax
     jnz L1_enter
-    mov rax, 155
+L1_enter:
+    mov rax, [rbp - 8]
     ;; Convert integer in rax to ASCII
     mov rbx, 10
     mov rcx, 0
@@ -86,11 +88,10 @@ print3:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, 60
-    mov rdi, 0
-    syscall
-L1_enter:
     mov rax, [rbp - 8]
+    sub rax, 1
+    mov [rbp - 8], rax
+    mov rax, 155
     ;; Convert integer in rax to ASCII
     mov rbx, 10
     mov rcx, 0
@@ -124,9 +125,11 @@ print5:
     mov rdx, rcx
     syscall
     add rsp, 32
-    mov rax, [rbp - 8]
-    sub rax, 1
-    mov [rbp - 8], rax
+    mov rax, 60
+    mov rdi, 0
+    syscall
+    jmp L1_exit
+L2_exit:
     mov rax, [rbp - 8]
     mov rbx, 150
     cmp rax, rbx
@@ -135,11 +138,9 @@ print5:
     mov QWORD [rbp - 24], rax
     mov rax, [rbp - 24]
     test rax, rax
-    jnz L1_enter
-    jmp L1_exit
-L0_exit:
-L0_enter:
-    mov rax, 155
+    jnz L2_enter
+L2_enter:
+    mov rax, [rbp - 8]
     ;; Convert integer in rax to ASCII
     mov rbx, 10
     mov rcx, 0
@@ -166,6 +167,45 @@ print6:
     inc rcx
     jmp print6
 print7:
+    inc rdi
+    mov rax, 1
+    mov rsi, rdi
+    mov rdi, 1
+    mov rdx, rcx
+    syscall
+    add rsp, 32
+    mov rax, [rbp - 8]
+    sub rax, 1
+    mov [rbp - 8], rax
+    jmp L2_exit
+L0_enter:
+    mov rax, 155
+    ;; Convert integer in rax to ASCII
+    mov rbx, 10
+    mov rcx, 0
+    sub rsp, 32
+    mov rdi, rsp
+    add rdi, 31
+    mov BYTE [rdi], 10
+    dec rdi
+    inc rcx
+    test rax, rax
+    jnz print8
+    mov BYTE [rdi], '0'
+    dec rdi
+    inc rcx
+    jmp print9
+print8:
+    test rax, rax
+    jz print9
+    xor rdx, rdx
+    div rbx
+    add dl, '0'
+    mov [rdi], dl
+    dec rdi
+    inc rcx
+    jmp print8
+print9:
     inc rdi
     mov rax, 1
     mov rsi, rdi

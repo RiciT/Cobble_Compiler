@@ -19,9 +19,11 @@ IRProgram IRBuilder::build_ir()
     m_current_func = &m_current_program->functions.front();
     m_current_block = &m_current_func->blocks.front();
 
+    auto current_index = 0;
+
     for (const NodeStmt* stmt : m_prog.stmts)
     {
-        build_statement(stmt, 0);
+        build_statement(stmt, current_index);
     }
 
     m_current_block->instructions.push_back({ .opcode = IROpcode::EXIT, .src1 = IROperand::make_lit(0)});

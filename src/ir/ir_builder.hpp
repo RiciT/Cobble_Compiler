@@ -12,9 +12,9 @@ public:
     [[nodiscard]] IRProgram build_ir();
 
 private:
-    void build_statement(const NodeStmt* stmt, int parent_block_index);
-    void build_if_predicate(const NodeIfPredicate *pred, size_t end_label_id, int parent_block_index);
-    void build_scope(const NodeScope* scope, int parent_block_index);
+    void build_statement(const NodeStmt* stmt, int &parent_block_index);
+    void build_if_predicate(const NodeIfPredicate *pred, size_t end_label_id, int &parent_block_index);
+    void build_scope(const NodeScope* scope, int &parent_block_index);
     IROperand build_expr(const NodeExpr* expr);
     IROperand build_binexpr(const NodeBinExpr* bin_expr);
     IROperand build_atom(const NodeAtom* atom);
