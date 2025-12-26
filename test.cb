@@ -9,8 +9,8 @@ while(i != 150)
 {
     print(i);
     i = i - 1;
-    while (i != 150) {
-        print(i); i = i - 1; }
+    //while (i != 150) {
+      //  print(i); i = i - 1; }
 }
 
 print(a);

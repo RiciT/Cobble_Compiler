@@ -153,66 +153,6 @@ label8:
     push rax
     pop rax
     mov [rsp + 0], rax
-label9:
-    push QWORD [rsp + 0]
-    mov rax, 150
-    push rax
-    pop rbx
-    pop rax
-    cmp rax, rbx
-    setne al
-    movzx rax, al
-    push rax
-    pop rax
-    test rax, rax
-    jz label10
-    push QWORD [rsp + 0]
-    pop rax
-    ;; Convert integer in rax to ASCII
-    mov rbx, 10
-    mov rcx, 0
-    sub rsp, 32
-    mov rdi, rsp
-    add rdi, 31
-    mov BYTE [rdi], 10
-    dec rdi
-    inc rcx
-    test rax, rax
-    jnz label11
-    mov BYTE [rdi], '0'
-    dec rdi
-    inc rcx
-    jmp label12
-label11:
-    test rax, rax
-    jz label12
-    xor rdx, rdx
-    div rbx
-    add dl, '0'
-    mov [rdi], dl
-    dec rdi
-    inc rcx
-    jmp label11
-label12:
-    inc rdi
-    mov rax, 1
-    mov rsi, rdi
-    mov rdi, 1
-    mov rdx, rcx
-    syscall
-    add rsp, 32
-    mov rax, 1
-    push rax
-    push QWORD [rsp + 8]
-    pop rax
-    pop rbx
-    sub rax, rbx
-    push rax
-    pop rax
-    mov [rsp + 0], rax
-    add rsp, 0
-    jmp label9
-label10:
     add rsp, 0
     jmp label5
 label6:
@@ -228,22 +168,22 @@ label6:
     dec rdi
     inc rcx
     test rax, rax
-    jnz label13
+    jnz label9
     mov BYTE [rdi], '0'
     dec rdi
     inc rcx
-    jmp label14
-label13:
+    jmp label10
+label9:
     test rax, rax
-    jz label14
+    jz label10
     xor rdx, rdx
     div rbx
     add dl, '0'
     mov [rdi], dl
     dec rdi
     inc rcx
-    jmp label13
-label14:
+    jmp label9
+label10:
     inc rdi
     mov rax, 1
     mov rsi, rdi
