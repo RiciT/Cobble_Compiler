@@ -151,6 +151,7 @@ bool IROptimizer::constant_folding()
 // ReSharper disable once CppMemberFunctionMayBeConst
 bool IROptimizer::unreachable_code_elimination()
 {
+    //need to update this with graph coloring and a full walk
     bool changed = false;
 
     for (auto [index_f, func] : std::views::enumerate(m_prog.functions))
@@ -368,14 +369,12 @@ bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& 
         //if the next block's first instr is a label and this blocks last instruction is not a GO op or
         //a GO op with the same label we know we will fall through
         auto b_plus_one_first_instr = func.blocks[index_b + 1].instructions.front();
-        if (b_plus_one_first_instr.opcode == IROpcode::LABEL)
+        if (b_plus_one_first_instr.opcode != IROpcode::LABEL) continue;
+        //add if theres not an unconditional jump to the label
+        if (!(curr_instrs.back().opcode == IROpcode::GOTO && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label) &&
+            !(curr_instrs.back().opcode == IROpcode::GOTRUE && curr_instrs.back().src1 == IROperand::make_lit(1) &&
+            curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label))
         { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c++; }
-        else continue;
-        //dont add if there is an uncond GO op to the label
-        if ((curr_instrs.back().opcode == IROpcode::GOTO && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label) ||
-            (curr_instrs.back().opcode == IROpcode::GOTRUE && curr_instrs.back().src1 == IROperand::make_lit(1)
-                && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label))
-        { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c--; }
     }
     if (label_instance_count.empty()) return changed;
     for (auto [label, count] : label_instance_count)
