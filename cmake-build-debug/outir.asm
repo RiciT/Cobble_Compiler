@@ -128,6 +128,15 @@ print5:
     mov rax, [rbp - 8]
     sub rax, 1
     mov [rbp - 8], rax
+    mov rax, [rbp - 8]
+    mov rbx, 150
+    cmp rax, rbx
+    setne al
+    movzx rax, al
+    mov QWORD [rbp - 24], rax
+    mov rax, [rbp - 24]
+    test rax, rax
+    jnz L1_enter
     jmp L1_exit
 L0_enter:
     mov rax, 155
