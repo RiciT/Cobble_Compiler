@@ -24,7 +24,7 @@ void IROptimizer::optimize()
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
         //only start func-wide optimizations if the basic block opts are already done
-        if (!changed) changed |= coalescing();
+        //if (!changed) changed |= coalescing();
         if (!changed) changed |= jump_target_merging();
         //global optimizations
         if (!changed) changed |= copy_propagation();
@@ -364,17 +364,18 @@ bool IROptimizer::coalescing_single_jump_labels(const long index_f, IRFunction& 
         //only do this if we are not on the last block
         if (func.blocks[index_b] == func.blocks.at(func.blocks.size() - 1)) break;
         //also add to label_count if the previous block falls_through to it
-        //we can fall through if there is an exit
+        //we cant fall through if there is an exit
         if (curr_instrs.back().opcode == IROpcode::EXIT) continue;
         //if the next block's first instr is a label and this blocks last instruction is not a GO op or
         //a GO op with the same label we know we will fall through
         auto b_plus_one_first_instr = func.blocks[index_b + 1].instructions.front();
         if (b_plus_one_first_instr.opcode != IROpcode::LABEL) continue;
+        //we cant fall through if the previous instruction is an unconditional jump
+        if (curr_instrs.back().opcode == IROpcode::GOTO || (curr_instrs.back().opcode == IROpcode::GOTRUE && curr_instrs.back().src1 == IROperand::make_lit(1))) continue;
         //add if theres not an unconditional jump to the label
-        if (!(curr_instrs.back().opcode == IROpcode::GOTO && curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label) &&
-            !(curr_instrs.back().opcode == IROpcode::GOTRUE && curr_instrs.back().src1 == IROperand::make_lit(1) &&
-            curr_instrs.back().dest.label == b_plus_one_first_instr.dest.label))
+        if (curr_instrs.back().dest.label != b_plus_one_first_instr.dest.label)
         { auto& [c, u, p] = label_instance_count[b_plus_one_first_instr.dest.label]; c++; }
+
     }
     if (label_instance_count.empty()) return changed;
     for (auto [label, count] : label_instance_count)
