@@ -89,7 +89,7 @@ bool IROptimizer::dead_assignment_elimination()
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
                     if (std::ranges::find(vregs_as_dest, instr.dest) != vregs_as_dest.cend())
                     {
-                        //this is a really ugly solution but for now it will do
+                        //this is a hideous solution but for now it will do
                         //later ill implement a reversing scheme
                         curr_instrs.erase(curr_instrs.begin() + index_i);
                         break; //TODO change this to something sensible
