@@ -24,6 +24,7 @@ void IROptimizer::optimize()
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
         //only start func-wide optimizations if the basic block opts are already done
+        //TODO: FIX COALESCING
         //if (!changed) changed |= coalescing();
         if (!changed) changed |= jump_target_merging();
         //global optimizations
@@ -88,7 +89,7 @@ bool IROptimizer::dead_assignment_elimination()
                 for (auto [index_i, instr] : std::views::enumerate(block.instructions))
                     if (std::ranges::find(vregs_as_dest, instr.dest) != vregs_as_dest.cend())
                     {
-                        //this is a really ugly solution but for now it will do
+                        //this is a hideous solution but for now it will do
                         //later ill implement a reversing scheme
                         curr_instrs.erase(curr_instrs.begin() + index_i);
                         break; //TODO change this to something sensible
