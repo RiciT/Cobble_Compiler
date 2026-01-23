@@ -24,6 +24,7 @@ void IROptimizer::optimize()
         changed |= algebraic_reduction();
         changed |= dead_code_elimination();
         //only start func-wide optimizations if the basic block opts are already done
+        //TODO: FIX COALESCING
         //if (!changed) changed |= coalescing();
         if (!changed) changed |= jump_target_merging();
         //global optimizations

@@ -4,6 +4,11 @@ i = i * 1;
 print(i);
 
 if(i == 155) { print(a); }
+if(i != 155) { print(a); }
+if (i == 155)
+{
+print (i);
+}
 
 while(i != 150)
 {
