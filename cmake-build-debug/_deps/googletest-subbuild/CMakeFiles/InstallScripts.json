@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/cmake-build-debug/_deps/googletest-subbuild/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

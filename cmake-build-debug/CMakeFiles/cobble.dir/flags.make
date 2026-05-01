@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/tamas/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src
+CXX_INCLUDES = -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src
 
 CXX_FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
 

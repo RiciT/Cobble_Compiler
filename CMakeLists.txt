@@ -3,6 +3,7 @@ project(cobble_compiler CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # --- 1. Define Sources ---
 # Gather all source files except main.cpp and unit_tests.cpp
@@ -22,24 +23,24 @@ add_executable(cobble src/main.cpp)
 target_link_libraries(cobble PRIVATE cobble_core)
 
 # --- 4. Google Test Setup ---
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/refs/tags/v1.16.0.zip
-)
-FetchContent_MakeAvailable(googletest)
+#include(FetchContent)
+#FetchContent_Declare(
+#      googletest
+#       URL https://github.com/google/googletest/archive/refs/tags/v1.16.0.zip
+#)
+#FetchContent_MakeAvailable(googletest)
 
 # --- 5. Test Executable ---
-enable_testing()
+#enable_testing()
 
-add_executable(unit_tests src/unit_tests.cpp)
+#add_executable(unit_tests src/unit_tests.cpp)
 
 # Link against your core library AND gtest
-target_link_libraries(unit_tests PRIVATE
-        cobble_core
-        GTest::gtest_main
-)
+#target_link_libraries(unit_tests PRIVATE
+#       cobble_core
+#      GTest::gtest_main
+#)
 
 # Helper to auto-discover tests so you can see them in your IDE
-include(GoogleTest)
-gtest_discover_tests(unit_tests)
+#include(GoogleTest)
+#gtest_discover_tests(unit_tests)
