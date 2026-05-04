@@ -1,34 +1,34 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include  "ast/nodes.hpp"
-#include  "diagnostics/error_handler.hpp"
+#include "ast/nodes.hpp"
+#include "diagnostics/error_handler.hpp"
 
 class TypeChecker {
 public:
-    explicit TypeChecker(NodeProgram prog, ErrorHandler& error_handler);
+  explicit TypeChecker(NodeProgram prog, ErrorHandler &error_handler);
 
-    void analyse_program();
+  void analyse_program();
 
 private:
-    void analyse_scope(const NodeScope* scope);
-    void analyse_stmt(NodeStmt* stmt);
-    VarType analyse_expr(NodeExpr* expr);
+  void analyse_scope(const NodeScope *scope);
+  void analyse_stmt(NodeStmt *stmt);
+  VarType analyse_expr(NodeExpr *expr);
 
-    //Logic extracted from Generator
-    struct Variable {
-        std::string name;
-        VarType type;
-    };
+  // Logic extracted from Generator
+  struct Variable {
+    std::string name;
+    VarType type;
+  };
 
-    const NodeProgram m_prog;
-    ErrorHandler& m_error_handler;
+  const NodeProgram m_prog;
+  ErrorHandler &m_error_handler;
 
-    std::vector<Variable> m_vars;
-    std::vector<size_t> m_scopes;
+  std::vector<Variable> m_vars;
+  std::vector<size_t> m_scopes;
 
-    void begin_scope();
-    void end_scope();
+  void begin_scope();
+  void end_scope();
 };

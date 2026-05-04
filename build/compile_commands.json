@@ -1,0 +1,92 @@
+[
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/analysis/type_checker.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/analysis/type_checker.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/codegen/generation.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/codegen/generation.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation_expression.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation_expression.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/codegen/generation_expression.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation_statement.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generation_statement.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/codegen/generation_statement.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generator.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/codegen/generator.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/codegen/generator.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/ir/ir.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/ir/ir_builder.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_expression.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_expression.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/ir/ir_builder_expression.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/ir/ir_builder_statement.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/ir/ir_builder_statement.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/lexing/tokenization.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/lexing/tokenization.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/optimization/optimizer.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/optimization/optimizer.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/parsing/parser.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_expression.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_expression.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/parsing/parser_expression.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_statement.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/parsing/parser_statement.cpp",
+  "output": "CMakeFiles/cobble_core.dir/src/parsing/parser_statement.cpp.o"
+},
+{
+  "directory": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/build",
+  "command": "/usr/bin/c++  -I/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src -g -std=gnu++23 -o CMakeFiles/cobble.dir/src/main.cpp.o -c /home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp",
+  "file": "/home/br4mos/PERSONAL/Developing/Cobble_language/Cobble_Compiler/src/main.cpp",
+  "output": "CMakeFiles/cobble.dir/src/main.cpp.o"
+}
+]
