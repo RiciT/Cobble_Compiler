@@ -7,7 +7,7 @@ immediate representations and much more. It is technically not meant to be used 
 
 Everything here is mostly correct, as the changes since the last update have been **99%** additive.
 
-
+<img src="docs/grammar.png" alt="Grammar of cobble">
 
 Note:
     For functional purity, local variables are not accessible inside functions
